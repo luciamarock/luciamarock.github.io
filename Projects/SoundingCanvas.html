@@ -10,223 +10,91 @@
             line-height: 1.6;
             margin: 20px;
             background-color: #f4f4f9;
-            color: #333;
+            color: #333; /* Dark gray text for better contrast */
         }
         h1, h2 {
-            color: #0056b3;
+            color: #333; /* Dark gray titles matching the old nav background */
         }
         h1 {
             text-align: center;
         }
-        pre {
-            background-color: #eaeaea;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+        img {
+            max-width: 100%; /* Makes image responsive */
+            max-height: 500px; /* Example maximum height */
+            height: auto;
+            display: block; /* Prevents image from affecting line height */
+            margin: 20px auto; /* Centers the image */
         }
-        .section {
-            margin-bottom: 30px;
+        figure {
+    display: inline-block; /* Or block, depending on your layout */
+    margin: 20px auto; /* Centers the figure */
+    text-align: center; /* Centers the caption text */
+}
+
+figcaption {
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #777; /* A lighter gray color */
+    margin-top: 5px; /* Adds a small space above the caption */
+}
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            max-width: 800px; /* Example maximum width */
+            max-height: 450px; /* Example maximum height (optional, but recommended) */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        a {
+            color: #007bff; /* Standard blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>Sounding Canvas Project Report</h1>
-
-    <div class="section">
-        <h2>1. Overview</h2>
-        <p>
-            The project successfully integrates capacitive sensing into an Arduino Duemilanove connected to a 
-            Raspberry Pi 4 Model B. The goal was to create a setup where changes in capacitance of a sensor 
-            (aluminum foil) can be detected, leveraging the <strong>CapacitiveSensor</strong> library. 
-            This report documents the progress, circuit explanation, software implementation, and the 
-            underlying electronics.
-        </p>
-        <p>The following <a href="../temp/utilities/useful_links.html" target="_blank">links</a> have been very useful.</p>
-    </div>
-
-    <div class="section">
-        <h2>2. Hardware Setup</h2>
-        <h3>Components:</h3>
-        <ul>
-            <li>Arduino Duemilanove (connected via USB to Raspberry Pi).</li>
-            <li>Raspberry Pi 4 Model B (powered through HiFiBerry Amp2 HAT).</li>
-            <li>Aluminum foil as the capacitive sensor.</li>
-            <li>Resistor (value: 1 MΩ, adjustable if needed for optimization).</li>
-            <li>Breadboard and wires.</li>
-        </ul>
-        <h3>Connections:</h3>
-        <p>
-            <ul>
-                <li><strong>Send Pin:</strong> Pin on the Arduino configured to output pulses.</li>
-                <li><strong>Receive Pin:</strong> Connected to the aluminum foil sensor and pulled down through a 1 MΩ resistor to ground.</li>
-                <li><strong>Ground:</strong> Shared across all components for stable reference.</li>
-            </ul>
-        </p>
-    </div>
-
-    <div class="section">
-        <h2>3. Software Implementation</h2>
-        <h3>Library:</h3>
-        <p>The <strong>CapacitiveSensor</strong> library by Paul Stoffregen was used.</p>
-        <h3>Arduino Sketch:</h3>
-        <pre>
-CapacitiveSensor cs = CapacitiveSensor(sendPin, receivePin);
-        </pre>
-        <p>
-            Sensitivity was fine-tuned by adjusting the number of samples (default <code>30</code>).
-            By bringing a hand close to the aluminum foil, the change in capacitance was detected and printed via the serial monitor.
-        </p>
-    </div>
-
-    <div class="section">
-        <h2>4. Circuit Explanation</h2>
-        <p>
-            The capacitive sensing circuit relies on measuring the time delay caused by an RC 
-            (resistor-capacitor) network. The key components and their roles are:
-        </p>
-        <ul>
-            <li><strong>Send Pin:</strong> Outputs a square wave signal to charge and discharge the capacitor.</li>
-            <li><strong>Receive Pin:</strong> Reads the voltage changes due to charging/discharging.</li>
-            <li><strong>Resistor (R):</strong> Controls the charging rate of the capacitor.</li>
-            <li><strong>Capacitor (C):</strong> Includes contributions from the aluminum foil, environmental capacitance, and touch effects.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>5. RC Delay Calculation</h2>
-        <p>
-            The delay in the RC circuit depends on the <strong>RC time constant</strong>, given by:
-            <code>τ = R × C</code>
-        </p>
-        <h3>Charging Curve:</h3>
-        <p>
-            Voltage across the capacitor during charging follows:
-        </p>
-        <pre>
-V(t) = Vmax × (1 - e^(-t/RC))
-        </pre>
-        <p>
-            At <code>V(t) = 2.5V</code>, solving for <code>t</code>:
-        </p>
-        <pre>
-t = -RC × ln(1 - 2.5/5) ≈ 0.693 × RC
-        </pre>
-    </div>
-
-    <div class="section">
-        <h2>6. Multiple Sensors Consideration</h2>
-        <p>
-            Adding sensors increases processing time linearly. Optimization by adjusting sample size 
-            and RC values can ensure performance remains acceptable.
-        </p>
-    </div>
-
-    <div class="section">
-        <h2>7. Testing Results</h2>
-        <ul>
-            <li><strong>One Sensor:</strong> Successfully detected capacitance changes with fast and consistent readings.</li>
-            <li><strong>Plan for Multiple Sensors:</strong> Incrementally test with up to three sensors and measure timing.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>8. Next Steps</h2>
-        <p>
-            The circuit is functioning as intended for one sensor, with the ability to detect capacitance 
-            changes due to touch or proximity. Future work includes:
-        </p>
-        <ul>
-            <li>Adding more sensors and verifying processing times.</li>
-            <li>Fine-tuning resistor and foil sizes for optimal sensitivity and speed.</li>
-            <li>Integrating Raspberry Pi to process and visualize sensor data.</li>
-        </ul>
-    </div>
+    <h1>Sounding Canvas Series</h1>
+    <h2>Overview</h2>
+    <p>The visual artist <a href="https://www.instagram.com/dora.negar/" target="_blank">@dora.negar</a> (Dora Motegh) and I are collaborating on an extraordinary project that merges art and technology in a truly unique way. <br> The shapes in these paintings are inspired by Persian characters and musical notes, creating a visual language that is both poetic and meaningful. What sets this project apart is its interactivity: the paintings are equipped with sensors that respond to touch. Yes, you heard it right, when you touch the artwork, it produces sound! <br> This innovative approach transforms the traditional experience of a painting. Instead of passively observing the artwork, you become an active participant, <b>performing</b> with it to create a harmonious fusion of visual and auditory art. It's an entirely new way to engage with and experience art!</p> <p>Check out our <a href="https://www.youtube.com/playlist?list=PLWCEF9zFjxsRQh7xD3kHHybqgGCL4OYLn" target="_blank">YouTube playlist</a> for captivating videos that showcase the Sounding Canvas in action and discover how touch brings these works of art to life.</p>
     
-    <h1>Technical Report: From Sensors to the Final Sounding Canvas</h1>
+    <h2>How they look</h2>
 
-    <div class="section">
-        <h2>1. Addition and Testing of Sensors</h2>
-        <h3>Initial Setup:</h3>
-        <p>Initially, one capacitive sensor was tested using aluminum foil and a resistor to determine proper sensitivity levels. Success with a single sensor led to the addition of three more sensors, resulting in a total of four.</p>
+    <p>The following picture shows the second canvas of the series, on the artist's webpage you can find higher quality photos and descriptions. </p>
+<figure>
+  <img src="images/sc_azzurra.jpg" alt="Second Canvas.">
+  <figcaption>Second Canvas of the Series.</figcaption>
+</figure>
+    <p>My duty here is to reveal the "Behind the Scenes" of this kind of artwork, let's start !.</p>
 
-        <h3>Configuration:</h3>
-        <ul>
-            <li><strong>Sensors:</strong> Four aluminum foil pads, each connected to an independent "receive" pin on the Arduino (pins 4, 6, 8, and 10), and a shared "send" pin (pin 2).</li>
-            <li><strong>Resistors:</strong> Each sensor circuit included a 1.4 MΩ resistor between the send and receive pins.</li>
-        </ul>
-
-        <h3>Testing:</h3>
-        <p>Sensor values were read and calibrated via the Arduino IDE Serial Monitor. Threshold values for activation were determined experimentally to minimize false positives and ensure responsiveness. The system successfully detected individual sensor activation without interference from the others.</p>
+    <h2>Where's the hack</h2>
+    
+    <p> The hack is in the back ! <br>
+    In the next picture you can see how the sensors are cabled and fixed to the canvas, they are made using resistors and aluminum foil.</p>
+    <figure>
+  <img src="images/sc_sensors.jpg" alt="Connecting Sensors.">
+  <figcaption>How the sensors are connected.</figcaption>
+</figure>
+    <p> Then a wooden cover has been mounted upon to host loudspeakers and boards. </p>
+    <figure>
+  <img src="images/sc_back.jpg" alt="Closed Back.">
+  <figcaption>The closed back of the Sounding Canvas.</figcaption>
+</figure>
+<!--
+    <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
 
-    <div class="section">
-        <h2>2. Fine-Tuning of Resistor Values and Aluminum Foil Dimensions</h2>
-
-        <h3>Resistor Value Optimization:</h3>
-        <p>Experimentation revealed that 1.4 MΩ resistors provided the best balance between sensitivity and stability. Lower values caused under-sensitivity, while higher values introduced excessive noise.</p>
-
-        <h3>Aluminum Foil Dimensions:</h3>
-        <p>Each sensor was created with an aluminum foil area of approximately <strong>40 square centimeters</strong>. This size offered a reliable detection range for finger touches while avoiding unintentional activation.</p>
-    </div>
-
-    <div class="section">
-        <h2>3. Mounting Sensors on the Canvas</h2>
-
-        <h3>Placement:</h3>
-        <p>Sensors were mounted on the back of the canvas using adhesive to keep them flat and secure. A 3 cm gap was maintained between the canvas and a wooden back panel to accommodate the sensors and other components.</p>
-
-        <h3>Insulation:</h3>
-        <p>Non-conductive layers were added between the aluminum foil and the canvas to avoid false triggers caused by external electrical interference.</p>
-    </div>
-
-    <div class="section">
-        <h2>4. Mounting Other Components</h2>
-
-        <h3>Components Mounted:</h3>
-        <ul>
-            <li><strong>Arduino Duemilanove:</strong> Connected via USB to the Raspberry Pi for sensor data transmission.</li>
-            <li><strong>Raspberry Pi 4 Model B with HiFiBerry Amp2:</strong> Responsible for audio processing and amplification.</li>
-            <li><strong>Loudspeakers:</strong> Two 4-inch speakers with 20-40 W power capacity and 4 Ω impedance.</li>
-            <li><strong>Cabling:</strong> Managed with clips and supports to ensure a clean and safe layout.</li>
-        </ul>
-
-        <h3>Loudspeaker Installation:</h3>
-        <p>Speakers were fixed to the wooden back panel using screws and circular recesses to ensure stability and reduce protrusion.</p>
-
-        <h3>Final Assembly:</h3>
-        <p>All components were secured to the wooden panel, which was then mounted behind the canvas, ensuring easy access for maintenance.</p>
-    </div>
-
-    <div class="section">
-        <h2>5. Creation of Sounds</h2>
-
-        <h3>Process:</h3>
-        <p>Sounds were recorded using a sustained electric guitar. Each sensor corresponded to a folder containing four distinct sound samples, creating variety.</p>
-    </div>
-
-    <div class="section">
-        <h2>6. Python Program for Integration</h2>
-
-        <h3>Overview:</h3>
-        <p>The Python program executed on the Raspberry Pi serves as the glue for the system, reading sensor data from the Arduino and triggering corresponding audio samples.</p>
-
-        <h3>Key Features:</h3>
-        <ol>
-            <li><strong>Serial Communication:</strong> Reads sensor data from the Arduino over USB.</li>
-            <li><strong>Threshold-Based Triggers:</strong> Activates sounds when sensor values exceed predefined thresholds.</li>
-            <li><strong>Debouncing:</strong> Ensures a minimum of two seconds between successive activations for each sensor.</li>
-            <li><strong>Randomized Sound Selection:</strong> Selects a random sound file from the corresponding folder for variety.</li>
-            <li><strong>Parallel Playback:</strong> Supports simultaneous playback of multiple sounds.</li>
-        </ol>
-    </div>
-
-    <div class="section">
-        <h2>Credits</h2>
-        <p><strong>OpenAI's ChatGPT:</strong> Technical assistant for software development, troubleshooting, and documentation.</p>
-        <p>Special thanks to the OpenAI team for providing tools that empowered this innovative project.</p>
-    </div>
-
-    <p>This interactive sound canvas represents the fusion of art and technology, offering a dynamic platform for creative expression. It exemplifies the potential of collaborative efforts between humans and AI in the realization of artistic and technical visions.</p>
+    <p>A paragraph after the embedded video.</p>
+-->
+    <p>The interested ones can check out <a href="technicalities/tech_report.html" target="_blank">some more in-depth technicalities</a> </p>
 </body>
 </html>
-
