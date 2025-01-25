@@ -1,1 +1,72 @@
-<p> Page under construction </p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stompbox Development Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        h2 {
+            margin-top: 2em; /* Adds more space above h2 elements */
+        }
+        ul {
+            list-style-type: disc; /* Use bullets for lists */
+            padding-left: 20px; /* Indent the list items */
+        }
+    </style>
+</head>
+<body>
+    <h1>Stompbox Development Status</h1>
+
+    <h2>Introduction</h2>
+    <p>The Stompbox is a versatile guitar/bass effect pedal focused on dynamic sound manipulation through advanced audio analysis. Unlike traditional effects pedals, the Stompbox uses real-time pitch detection to drive various effects and even control external devices, creating a more expressive and interactive playing experience. This page provides an overview of the project's current development status.</p>
+
+    <h2>Core Features</h2>
+    <p>The Stompbox's core functionality revolves around accurate polyphonic pitch detection, which enables the following key features:</p>
+    <ul>
+        <li><strong>Pitch-Controlled Effects:</strong> The detected pitch is used to dynamically control parameters of existing audio effects such as tremolo, vibrato, and distortion. This adds a new dimension of expressiveness, allowing the effects to respond directly to the player's performance.</li>
+        <li><strong>Frequency-Based Effects:</strong> Accurate pitch information enables the implementation of frequency-sensitive effects like ring modulation, producing controlled and musical results.</li>
+        <li><strong>Sound Synthesis:</strong> The Stompbox can synthesize additional sounds alongside the direct guitar signal, enriching the sonic texture. This includes the implementation of effects similar to the previously described "Freeze Harmony" and "Extra Sounds".</li>
+        <li><strong>Expression Output:</strong> The Stompbox provides an expression output that can be used to control external devices, with the control signal potentially derived from the pitch detection data.</li>
+    </ul>
+
+    <h2>Current Development Status</h2>
+    <p>A software version of the Stompbox has been successfully developed and currently implements all the core features described above. This includes:</p>
+    <ul>
+        <li>Accurate polyphonic pitch detection algorithm specifically designed for electric guitars.</li>
+        <li>Real-time control of effect parameters (tremolo, vibrato, distortion, etc.) based on detected pitch.</li>
+        <li>Implementation of frequency-based effects like ring modulation.</li>
+        <li>Synthesis of additional sounds triggered and controlled by pitch information.</li>
+    </ul>
+    <p>This software prototype serves as a solid foundation for the hardware implementation. The next steps involve:</p>
+    <ul>
+        <li>Optimizing algorithms for real-time performance on a hardware platform.</li>
+        <li>Selecting a suitable hardware platform (DSP, microcontroller, etc.).</li>
+        <li>Porting the software to the chosen hardware.</li>
+        <li>Designing and implementing the user interface (physical controls).</li>
+    </ul>
+
+    <h2>Looking Ahead</h2>
+    <p>The development of the Stompbox is progressing rapidly. The successful software implementation has validated the core concepts and paved the way for a powerful and expressive guitar effect pedal. Future updates will provide more information on the hardware implementation and user interface design.</p>
+
+</body>
+</html>
