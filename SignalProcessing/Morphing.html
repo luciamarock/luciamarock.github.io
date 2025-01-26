@@ -1,4 +1,160 @@
-adaptive_waveshaper
-guitar_warmer
-retroazione_voice_morphing_experiments
-spectralShaper
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sounding Canvas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333; /* Dark gray text for better contrast */
+        }
+        h1, h2 {
+            color: #333; /* Dark gray titles matching the old nav background */
+        }
+        h1 {
+            text-align: center;
+        }
+        img {
+            max-width: 100%; /* Makes image responsive */
+            max-height: 500px; /* Example maximum height */
+            height: auto;
+            display: block; /* Prevents image from affecting line height */
+            margin: 20px auto; /* Centers the image */
+        }
+        figure {
+    display: inline-block; /* Or block, depending on your layout */
+    margin: 20px auto; /* Centers the figure */
+    text-align: center; /* Centers the caption text */
+}
+
+figcaption {
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #777; /* A lighter gray color */
+    margin-top: 5px; /* Adds a small space above the caption */
+}
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            max-width: 800px; /* Example maximum width */
+            max-height: 450px; /* Example maximum height (optional, but recommended) */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        a {
+            color: #007bff; /* Standard blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Dark gray background */
+    color: #fff; /* White text */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Bold text */
+    border: none; /* Removes border */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 20px; /* Adds some space above the button */
+}
+
+.home-button:hover {
+    background-color: #444; /* Darker gray on hover */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+    </style>
+</head>
+<body>
+    <h1>Sound Morphing</h1>
+    <main>
+        <section>
+            <p>
+                Sound Morphing has been one of my deep interests since my work experience with Benti (a Swiss start-up, 2013). 
+                One of the first experiments I conducted involved using convolution with pulse responses to transform guitar sounds. 
+                I used different shapes and materials for pulse responses to simulate various and sometimes unusual guitar physics 
+                (such as plastic strings, extremely warm environmental conditions, and so on). The results were intriguing, and I 
+                continued exploring this domain in subsequent years.
+            </p>
+            <p>Over time, I focused mainly on four topics or techniques:</p>
+        </section>
+
+        <section>
+            <h2>1. Adaptive Waveshaping</h2>
+            <p>
+                This technique dynamically alters the shape of an audio waveform in real time. Unlike static waveshaping, where a 
+                fixed transfer function is applied, adaptive waveshaping adjusts the transfer function based on the characteristics 
+                of the input signal. The goal is to dynamically modify the timbre and harmonic content of the sound, creating effects 
+                ranging from subtle warmth and saturation to more aggressive distortion and dynamic range compression.
+            </p>
+            <ul>
+                <li>Using the input signal's amplitude to control the amount of distortion.</li>
+                <li>Using frequency information to shape different parts of the spectrum differently.</li>
+                <li>Using envelope followers to create dynamic changes in the waveshaping over time.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>2. Guitar Warmer</h2>
+            <p>
+                This technique focuses specifically on enhancing the spectral content of guitar recordings, bringing out harmonics 
+                and tonal nuances. The goal is to add warmth, richness, and clarity to the guitar sound, making it more vibrant and 
+                present. My exploration involved:
+            </p>
+            <ul>
+                <li>Spectral analysis to identify frequencies that could be enhanced.</li>
+                <li>Boosting specific frequency bands or harmonics.</li>
+                <li>Dynamic processing to avoid over-emphasizing certain frequencies or creating unwanted artifacts.</li>
+                <li>Time-domain processing to add subtle warmth and saturation.</li>
+            </ul>
+            <p>
+                Examples of sounds achieved with these techniques are available at 
+                <a href="https://drive.google.com/drive/folders/1NjsxahdHzQlamZFRj99SyHsZtEvjq7pe?usp=sharing" target="_blank">this link</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Spectral Shaper</h2>
+            <p>
+                This technique manipulates the frequency spectrum of a sound using various methods. The goal is to sculpt the tonal 
+                balance of the sound, emphasize or attenuate specific frequencies, and create unique sonic textures. Key areas I 
+                explored include:
+            </p>
+            <ul>
+                <li>Frequency domain processing.</li>
+                <li>All-pass filters for local spectral approximation and frequency wrapping.</li>
+            </ul>
+            <p>
+                Here's a paper I presented while working at Benti: 
+                <a href="https://drive.google.com/file/d/1gB2L-QWY_TuvZUjfHw0dFMK3MaCFgMi_/view" target="_blank">View Paper</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Morphing, Particularly with the Voice</h2>
+            <p>
+                This technique involves smoothly transitioning between two or more sounds or timbres. The goal is to create seamless 
+                and dynamic changes in the sound, often resulting in unique and evolving textures. One specific area of interest was 
+                voice-controlled morphing, where the voice acts as a control signal to modulate various parameters of the sound, 
+                creating a more organic and expressive form of morphing.
+            </p>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/bMhXYSO8W9M?si=xMq9RWUODwfngsGR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </section>
+    </main>
+    <a href="https://luciamarock.github.io/" class="home-button">Back to Home</a>
+</body>
+</html>
+
+
