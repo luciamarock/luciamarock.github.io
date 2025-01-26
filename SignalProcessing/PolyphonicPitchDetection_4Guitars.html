@@ -1,11 +1,135 @@
-<p> This page is under construction, however:</p>
-<p> The Polyphic Pitch Detection Algorithm for Guitars is something I developed at the time of my collaboration with Benti (a Swizz start-up), since then I have evolved the algorithm but these upgrases are not yet public.</p>
-<p> Anyway the first version of the algorithm was based solely upon two techniques: the RTFI and the classic FFT.</p>
-<p> I have published separately these two techniques and their implementation is available on my GituHub:</p>
-<ul>
-  <li><a href="https://github.com/luciamarock/Polyphonic-Pitch-Detector-for-guitars" target="_blank">RTFI technique</a></li>
-  <li><a href="https://github.com/luciamarock/FFT_for_RTFI_analyzer" target="_blank">FFT (personal implementation)</a></li>
-</ul>
-<p> When putting everything together you obtain the algorithm I have developed for Benti (which is not public) at the moment.</p>
-<p> You can appreciate the performances of the Benti algorithm in this youtube playlist</p>
-<a href="https://www.youtube.com/playlist?list=PL3pYQ_Ww19BV61bMUF2VkwfdTDds1Mixh" target="_blank">Polyphonic Pitch Detection Playlist</a></li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyphonic Pitch Detection Algorithm for Guitars</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333; /* Dark gray text for better contrast */
+        }
+        h1, h2 {
+            color: #333; /* Dark gray titles matching the old nav background */
+        }
+        h1 {
+            text-align: center;
+        }
+        img {
+            max-width: 100%; /* Makes image responsive */
+            max-height: 500px; /* Example maximum height */
+            height: auto;
+            display: block; /* Prevents image from affecting line height */
+            margin: 20px auto; /* Centers the image */
+        }
+        figure {
+    display: inline-block; /* Or block, depending on your layout */
+    margin: 20px auto; /* Centers the figure */
+    text-align: center; /* Centers the caption text */
+}
+
+figcaption {
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #777; /* A lighter gray color */
+    margin-top: 5px; /* Adds a small space above the caption */
+}
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            max-width: 800px; /* Example maximum width */
+            max-height: 450px; /* Example maximum height (optional, but recommended) */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        a {
+            color: #007bff; /* Standard blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Dark gray background */
+    color: #fff; /* White text */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Bold text */
+    border: none; /* Removes border */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 20px; /* Adds some space above the button */
+}
+
+.home-button:hover {
+    background-color: #444; /* Darker gray on hover */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+    </style>
+</head>
+<body>
+    <h1>Polyphonic Pitch Detection Algorithm for Guitars</h1>
+    <main>
+        <section>
+            <p>
+                I began developing the Polyphonic Pitch Detection Algorithm for Guitars during my collaboration with Benti, 
+                a Swiss start-up. Later, I refined the algorithm for Proel and its subsidiary, Dexibel. 
+                Currently, I am working on a third version of the algorithm to support my music and ongoing research on the guitar.
+            </p>
+        </section>
+
+        <section>
+            <h2>First Version: Benti</h2>
+            <p>
+                The first version of the algorithm, developed for Benti, was based on two primary techniques: 
+                the RTFI (Real-Time Frequency Identification) and the classic FFT (Fast Fourier Transform). 
+                Both techniques were implemented and tested extensively during the development phase.
+            </p>
+            <p>
+                I have published these techniques separately, and their implementation is available on my GitHub:
+            </p>
+            <ul>
+                <li><a href="https://github.com/luciamarock/Polyphonic-Pitch-Detector-for-guitars" target="_blank">RTFI Technique</a></li>
+                <li><a href="https://github.com/luciamarock/FFT_for_RTFI_analyzer" target="_blank">FFT (Personal Implementation)</a></li>
+            </ul>
+            <p>
+                The integration of these two techniques resulted in the algorithm developed for Benti. 
+                Although this complete algorithm is currently not public, you can read a detailed article about its design and functionality 
+                <a href="https://drive.google.com/file/d/1clCn2x8OEyG84iHjQJjv0fTyLrd4nqrS/view?usp=sharing" target="_blank">here</a>.
+            </p>
+            <p>
+                Additionally, you can see the algorithm in action by exploring the performances available in 
+                <a href="https://www.youtube.com/playlist?list=PL3pYQ_Ww19BV61bMUF2VkwfdTDds1Mixh" target="_blank">this YouTube playlist</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Second Version: Proel</h2>
+            <p>
+                The second version of the algorithm, refined for Proel and Dexibel, introduced improvements in precision and performance. 
+                While this version is also not publicly available, you can read a detailed article about its development 
+                <a href="https://drive.google.com/file/d/1qonOzZAW27c8pKQA_uqrqxJhC9M8uCPh/view?usp=sharing" target="_blank">here</a>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Current Version: Research and Development</h2>
+            <p>
+                The third version of the algorithm is currently under development. My aim is to further enhance its accuracy, 
+                real-time performance, and adaptability, making it a powerful tool for my research and music projects.
+            </p>
+        </section>
+    </main>
+    <a href="https://luciamarock.github.io/" class="home-button">Back to Home</a>
+</body>
+</html>
