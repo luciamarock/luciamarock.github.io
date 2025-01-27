@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeedGuitar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 500px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+        figure {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+        figcaption {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 5px;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            max-width: 800px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .home-button:hover {
+            background-color: #444;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>FeedGuitar</h1>
+
+    <p>The <strong>FeedGuitar</strong> project began as part of my Master’s Thesis in Music Technology at the University of L'Aquila, Italy. During my internship at the <em>Centro di Ricerche Musicali</em> (CRM) in Rome, under the mentorship of Michelangelo Lupone, I drew inspiration from the <em>Feed Drum</em> to create a system capable of actuating guitar strings via electromagnetic feedback.</p>
+
+    <p>Initially, I experimented with using a wired coil in place of the guitar’s neck pickup to interact with the strings. However, this approach introduced significant interference problems, which proved challenging to mitigate. To address these issues, I transitioned to using an actuator mounted on the bridge. This solution allowed for more direct and reliable string manipulation, forming the foundation of the instrument’s electromagnetic feedback system.</p>
+
+    <p>After completing my thesis, I conducted more detailed studies of the bridge-actuator system, focusing on its resonances and transfer function. These investigations provided valuable insights into the mechanical and acoustic interactions between the strings, the bridge, and the actuator, enabling further refinement of the system.</p>
+
+    <figure>
+        <img src="images/fg_system_resonance.png" alt="System Resonance">
+        <figcaption>The Actuator + Bridge Transfer Function</figcaption>
+    </figure>
+
+    <p>After my thesis, I started working with Benti (a Swiss start-up), and together we began the patent application process for the system. The initial technical document we presented can be viewed <a href="https://drive.google.com/file/d/1_F0b1kaqxw9poe90fX6Hzf2_sFd1TGfE/view?usp=sharing" target="_blank">here</a>.</p>
+
+    <p>Later, I mounted a small motor to the guitar’s whammy bar to create a “frequency modulation effect” by modulating string tension. While I achieved the desired modulation effect, the system became noisy and unwieldy, presenting significant challenges in practical implementation.</p>
+
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/hrFaG-gsarc?si=ImrUlRXthN2Gcn7b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    <figure>
+        <img src="images/fg_freq_modulation.png" alt="On String FM">
+        <figcaption>Achieved Frequency Modulation on the Strings</figcaption>
+    </figure>
+
+    <p>In subsequent iterations, I optimized the FeedGuitar for live performance applications. At the time, I was playing in Rome with a band called <strong>MUNA</strong>. Using a Marshall G30R CD amplifier to drive the actuator, I improved the instrument’s responsiveness and its capability for real-time sound manipulation. I also explored expanding its functionality by experimenting with external input sources and testing the feasibility of triggering its system with other stringed instruments.</p>
+
+    <p>In 2016, my collaboration with Benti ended, and I transitioned to a new career in aerospace. Despite this, I pursued a PhD application with a project titled <em>Guitar Actuated Processing</em>, which proposed further exploration of the FeedGuitar’s potential. Although the application was unsuccessful, you can find the project document <a href="https://drive.google.com/file/d/1Mz19w3vKXo8a5erpUs0GuSH195YJ8Gnq/view?usp=sharing" target="_blank">here</a>.</p>
+
+    <p>Years later, the FeedGuitar continues to fascinate me. An ongoing area of focus is refining the system’s behavior during the “attack” phase of sound production. Achieving minimal delay requires proper hardware development, shifting my focus toward DSP (Digital Signal Processing) solutions. While there is much to do, this project remains close to my heart.</p>
+    <p> In case of interest you could checkout <a href="https://www.youtube.com/playlist?list=PL3pYQ_Ww19BWXq50DTIXmZSNcLlbQEVva" target="_blank">this YouTube Playlist</a> to watch some videos of the FeedGuitar in action</p>
+    <p> The following is, instead, one of the live MUNA songs in which I used the FeedGuitar for the intro</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/cS7ELsenvg0?si=TFs7OBFxttgQu_NP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+    <p>
+        <a href="https://luciamarock.github.io/" class="home-button">Back to Home</a>
+    </p>
+</body>
+</html>
+
