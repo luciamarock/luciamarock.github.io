@@ -1,1 +1,114 @@
-chisco - granita
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addicted2Random</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333; /* Dark gray text for better contrast */
+        }
+        h1, h2 {
+            color: #333; /* Dark gray titles matching the old nav background */
+        }
+        h1 {
+            text-align: center;
+        }
+        img {
+            max-width: 100%; /* Makes image responsive */
+            max-height: 500px; /* Example maximum height */
+            height: auto;
+            display: block; /* Prevents image from affecting line height */
+            margin: 20px auto; /* Centers the image */
+        }
+        figure {
+    display: inline-block; /* Or block, depending on your layout */
+    margin: 20px auto; /* Centers the figure */
+    text-align: center; /* Centers the caption text */
+}
+
+figcaption {
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #777; /* A lighter gray color */
+    margin-top: 5px; /* Adds a small space above the caption */
+}
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            max-width: 800px; /* Example maximum width */
+            max-height: 450px; /* Example maximum height (optional, but recommended) */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        a {
+            color: #007bff; /* Standard blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Dark gray background */
+    color: #fff; /* White text */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Bold text */
+    border: none; /* Removes border */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 20px; /* Adds some space above the button */
+}
+
+.home-button:hover {
+    background-color: #444; /* Darker gray on hover */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+    </style>
+</head>
+<body>
+
+
+        
+        <h1>The Music Kiosk</h1>
+
+        <p>The Music Kiosk was developed as part of the "Addicted 2 Random" project in Halle, Germany. This European initiative explored the intersection of traditional European music and contemporary computer-generated music, aiming to bridge the gap between musical heritage and modern digital practices. The Kiosk project specifically addressed the challenge of engaging the public with this exploration in a hands-on, creative way.</p>
+
+        <h2>Project Goals</h2>
+
+        <p>The primary goal of the Music Kiosk was to empower users to become active participants in the musical creation process.  Rather than passively consuming music, users were given the tools to manipulate existing musical material and generate new compositions. This fostered a deeper understanding of musical structure and encouraged experimentation with sound and form.  The project also aimed to demonstrate the potential of digital tools for reinterpreting and reimagining existing musical works, creating a dialogue between the past and present.</p>
+
+        <h2>Technical Implementation</h2>
+
+        <p>The Music Kiosk provided users with a custom-designed sound palette.  This palette comprised two categories of sounds: synthesized sounds generated using digital audio workstations and processed excerpts from classical music pieces.  The classical excerpts were algorithmically manipulated using digital signal processing techniques, transforming their semantic content into raw sonic material suitable for integration into user compositions. This process allowed for the deconstruction and recontextualization of traditional musical elements.</p>
+        
+        <h2>Granita - A Pure Data based sound Granulator</h2>
+
+        <p>Users interacted with the sound palette through a graphical user interface (GUI) (see the links below). The GUI allowed users to arrange and manipulate sounds, enabling them to create musical pieces by layering, looping, and transforming the available sonic elements. Compositions were stored locally on the kiosk's hard drive. A planned feature, though not fully implemented in all iterations, was a shared database (potentially web-accessible) where users could upload, share, and comment on their creations. This functionality aimed to foster a community of users and create a collaborative environment for musical exploration.</p> <p>Another partially implemented feature involved processing an audio signal from Radiofabrik (Salzburg). This signal was generated by a musical algorithm based on parameters derived from the movement of iPhones. From the audio signal, I extracted musical parameters—primarily audio descriptors obtained through various sound analysis methods. These parameters were sent to the kiosk’s PC, where the musical algorithm ran. The algorithm also received additional input parameters from the GUI. The Music Kiosk processed this data and generated an audio signal, which was then sent back to the computer running the general algorithm, "Granita." This algorithm spatialized the Music Kiosk's output based on data received from an Arduino, which was connected to a circuit that collected external signals via an antenna.</p>
+
+        <p>The technical architecture of the kiosk involved a standard PC running a custom software application.  The software was developed using Pure Data (plus Arduino with external libraries).  The audio interface provided high-quality sound output, and the user interface was designed for intuitive interaction.  Further details regarding specific algorithms used for sound processing and the design of the GUI can be found on the links below.</p>
+
+        <h2>Evaluation and Useful Links</h2>
+
+        <p>A demo of some User's performances</p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/70MzR149rZI?si=rY1e_B2w2m69NCbn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<p><a href="https://drive.google.com/file/d/1gdbj_hc8FgBMjG6TfpQVsRUfD2DmT6Y0/view?usp=sharing" target="_blank">- GUI semantics</a></p>
+<p><a href="https://drive.google.com/file/d/1YskkE7XMaSw4ZtYfeEZe0q-E5r0taAVO/view?usp=sharing" target="_blank">- System Schema</a></p>
+<p><a href="https://drive.google.com/file/d/17J0QW7ngBRVSjC4Fj85pUe6FQW3JZB_v/view?usp=sharing" target="_blank">- Event Brochure</a></p>
+<p><a href="https://drive.google.com/file/d/1Z4vfafAXH7yV_jToEnhHCZcW1GOD43fS/view?usp=sharing" target="_blank">- Project Report</a> (in Italian)</p>
+<p></p>
+<a href="https://luciamarock.github.io/" class="home-button">Back to Home</a>
+</body>
+</html>
