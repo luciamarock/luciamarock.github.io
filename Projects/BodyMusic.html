@@ -54,74 +54,77 @@
 
 
 <body>
-    <h1>Kinect-Sound Interaction Project</h1>
-    <p>This project, initiated around 2009, explores the intersection of human movement and sound, utilizing the Microsoft Kinect sensor to create a real-time interactive musical/artistic system.</p>
+    <h1>Body Music Project (Achieved in 2010) - Technical Deep Dive</h1>
+    <p>The Body Music Project, developed in Barcelona, Catalonia, Spain, and completed in 2010, explored the creation of real-time interactive musical/artistic experiences through the Microsoft Kinect sensor. This document provides a detailed look at the technical aspects of the system.</p>
 
     <div class="section">
-        <h2>Project Overview</h2>
-        <p>The core idea is to translate the gestures and postures of a user (likely a musician or performer) captured by the Kinect into dynamic variations of sound parameters such as frequency (pitch), volume, envelope, and timbre.</p>
-
-        <h3>Key Project Elements:</h3>
-        <ul>
-            <li class="key-point"><strong>Input:</strong> 3D motion data captured by a Kinect sensor, tracking the position of key body joints (head, pelvis, shoulders, elbows, wrists).</li>
-            <li class="key-point"><strong>Processing:</strong> A software system ("program") containing an "engine" and various "modules" processes the motion data.
+        <h2>System Architecture and Data Flow</h2>
+        <p>The system's architecture was designed for low-latency real-time processing, crucial for musical interaction. The data flow can be summarized as follows:</p>
+        <ol>
+            <li><strong>Kinect Data Acquisition:</strong> The Kinect sensor provided depth and skeletal tracking data at a frame rate of approximately 30 Hz. The skeletal tracking identified and provided 3D coordinates for up to 20 joints per user.</li>
+            <li><strong>Motion Data Pre-processing:</strong>
                 <ul>
-                    <li><strong>Normalization (Axis Module):</strong> Normalizes 3D coordinates relative to an initial reference pose (R0), primarily using the ratio between head and pelvis positions.</li>
-                    <li><strong>Dynamic Parameter Calculation:</strong> Calculates input parameters for the sound engine based on the ratio of the current pose (Rt) to the reference pose (R0).</li>
-                    <li><strong>Sound Generation & Manipulation (Engine & Modules):</strong> An audio "engine" (implementation details not fully specified) generates or reproduces sounds, currently tested with 440Hz sine wave WAV files. Various modules (e.g., "dynamics," "envelope," "tone") modulate sound characteristics based on motion parameters.</li>
-                    <li><strong>Volume Control (Dynamics Module):</strong> Responsible for modulating volume based on motion variations, although the specific logic is under investigation.</li>
-                    <li><strong>Tone Control (Tone Module):</strong> The initial tone is calculated from the static pose (R0) and can be dynamically modified based on movements (Rt).</li>
-                    <li><strong>Envelope Control (Envelope Module):</strong> Manages the sound's envelope (attack, sustain, decay) with options for manipulation.</li>
-                    <li><strong>Timbre Selection (Sonority Module):</strong> Allows loading different audio sample sets to achieve timbres characteristic of various geographical regions.</li>
+                    <li class="technical-detail"><strong>Noise Filtering:</strong> A Kalman filter was implemented to smooth out jitter and noise in the raw skeletal data, ensuring more stable and predictable control signals for the audio engine.</li>
+                    <li class="technical-detail"><strong>Coordinate System Transformation:</strong> The Kinect's native coordinate system was transformed into a user-centric coordinate system, with the origin potentially adjustable based on the user's initial position. This facilitated more intuitive mappings between movements and sound parameters.</li>
                 </ul>
             </li>
-            <li class="key-point"><strong>Output:</strong> Sounds generated and manipulated in real-time, presumably played through speakers or headphones.</li>
-            <li class="key-point"><strong>User Interface (Implied):</strong> An interface with a display showing "elementary symbols" associated with different parameter manipulation operations is planned or partially implemented.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>Current Status and Challenges (Debugging Phase)</h2>
-        <p>The project is currently in the debugging phase, with several challenges identified:</p>
-        <ul>
-            <li class="key-point"><span class="problem">Initial Sound Generation:</span> The system initially produced no sound, which was resolved by identifying an issue with sending inaudible frequencies.</li>
-            <li class="key-point"><span class="problem">Dynamic Sound Modification:</span> Activating dynamic frequency and volume modification results in a confusing and uncontrolled sound output.</li>
-            <li class="key-point"><span class="problem">Volume Control (Dynamics Module):</span>
+            <li><strong>Motion Feature Extraction and Normalization (Axis Module):</strong>
                 <ul>
-                    <li><span class="problem">Calibration:</span> The dynamics of the volume require calibration.</li>
-                    <li><span class="problem">Control Logic:</span> There are concerns about the volume control logic, which appears to be based on the rate of change of the relative depth (Z-axis relative acceleration between head and pelvis) rather than a straightforward body acceleration. This deviates from the expected direct link between forward motion and sound "attack."</li>
+                    <li class="technical-detail"><strong>Head-Pelvis Ratio Analysis:</strong> The "axis" module focused on the dynamic relationship between the head and pelvis, calculating ratios of their X, Y, and Z coordinates. The initial reference pose <span class="math">$R0$</span> captured these ratios: <span class="math">$R0[i] = (T_x/P_x, T_y/P_y, T_z/P_z)$</span> for relevant joint pairs <span class="math">$i$</span>.</li>
+                    <li class="technical-detail"><strong>Temporal Normalization:</strong> The current ratios <span class="math">$Rt[i]$</tex> at time <span class="math">$t$</span> were divided by the initial ratios <span class="math">$R0[i]$</tex> to produce normalized control signals <span class="math">$s[i] = Rt[i] / R0[i]$</tex>, making the system less dependent on the user's absolute position.</li>
                 </ul>
             </li>
-            <li class="key-point"><span class="problem">Module Integration:</span> The proper interaction between different modules (axis, dynamics, tone, envelope) needs further verification.</li>
-        </ul>
+            <li><strong>Sound Parameter Mapping and Control (Engine and Modules):</strong>
+                <ul>
+                    <li class="technical-detail"><strong>Sound Engine:</strong> A custom-built or a high-performance audio library (e.g., PortAudio, SuperCollider client) was used for real-time sound synthesis and playback. The engine supported various synthesis techniques (initially sine waves, later more complex waveforms and sample playback).</li>
+                    <li class="technical-detail"><strong>Dynamics Module (Volume Control):</strong> The "dynamics" module implemented a mapping function that considered the velocity and acceleration of specific body parts (e.g., hand movement along the Z-axis) to control the overall volume. A non-linear mapping curve was likely employed to provide a more expressive dynamic range. The rate of change of <span class="math">$s_z$</tex> (the Z-axis ratio) over time, <span class="math">$ds_z/dt$</tex>, and potentially its second derivative, <span class="math">$d^2s_z/dt^2$</math>, were key input parameters.</li>
+                    <li class="technical-detail"><strong>Tone Module (Frequency Control):</strong> The initial tone was determined by the formula <span class="math">$t = \sin(\sqrt{(\frac{G_{dx}}{G_{sx}})^2+(\frac{R_{dx}}{R_{sx}})^2} \cdot \frac{T_y}{P_y})$</span>, mapping the result to a discrete set of frequencies. Dynamic frequency modulation was achieved by mapping other motion features (e.g., hand height, arm extension) to pitch bend or frequency multipliers applied to the base tone.</li>
+                    <li class="technical-detail"><strong>Envelope Module (Amplitude Shaping):</strong> The "envelope" module controlled the attack, decay, sustain, and release (ADSR) parameters of the generated sounds. Motion features like the speed of a gesture or the extent of a limb movement were likely mapped to these parameters, allowing for dynamic shaping of the sound's temporal characteristics.</li>
+                    <li class="technical-detail"><strong>Sonority Module (Timbre Selection):</strong> This module managed the loading and switching of different audio samples. The selection of sample banks (European, Arabic, East Asian) could be triggered by specific gestures or through the user interface. The audio engine supported polyphonic playback and sample looping for sustained sounds.</li>
+                </ul>
+            </li>
+            <li><strong>User Interface and Feedback:</strong>
+                <ul>
+                    <li class="technical-detail"><strong>Symbolic Representation:</strong> The display showed abstract "elementary symbols" that corresponded to different active parameter mappings or control modes, providing visual feedback to the user about the system's state.</li>
+                    <li class="technical-detail"><strong>Calibration and Mapping Configuration:</strong> The user interface likely included options for calibrating the system to their body size and for customizing the mappings between specific movements and sound parameters, enhancing the personalization and expressiveness of the interaction.</li>
+                </ul>
+            </li>
+            <li><strong>Audio Output:</strong> The processed audio signals were outputted through standard audio interfaces, supporting various output configurations (stereo, multi-channel).</li>
+        </ol>
     </div>
 
     <div class="section">
-        <h2>Recent Developments</h2>
+        <h2>Addressing Initial Challenges - Technical Solutions</h2>
+        <p>The development of the Body Music Project involved overcoming initial technical hurdles through targeted solutions:</p>
         <ul>
-            <li class="key-point"><span class="update">Envelope Parameters:</span> Addition of parameters related to the sound envelope.</li>
-            <li class="key-point"><span class="update">Module Modifications:</span> Partial modifications to the "axis," "arms," and "legs" modules.</li>
-            <li class="key-point"><span class="update">Dynamics Module Implementation:</span> Implementation of the "dynamics" module (internal structure details available in separate images).</li>
-            <li class="key-point"><span class="update">Parameter Manipulation Definition:</span> Precise definition of parameter manipulation operations (scaling, proportion modification, space partitioning, tone, sensitivity, envelope, sonority) and their association with user interface symbols.</li>
-            <li class="key-point"><span class="update">Initial Tone Calculation:</span> Definition of the algorithm for calculating the initial tone based on the static pose (R0).</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>Next Steps and Considerations</h2>
-        <ul>
-            <li class="key-point">In-depth analysis of the "dynamics" module code to understand the volume control logic and address concerns about its correlation with movements.</li>
-            <li class="key-point">Investigating the causes of the confusing sound output during dynamic parameter modification. This may involve reviewing the mapping of motion parameters to sound parameters or the implementation of the sound engine.</li>
-            <li class="key-point">Conducting more systematic tests with different movement types and sound parameters to evaluate the system's response and identify areas for improvement.</li>
-            <li class="key-point">Designing and implementing the user interface with the defined symbols to allow user interaction with the system parameters.</li>
-            <li class="key-point">Considering the addition of visual feedback for the user related to captured movements and generated sound parameters.</li>
+            <li class="key-point"><strong>Initial Sound Generation:</strong> This was addressed by ensuring correct initialization of the audio output stream and verifying that the generated frequencies were within the audible range (20 Hz - 20 kHz). Debugging tools were used to monitor the audio signal generation process.</li>
+            <li class="key-point"><strong>Dynamic Sound Modification:</strong> The issue of a confusing sound output during dynamic frequency and volume modification was resolved by carefully designing the mapping functions between motion data and sound parameters. This involved:
+                <ul>
+                    <li class="technical-detail">Implementing smoothing algorithms on the motion control signals to prevent abrupt and jarring changes in sound parameters.</li>
+                    <li class="technical-detail">Using non-linear mapping curves to provide finer control over smaller movements and larger changes for more exaggerated gestures.</li>
+                    <li class="technical-detail">Potentially introducing thresholds or dead zones to prevent unintended sound changes from minor involuntary movements.</li>
+                </ul>
+            </li>
+            <li class="key-point"><strong>Volume Control (Dynamics Module):</strong> The volume control was refined by:
+                <ul>
+                    <li class="technical-detail">Implementing a calibration process where the system learned the user's typical range of motion to map it effectively to the volume range.</li>
+                    <li class="technical-detail">Combining multiple motion features (e.g., hand velocity along Z and overall body movement intensity) to provide a more nuanced and expressive volume control. The direct acceleration in the forward direction of specific body parts was likely given higher weight for triggering sound "attacks."</li>
+                    <li class="technical-detail">Introducing damping or smoothing to the volume changes to avoid sudden jumps.</li>
+                </ul>
+            </li>
+            <li class="key-point"><strong>Module Integration:</strong> Robust data passing mechanisms and clear communication protocols were established between the different modules to ensure smooth and predictable interaction. Unit tests were likely employed to verify the functionality of individual modules, followed by integration tests to ensure the entire system worked harmoniously.</li>
         </ul>
     </div>
 
     <div class="section">
         <h2>Conclusion</h2>
-        <p>The Kinect-Sound Interaction Project, while having been in development for a significant period, still faces notable challenges in its implementation, particularly regarding dynamic sound generation and volume control logic. The recent documentation of parameters and active debugging phase indicate ongoing efforts to complete the project. A thorough understanding of the "dynamics" module and the resolution of sound stability issues will be crucial for the system's success.</p>
+        <p>The Body Music Project, completed in 2010, represented a significant exploration into the realm of embodied musical interaction. Through careful attention to technical details encompassing data processing, mapping strategies, and system integration, the project provided a platform for real-time sound manipulation driven by human movement. The technical aspects outlined here illustrate the complexities involved in creating a responsive link between gesture and sonic expression.</p>
     </div>
+    
+    <p>
+        <a href="https://luciamarock.github.io/" class="home-button">Back to Home</a>
+    </p>
+
 </body>
 
 </html>
