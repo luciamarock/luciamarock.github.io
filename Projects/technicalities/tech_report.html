@@ -32,194 +32,109 @@
 <body>
     <h1>Sounding Canvas Project Report</h1>
 
-    <div class="section">
-        <h2>1. Overview</h2>
-        <p>
-            The project successfully integrates capacitive sensing into an Arduino Duemilanove connected to a 
-            Raspberry Pi 4 Model B. The goal was to create a setup where changes in capacitance of a sensor 
-            (aluminum foil) can be detected, leveraging the <strong>CapacitiveSensor</strong> library. 
-            This report documents the progress, circuit explanation, software implementation, and the 
-            underlying electronics.
-        </p>
-        <p>The following <a href="../../temp/utilities/useful_links.html" target="_blank">links</a> have been very useful.</p>
-    </div>
+<div class="section">
+    <h2>1. Project Overview and Goals</h2>
+    <p>
+        The Sounding Canvas project integrates capacitive sensing technology with a Raspberry Pi 4 Model B for interactive sound generation. The core objective was to develop a system where touch or proximity to the canvas surface, detected by changes in capacitance, triggers corresponding audio output through connected speakers. This report details the hardware setup, software implementation, underlying electronics, and the progression from initial sensor testing to the final integrated artwork. The following <a href="../../temp/utilities/useful_links.html" target="_blank">links</a> have been very useful throughout this project.
+    </p>
+</div>
 
-    <div class="section">
-        <h2>2. Hardware Setup</h2>
-        <h3>Components:</h3>
-        <ul>
-            <li>Arduino Duemilanove (connected via USB to Raspberry Pi).</li>
-            <li>Raspberry Pi 4 Model B (powered through HiFiBerry Amp2 HAT).</li>
-            <li>Aluminum foil as the capacitive sensor.</li>
-            <li>Resistor (value: 1 MΩ, adjustable if needed for optimization).</li>
-            <li>Breadboard and wires.</li>
-        </ul>
-        <h3>Connections:</h3>
-        <p>
-            <ul>
-                <li><strong>Send Pin:</strong> Pin on the Arduino configured to output pulses.</li>
-                <li><strong>Receive Pin:</strong> Connected to the aluminum foil sensor and pulled down through a 1 MΩ resistor to ground.</li>
-                <li><strong>Ground:</strong> Shared across all components for stable reference.</li>
-            </ul>
-        </p>
-    </div>
+<div class="section">
+    <h2>2. Hardware Architecture and Connections</h2>
+    <h3>2.1 Components:</h3>
+    <ul>
+        <li>Arduino Duemilanove: Microcontroller responsible for reading capacitive sensor data and communicating with the Raspberry Pi via USB.</li>
+        <li>Raspberry Pi 4 Model B with HiFiBerry Amp2 HAT: Single-board computer for audio processing, sound file playback, and amplification, powered through the HiFiBerry Amp2 HAT.</li>
+        <li>Capacitive Sensors: Constructed from aluminum foil pads strategically placed on the back of the canvas.</li>
+        <li>Resistors: 1.4 MΩ resistors (optimized through testing) used in each sensor circuit to control sensitivity.</li>
+        <li>Loudspeakers: Two 4-inch speakers (20-40 W, 4 Ω impedance) for audio output, mounted to the wooden back panel.</li>
+        <li>Breadboard and Wires: Used for prototyping and connecting initial circuits. Cabling within the final assembly is managed for cleanliness and safety.</li>
+        <li>Wooden Back Panel: Provides structural support and mounting points for electronic components behind the canvas, with a 3 cm gap to accommodate them.</li>
+    </ul>
 
-    <div class="section">
-        <h2>3. Software Implementation</h2>
-        <h3>Library:</h3>
-        <p>The <strong>CapacitiveSensor</strong> library by Paul Stoffregen was used.</p>
-        <h3>Arduino Sketch:</h3>
-        <pre>
-CapacitiveSensor cs = CapacitiveSensor(sendPin, receivePin);
-        </pre>
-        <p>
-            Sensitivity was fine-tuned by adjusting the number of samples (default <code>30</code>).
-            By bringing a hand close to the aluminum foil, the change in capacitance was detected and printed via the serial monitor.
-        </p>
-    </div>
+    <h3>2.2 Sensor Connections:</h3>
+    <p>
+        Each of the four capacitive sensors utilizes a shared "send" pin (Arduino pin 2) and an individual "receive" pin (Arduino pins 4, 6, 8, and 10). A 1.4 MΩ resistor is connected between the send and the respective receive pin for each sensor.
+    </p>
+</div>
 
-    <div class="section">
-        <h2>4. Circuit Explanation</h2>
-        <p>
-            The capacitive sensing circuit relies on measuring the time delay caused by an RC 
-            (resistor-capacitor) network. The key components and their roles are:
-        </p>
-        <ul>
-            <li><strong>Send Pin:</strong> Outputs a square wave signal to charge and discharge the capacitor.</li>
-            <li><strong>Receive Pin:</strong> Reads the voltage changes due to charging/discharging.</li>
-            <li><strong>Resistor (R):</strong> Controls the charging rate of the capacitor.</li>
-            <li><strong>Capacitor (C):</strong> Includes contributions from the aluminum foil, environmental capacitance, and touch effects.</li>
-        </ul>
-    </div>
+<div class="section">
+    <h2>3. Capacitive Sensing Technology</h2>
+    <h3>3.1 Circuit Explanation:</h3>
+    <p>
+        The capacitive sensing circuit operates by measuring the time delay in an RC (resistor-capacitor) network.
+    </p>
+    <ul>
+        <li><strong>Send Pin:</strong> Outputs a pulsed signal to charge and discharge the capacitive sensor.</li>
+        <li><strong>Receive Pin:</strong> Monitors the voltage changes resulting from the charging and discharging cycles.</li>
+        <li><strong>Resistor (R):</strong> The 1.4 MΩ resistor controls the rate at which the capacitor charges. Optimization determined this value provided the best balance of sensitivity and stability.</li>
+        <li><strong>Capacitor (C):</strong> The capacitance is influenced by the aluminum foil sensor, environmental factors, and, crucially, the proximity or touch of a user.</li>
+    </ul>
 
-    <div class="section">
-        <h2>5. RC Delay Calculation</h2>
-        <p>
-            The delay in the RC circuit depends on the <strong>RC time constant</strong>, given by:
-            <code>τ = R × C</code>
-        </p>
-        <h3>Charging Curve:</h3>
-        <p>
-            Voltage across the capacitor during charging follows:
-        </p>
-        <pre>
-V(t) = Vmax × (1 - e^(-t/RC))
-        </pre>
-        <p>
-            At <code>V(t) = 2.5V</code>, solving for <code>t</code>:
-        </p>
-        <pre>
-t = -RC × ln(1 - 2.5/5) ≈ 0.693 × RC
-        </pre>
-    </div>
+    <h3>3.2 RC Delay and Sensitivity:</h3>
+    <p>
+        The RC time constant (<code>τ = R × C</code>) dictates the charging and discharging speed. Changes in capacitance (C) due to interaction alter this time constant, which is detected by the Arduino. Sensitivity was fine-tuned by adjusting the resistor value and the sampling rate within the <strong>CapacitiveSensor</strong> library. The aluminum foil sensor area of approximately <strong>40 square centimeters</strong> was found to offer reliable detection.
+    </p>
+</div>
 
-    <div class="section">
-        <h2>6. Multiple Sensors Consideration</h2>
-        <p>
-            Adding sensors increases processing time linearly. Optimization by adjusting sample size 
-            and RC values can ensure performance remains acceptable.
-        </p>
-    </div>
+<div class="section">
+    <h2>4. Software Implementation</h2>
+    <h3>4.1 Arduino Firmware:</h3>
+    <p>
+        The Arduino Duemilanove utilizes the <strong>CapacitiveSensor</strong> library by Paul Stoffregen to measure capacitance changes. The core initialization in the Arduino sketch is:
+    </p>
+    <pre>
+CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For each sensor
+    </pre>
+    <p>
+        Sensitivity is managed through the number of samples taken by the library. Threshold values for sensor activation were determined experimentally via the Arduino IDE Serial Monitor to ensure accurate detection and minimize false triggers.
+    </p>
 
-    <div class="section">
-        <h2>7. Testing Results</h2>
-        <ul>
-            <li><strong>One Sensor:</strong> Successfully detected capacitance changes with fast and consistent readings.</li>
-            <li><strong>Plan for Multiple Sensors:</strong> Incrementally test with up to three sensors and measure timing.</li>
-        </ul>
-    </div>
+    <h3>4.2 Raspberry Pi Software:</h3>
+    <p>
+        A Python program running on the Raspberry Pi 4 Model B is responsible for processing sensor data received from the Arduino and triggering audio playback. Key features include:
+    </p>
+    <ol>
+        <li><strong>Serial Communication:</strong> Establishes communication with the Arduino over USB to receive sensor readings.</li>
+        <li><strong>Threshold-Based Activation:</strong> Detects sensor activation when received values exceed predefined thresholds.</li>
+        <li><strong>Debouncing:</strong> Implements a minimum two-second delay between successive activations of the same sensor to prevent rapid re-triggering.</li>
+        <li><strong>Randomized Sound Selection:</strong> For each of the four sensors, the program randomly selects one of four distinct sound samples from a corresponding folder. The sounds were created using sustained electric guitar recordings to provide sonic variety.</li>
+        <li><strong>Parallel Playback:</strong> Allows for the simultaneous playback of sounds triggered by multiple sensor activations.</li>
+    </ol>
+</div>
 
-    <div class="section">
-        <h2>8. Next Steps</h2>
-        <p>
-            The circuit is functioning as intended for one sensor, with the ability to detect capacitance 
-            changes due to touch or proximity. Future work includes:
-        </p>
-        <ul>
-            <li>Adding more sensors and verifying processing times.</li>
-            <li>Fine-tuning resistor and foil sizes for optimal sensitivity and speed.</li>
-            <li>Integrating Raspberry Pi to process and visualize sensor data.</li>
-        </ul>
-    </div>
-    
-    <h1>Technical Report: From Sensors to the Final Sounding Canvas</h1>
+<div class="section">
+    <h2>5. Sensor Integration and Mounting</h2>
+    <p>
+        Four capacitive sensors, made from aluminum foil pads, are mounted on the back of the canvas using adhesive to ensure they remain flat and secure. A non-conductive layer is placed between the foil and the canvas to prevent unintended triggers due to external electrical interference. The sensors are connected to the Arduino as described in Section 2.2.
+    </p>
+</div>
 
-    <div class="section">
-        <h2>1. Addition and Testing of Sensors</h2>
-        <h3>Initial Setup:</h3>
-        <p>Initially, one capacitive sensor was tested using aluminum foil and a resistor to determine proper sensitivity levels. Success with a single sensor led to the addition of three more sensors, resulting in a total of four.</p>
+<div class="section">
+    <h2>6. Component Mounting and Final Assembly</h2>
+    <p>
+        All electronic components, including the Arduino, Raspberry Pi with HiFiBerry Amp2, and loudspeakers, are securely mounted to a wooden back panel positioned behind the canvas. The loudspeakers are fixed using screws within circular recesses for stability. Cabling is carefully managed to ensure a clean and safe internal layout, with easy access for potential maintenance.
+    </p>
+</div>
 
-        <h3>Configuration:</h3>
-        <ul>
-            <li><strong>Sensors:</strong> Four aluminum foil pads, each connected to an independent "receive" pin on the Arduino (pins 4, 6, 8, and 10), and a shared "send" pin (pin 2).</li>
-            <li><strong>Resistors:</strong> Each sensor circuit included a 1.4 MΩ resistor between the send and receive pins.</li>
-        </ul>
+<div class="section">
+    <h2>7. Testing and Results</h2>
+    <p>
+        Initial testing with a single sensor confirmed the successful detection of capacitance changes with fast and consistent readings. Subsequent testing with four sensors demonstrated the system's ability to detect individual sensor activations without interference. Threshold calibration ensured reliable responsiveness and minimized false positives.
+    </p>
+</div>
 
-        <h3>Testing:</h3>
-        <p>Sensor values were read and calibrated via the Arduino IDE Serial Monitor. Threshold values for activation were determined experimentally to minimize false positives and ensure responsiveness. The system successfully detected individual sensor activation without interference from the others.</p>
-    </div>
-
-    <div class="section">
-        <h2>2. Fine-Tuning of Resistor Values and Aluminum Foil Dimensions</h2>
-
-        <h3>Resistor Value Optimization:</h3>
-        <p>Experimentation revealed that 1.4 MΩ resistors provided the best balance between sensitivity and stability. Lower values caused under-sensitivity, while higher values introduced excessive noise.</p>
-
-        <h3>Aluminum Foil Dimensions:</h3>
-        <p>Each sensor was created with an aluminum foil area of approximately <strong>40 square centimeters</strong>. This size offered a reliable detection range for finger touches while avoiding unintentional activation.</p>
-    </div>
-
-    <div class="section">
-        <h2>3. Mounting Sensors on the Canvas</h2>
-
-        <h3>Placement:</h3>
-        <p>Sensors were mounted on the back of the canvas using adhesive to keep them flat and secure. A 3 cm gap was maintained between the canvas and a wooden back panel to accommodate the sensors and other components.</p>
-
-        <h3>Insulation:</h3>
-        <p>Non-conductive layers were added between the aluminum foil and the canvas to avoid false triggers caused by external electrical interference.</p>
-    </div>
-
-    <div class="section">
-        <h2>4. Mounting Other Components</h2>
-
-        <h3>Components Mounted:</h3>
-        <ul>
-            <li><strong>Arduino Duemilanove:</strong> Connected via USB to the Raspberry Pi for sensor data transmission.</li>
-            <li><strong>Raspberry Pi 4 Model B with HiFiBerry Amp2:</strong> Responsible for audio processing and amplification.</li>
-            <li><strong>Loudspeakers:</strong> Two 4-inch speakers with 20-40 W power capacity and 4 Ω impedance.</li>
-            <li><strong>Cabling:</strong> Managed with clips and supports to ensure a clean and safe layout.</li>
-        </ul>
-
-        <h3>Loudspeaker Installation:</h3>
-        <p>Speakers were fixed to the wooden back panel using screws and circular recesses to ensure stability and reduce protrusion.</p>
-
-        <h3>Final Assembly:</h3>
-        <p>All components were secured to the wooden panel, which was then mounted behind the canvas, ensuring easy access for maintenance.</p>
-    </div>
-
-    <div class="section">
-        <h2>5. Creation of Sounds</h2>
-
-        <h3>Process:</h3>
-        <p>Sounds were recorded using a sustained electric guitar. Each sensor corresponded to a folder containing four distinct sound samples, creating variety.</p>
-    </div>
-
-    <div class="section">
-        <h2>6. Python Program for Integration</h2>
-
-        <h3>Overview:</h3>
-        <p>The Python program executed on the Raspberry Pi serves as the glue for the system, reading sensor data from the Arduino and triggering corresponding audio samples.</p>
-
-        <h3>Key Features:</h3>
-        <ol>
-            <li><strong>Serial Communication:</strong> Reads sensor data from the Arduino over USB.</li>
-            <li><strong>Threshold-Based Triggers:</strong> Activates sounds when sensor values exceed predefined thresholds.</li>
-            <li><strong>Debouncing:</strong> Ensures a minimum of two seconds between successive activations for each sensor.</li>
-            <li><strong>Randomized Sound Selection:</strong> Selects a random sound file from the corresponding folder for variety.</li>
-            <li><strong>Parallel Playback:</strong> Supports simultaneous playback of multiple sounds.</li>
-        </ol>
-    </div>
-
+<div class="section">
+    <h2>8. Next Steps</h2>
+    <p>
+        With the core functionality for four sensors successfully implemented, future development will focus on:
+    </p>
+    <ul>
+        <li>Further optimization of sensor sensitivity and response time through fine-tuning of resistor values and potentially aluminum foil dimensions.</li>
+        <li>Exploring more complex sound design and mapping possibilities based on sensor input.</li>
+        <li>Developing potential interactive visualizations or feedback mechanisms beyond audio.</li>
+    </ul>
+</div>
     <div class="section">
         <h2>Credits</h2>
         <p><strong>OpenAI's ChatGPT:</strong> Technical assistant for software development, troubleshooting, and documentation.</p>
