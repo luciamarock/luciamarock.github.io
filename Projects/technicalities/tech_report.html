@@ -27,6 +27,31 @@
         .section {
             margin-bottom: 30px;
         }
+        img {
+            max-width: 100%; /* Ensures image doesn't overflow its container */
+            height: auto;    /* Maintains aspect ratio */
+            display: block;  /* Removes extra space below images */
+            margin: 0 auto;  /* Centers images if they are smaller than 100% width */
+        }
+
+        /* Optional: Add a class for specific image styling if needed */
+        .full-width-image {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Optional: Basic image gallery/grid if you have multiple images */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust minmax as needed */
+            gap: 20px; /* Space between images */
+            margin-top: 20px;
+        }
+        .image-gallery img {
+            width: 100%;
+            height: auto;
+            object-fit: cover; /* Ensures images fill their grid area without distortion */
+        }
     </style>
 </head>
 <body>
@@ -117,6 +142,31 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
 </div>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D-_uQ7EWdfk?si=tJvAfXpfIp5dCwFd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <p>This interactive sound canvas represents the fusion of art and technology, offering a dynamic platform for creative expression. It exemplifies the potential of collaborative efforts between humans and AI in the realization of artistic and technical visions.</p>
+    <div class="section">
+    <h2>5. Communication Between Canvases</h2>
+    <p>
+        A unique and powerful aspect of the Sounding Canvas series is its ability to communicate across multiple artworks, creating a networked, collaborative experience. This inter-canvas communication is facilitated by a central <strong>Python server</strong> that acts as a hub for all connected Sounding Canvases.
+    </p>
+
+    <h3>5.1 WebSocket-Based Connectivity</h3>
+    <p>
+        Each individual Sounding Canvas establishes a persistent connection to the Python server using <strong>WebSockets</strong>. WebSockets provide a full-duplex communication channel over a single TCP connection, allowing for real-time, low-latency data exchange between the canvases and the server. This is crucial for the responsive and synchronous interaction desired across the networked artworks.
+    </p>
+
+    <h3>5.2 Routing Touch Events</h3>
+    <p>
+        When a user interacts with a specific Sounding Canvas (e.g., touches a sensor), the following communication flow occurs:
+    </p>
+    <ol>
+        <li><strong>Event Detection:</strong> The touched canvas detects the sensor activation and processes it locally (as described in the "Software Implementation" section).</li>
+        <li><strong>Event Transmission to Server:</strong> The canvas immediately sends a message to the central Python server via its established WebSocket connection. This message contains information about the touch event, such as the canvas ID and the activated sensor.</li>
+        <li><strong>Server Routing:</strong> Upon receiving a touch event from any canvas, the Python server acts as a router. It takes the incoming event and <strong>broadcasts it to all other currently connected Sounding Canvases</strong>. This ensures that every canvas in the network is aware of interactions happening on any other canvas.</li>
+        <li><strong>Reception and Response:</strong> Each receiving canvas processes the incoming event from the server. This allows for synchronized visual or auditory responses across the entire network of artworks, enabling complex, multi-canvas compositions or shared interactive experiences.</li>
+    </ol>
+    <p>
+        This server-client architecture, powered by WebSockets, allows the Sounding Canvas series to transcend individual artworks, transforming them into a cohesive, interactive network where a touch on one canvas can resonate and influence the sonic landscape of all others.
+    </p>
+</div>
 </body>
 </html>
 
