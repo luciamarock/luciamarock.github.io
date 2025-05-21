@@ -143,17 +143,17 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D-_uQ7EWdfk?si=tJvAfXpfIp5dCwFd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <p>This interactive sound canvas represents the fusion of art and technology, offering a dynamic platform for creative expression. It exemplifies the potential of collaborative efforts between humans and AI in the realization of artistic and technical visions.</p>
     <div class="section">
-    <h2>5. Communication Between Canvases</h2>
+    <h2>6. Communication Between Canvases</h2>
     <p>
         A unique and powerful aspect of the Sounding Canvas series is its ability to communicate across multiple artworks, creating a networked, collaborative experience. This inter-canvas communication is facilitated by a central <strong>Python server</strong> that acts as a hub for all connected Sounding Canvases.
     </p>
 
-    <h3>5.1 WebSocket-Based Connectivity</h3>
+    <h3>6.1 WebSocket-Based Connectivity</h3>
     <p>
         Each individual Sounding Canvas establishes a persistent connection to the Python server using <strong>WebSockets</strong>. WebSockets provide a full-duplex communication channel over a single TCP connection, allowing for real-time, low-latency data exchange between the canvases and the server. This is crucial for the responsive and synchronous interaction desired across the networked artworks.
     </p>
 
-    <h3>5.2 Routing Touch Events</h3>
+    <h3>6.2 Routing Touch Events</h3>
     <p>
         When a user interacts with a specific Sounding Canvas (e.g., touches a sensor), the following communication flow occurs:
     </p>
