@@ -166,6 +166,28 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
     <p>
         This server-client architecture, powered by WebSockets, allows the Sounding Canvas series to transcend individual artworks, transforming them into a cohesive, interactive network where a touch on one canvas can resonate and influence the sonic landscape of all others.
     </p>
+    <div class="image-gallery">
+        <h4>Communication Logs:</h4>
+        <p>Below are terminal logs illustrating the communication flow between the canvases and the central server.</p>
+        <figure>
+            <img src="../images/canvas-rome-log.png" 
+                 alt="Terminal log of the Sounding Canvas in Rome, showing its connection as the first client and received touch events."
+                 loading="lazy">
+            <figcaption>Figure 5.1: Terminal Log - Canvas in Rome (Client 1)</figcaption>
+        </figure>
+        <figure>
+            <img src="../images/canvas-barcelona-log.png" 
+                 alt="Terminal log of the Sounding Canvas in Barcelona, showing its connection as the second client and received touch events."
+                 loading="lazy">
+            <figcaption>Figure 5.2: Terminal Log - Canvas in Barcelona (Client 2)</figcaption>
+        </figure>
+        <figure>
+            <img src="../images/server-log.png" 
+                 alt="Terminal log of the central Python server, showing incoming client connections and the routing of touch events to all connected canvases."
+                 loading="lazy">
+            <figcaption>Figure 5.3: Terminal Log - Central Python Server</figcaption>
+        </figure>
+    </div>
 </div>
 </body>
 </html>
