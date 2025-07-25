@@ -1,91 +1,74 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Negar Motegh</title>
-  <link rel="icon" href="./favicon/ng.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptrum Duo - Select Language</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon/logo.jpg" type="image/jpeg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            /* Customizing Tailwind colors if needed, or just using existing ones */
+            --color-primary-yellow: #FFD700; /* Gold/Yellow */
+            --color-text-black: #1A1A1A; /* Darker black for better contrast */
+            --color-bg-white: #FFFFFF;
         }
-        h1, h2 {
-            color: #0056b3;
+        /* Custom styles to ensure full height and centering */
+        .full-screen-center {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-bg-white); /* White background */
+            color: var(--color-text-black); /* Black text */
         }
-        h1 {
-            text-align: center;
+        .flag-container a {
+            border-color: var(--color-text-black); /* Black border for flags */
+            transition: all 0.3s ease-in-out;
         }
-        pre {
-            background-color: #eaeaea;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+        .flag-container a:hover {
+            border-color: var(--color-primary-yellow); /* Yellow border on hover */
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(255, 215, 0, 0.3), 0 4px 6px -2px rgba(255, 215, 0, 0.1); /* Yellow shadow */
         }
-        .section {
-            margin-bottom: 30px;
+        .flag-container a img {
+            object-fit: cover; /* Ensure flags fill their circular container */
         }
     </style>
 </head>
-<body>
-  <div id="top">
-    <div id="titlearea">
-      <table>
-        <tbody>
-          <tr>
-            <td id="projectalign">
-              <div id="projectname">
-		  <strong>Negar Motegh - Portfolio links collection</strong>
-		</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-<br>
-  <div class="header">
-    <div class="headertitle">
-      <div class="title">This web page is temporary, my portfolio website is under construction</div>
-    </div>
-  </div>
+<body class="bg-white text-black">
+    <div class="full-screen-center p-4">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-12">Select Your Language</h1>
 
-  <div class="contents">
-    <p>This is simply a list of links pointing to some pdf documents I have exported to illustrate some of the most significant past works of mine.</p>
-    <p>Lots of the works reported here trace back to my studying time since I've been graduated recently.</p>
+            <div class="flex flex-col items-center gap-y-8 flag-container">
+                <!-- UK Flag for English -->
+                <a href="content/engHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="flags/UK.png" alt="English Flag" class="w-full h-full">
+                </a>
 
-    <ul>
-      
-<li><a href="https://drive.google.com/file/d/1iagXOhD-6YdarnW6smZofTCTMOvP9hcN/view?usp=sharing" target="_blank">PROJECTS portfolio</a></li>
-<li><a href="https://drive.google.com/file/d/1MX0-UE4nnxVpB9WIy0g8iLTXOVx1zPri/view?usp=sharing" target="_blank">Stage Design portfolio</a></li>
-<li><a href="https://drive.google.com/file/d/122wiA3JH542eI9_gA-ShkBouDSRBrgXm/view?usp=sharing" target="_blank">GRAPHIC portfolio</a></li>
-<li><a href="https://drive.google.com/file/d/1-MiOZmPH6217RcIGdK5PTU2-k3-a26mQ/view?usp=sharing" target="_blank">Solitude – Photography Portfolio</a></li>
-<br>
-The following is a conceptual photo and video artwork under Identity subject <br>
-<li><a href="https://drive.google.com/file/d/1p70kXZcSpHmhOn4TnKC-Sa1TBtCp9twD/view?usp=sharing" target="_blank">Public and Private Identity</a></li>
-<li><a href="https://youtu.be/J-CswONm2qc" target="_blank">link to the video</a></li>
-<br>
-The following works are complete Stage Design projects <br>
-<li><a href="https://drive.google.com/file/d/1HumskhVDhYqPI9LS5VG0vsJ8ImkCAWyf/view?usp=sharing" target="_blank">El nos Milan</a></li>
-<li><a href="https://drive.google.com/file/d/1RDNxMSVam9Xk2oTP-0u4xd976VYgyeQQ/view?usp=sharing" target="_blank">Turandot - Stage and Costume Design (Italian)</a></li>
-<li><a href="https://drive.google.com/file/d/1pmBaiLhlCWr0mHWM5K3c8JxqxbC0FbAW/view?usp=sharing" target="_blank">Emotional and psychological effects of color in cinema  - Graduation Thesis (Italian)</a></li>
-<br>
-</ul>
-You can also access my
-<a href="https://drive.google.com/file/d/18XQDHqeU97JFbDqn7X7rW_O6qoRdNDHE/view?usp=sharing" target="_blank">Curriculum</a> 
-and my
-<a href="https://it.linkedin.com/in/negar-motegh" target="_blank">LinkedIn</a> account. 
-<br><br>
-Visit also my <a href="https://www.etsy.com/people/qwhz3i7exqlk0qd1" target="_blank">Online Shop</a> ! 
-  </div>
-  <br><br>
-    <h3>currently working on Sounding Canvases</h1>
-    <p><a href="../Projects/SoundingCanvas.html">Go to the project page</a></p>
-    The following <a href="../../temp/utilities/useful_links.html" target="_blank">links</a> have been very useful throughout this project.
-<p>You might also be interested in a more detailed description of the Accrocco instrument. Check out my dedicated page on it: <a href="../Projects/AccroccoSonic.html">The AccroccoSonic project</a></p>
+                <!-- ES Flag for Spanish -->
+                <a href="content/esHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="flags/ES.png" alt="Spanish Flag" class="w-full h-full">
+                </a>
+
+                <!-- IR Flag for Iranian (Persian) -->
+                <a href="content/irHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="flags/IR.png" alt="Iranian Flag" class="w-full h-full">
+                </a>
+
+                <!-- IT Flag for Italian -->
+                <a href="content/itaHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
+                    <img src="flags/IT.webp" alt="Italian Flag" class="w-full h-full">
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
