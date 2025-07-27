@@ -29,6 +29,23 @@
         .section-hover-border:hover {
             border-color: var(--color-primary-yellow);
         }
+        /* Style for the "More" button */
+        .more-button {
+            display: inline-block;
+            background-color: var(--color-primary-yellow);
+            color: var(--color-text-black);
+            padding: 0.75rem 2rem;
+            border-radius: 9999px; /* Fully rounded */
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .more-button:hover {
+            background-color: #FFEA00; /* Slightly lighter yellow on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col">
@@ -151,6 +168,11 @@ Para explorar la colección completa de nuestros Sounding Canvases, por favor vi
                     Estamos buscando activamente comisarios y directores de galerías que compartan nuestra visión y estén dispuestos a colaborar con nosotros para dar vida a esta exposición en red pionera. Si está interesado en ser parte de este singular esfuerzo artístico y tecnológico, le invitamos a ponerse en contacto con nosotros.
                 </p>
             </div>
+        </section>
+
+        <!-- "More" Button Section -->
+        <section class="flex justify-center mb-16">
+            <a href="pages/more.html" class="more-button" target="_blank">Más</a>
         </section>
 
     </main>
