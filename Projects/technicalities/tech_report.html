@@ -126,6 +126,47 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
         <li><strong>Randomized Sound Selection:</strong> For each of the four sensors, the program randomly selects one of four distinct sound samples from a corresponding folder. The sounds were created using sustained electric guitar recordings to provide sonic variety.</li>
         <li><strong>Parallel Playback:</strong> Allows for the simultaneous playback of sounds triggered by multiple sensor activations.</li>
     </ol>
+    
+    <h3>4.3 Arduino Interface & Event Manager</h3>
+    <p>
+        The Arduino Interface plays a crucial role in bridging the physical sensing hardware with the higher-level
+        software logic running on the Raspberry Pi. It collects raw capacitive touch data from the sensor electrodes
+        mounted behind the canvas and transmits meaningful interaction events to the main system.
+    </p>
+    <p>
+        The Arduino aggregates <strong>CapacitiveSensor</strong> data and periodically transmits it over a USB serial
+        connection to the Raspberry Pi. A custom Python module on the Raspberry Pi acts as a listener and parser for this
+        serial data stream. The module maintains a queue of recent readings and applies event detection logic to identify
+        new touch events, sustained contact, or release events.
+    </p>
+    <p>
+        To ensure responsiveness and avoid false triggers, the system employs a hysteresis mechanism and configurable
+        thresholds. For example, a touch is only registered if the measured signal exceeds a given activation threshold
+        for a sustained number of readings. This reduces noise and ensures reliable operation even in environments with
+        fluctuating electromagnetic conditions.
+    </p>
+    <p>
+        Once events are detected, they are forwarded to the <em>Event Manager</em>, a central coordination module
+        responsible for triggering corresponding actions within the system. These actions include activating sound
+        playback through the Audio Engine, updating visual feedback, or logging interaction data.
+    </p>
+    <p>
+        Beyond simple event forwarding, the Event Manager also performs adaptive learning based on user interaction
+        patterns. Earlier versions of the system employed adaptive <strong>Markov models</strong> to infer probabilities
+        of sequential gestures and transitions over time. This probabilistic model enabled context-aware reactions,
+        anticipating likely next events and tailoring the sonic or visual response accordingly.
+    </p>
+    <p>
+        Current development explores the use of <strong>Recurrent Neural Networks (RNNs)</strong> as a more powerful
+        approach for modeling and detecting complex, temporally extended interaction sequences. This opens the
+        possibility of deeper temporal understanding of user behavior, enriching the perceptual and expressive potential
+        of the artwork.
+    </p>
+    <p>
+        The modular design of the Arduino Interface and Event Manager ensures a clear separation between low-level
+        hardware communication and high-level behavioral logic. This makes the system maintainable and extensible, so new
+        sensor types or behaviors can be added with minimal impact on the overall architecture.
+    </p>
 </div>
 
 <div class="section">
@@ -188,6 +229,8 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
                  loading="lazy">
             <figcaption>Figure 5.3: Terminal Log - Central Python Server</figcaption>
         </figure>
+    <h2>7. Distributed Minds</h2>
+    <p>  </p>
     <p><a href="https://luciamarock.github.io/Projects/SoundingCanvas.html"">BACK to the SoundingCanvas main page</a></p>
 </body>
 </html>
