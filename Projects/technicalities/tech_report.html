@@ -120,14 +120,21 @@
     <h1>Sounding Canvas Project Report</h1>
 <main>
 <section>
+  <header>
     <h2>1. Project Overview and Goals</h2>
+  </header>
+  <article>
     <p>
         The Sounding Canvas project integrates capacitive sensing technology with a Raspberry Pi 4 Model B for interactive sound generation. The core objective was to develop a system where touch or proximity to the canvas surface, detected by changes in capacitance, triggers corresponding audio output through connected speakers. This report details the hardware setup, software implementation, underlying electronics, and the progression from initial sensor testing to the final integrated artwork. 
     </p>
+   </article>
 </section>
 
 <section>
+  <header>
     <h2>2. Hardware Architecture and Connections</h2>
+  </header>
+  <article>
     <h3>2.1 Components:</h3>
     <ul>
         <li>Arduino Uno Rev 3 (or Duemilanove): Microcontroller responsible for reading capacitive sensor data and communicating with the Raspberry Pi via USB.</li>
@@ -143,10 +150,14 @@
     <p>
         Each of the four capacitive sensors utilizes a shared "send" pin (Arduino pin 2) and an individual "receive" pin (Arduino pins 4, 6, 8, and 10). A 1.4 MΩ resistor is connected between the send and the respective receive pin for each sensor.
     </p>
+  </article>
 </section>
 
 <section>
+  <header>
     <h2>3. Capacitive Sensing Technology</h2>
+  </header>
+  <article>
     <h3>3.1 Circuit Explanation:</h3>
     <p>
         The capacitive sensing circuit operates by measuring the time delay in an RC (resistor-capacitor) network.
@@ -162,10 +173,14 @@
     <p>
         The RC time constant (<code>τ = R × C</code>) dictates the charging and discharging speed. Changes in capacitance (C) due to interaction alter this time constant, which is detected by the Arduino. Sensitivity was fine-tuned by adjusting the resistor value and the sampling rate within the <strong>CapacitiveSensor</strong> library. The aluminum foil sensor area of approximately <strong>40 square centimeters</strong> was found to offer reliable detection.
     </p>
+  </article>
 </section>
 
 <section>
+  <header>
     <h2>4. Software Implementation</h2>
+  </header>
+  <article>
     <h3>4.1 Arduino Firmware:</h3>
     <p>
         The Arduino Uno Rev.3 utilizes the <strong>CapacitiveSensor</strong> library by Paul Stoffregen to measure capacitance changes. The core initialization in the Arduino sketch is:
@@ -229,10 +244,14 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
         hardware communication and high-level behavioral logic. This makes the system maintainable and extensible, so new
         sensor types or behaviors can be added with minimal impact on the overall architecture.
     </p>
+  </article>
 </section>
 
 <section>
+  <header>
     <h2>5. Mounting and Running</h2>
+  </header>
+  <article>
     <p>
         In "Echo of Lines", four capacitive sensors, made from aluminum foil pads, are mounted on the back of the canvas using adhesive to ensure they remain flat and secure. A non-conductive layer is placed between the foil and the canvas to prevent unintended triggers due to external electrical interference. The sensors are connected to the Arduino as described in Section 2.2.
     </p>
@@ -245,10 +264,14 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D-_uQ7EWdfk?si=tJvAfXpfIp5dCwFd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <p>This interactive Sounding Canvas represents the fusion of art and technology, offering a dynamic platform for creative expression. It exemplifies the potential of collaborative efforts between humans and AI in the realization of artistic and technical visions.</p>
-    </section>
+  </article>
+</section>
     
     <section>
+    <header>
     <h2>6. Communication Between Canvases</h2>
+    </header>
+    <article>
     <p>
         A unique and powerful aspect of the Sounding Canvas series is its ability to communicate across multiple artworks, creating a networked, collaborative experience. This inter-canvas communication is facilitated by a central <strong>Python server</strong> that acts as a hub for all connected Sounding Canvases.
     </p>
@@ -293,12 +316,14 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
             <figcaption>Figure 5.3: Terminal Log - Central Python Server</figcaption>
         </figure>
       <iframe width="560" height="315" src="https://www.youtube.com/embed/fp2zlIqmafU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    
+    </article>
 </section>
     
     <section>
+    <header>
     <h2>7. Distributed Minds</h2>
-
+   </header>
+<article>
 <p>
   The <em>Event Manager</em> doesn’t just trigger a sound; it makes a decision.
   In our RNN-based setup, the canvas maintains an internal goal and selects
@@ -337,6 +362,7 @@ CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For eac
 </p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_cPSDONYloE?si=I3an9WYwm7nNsWRa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <p>  </p>
+  </article>
     </section>
     </main>
     <footer>
