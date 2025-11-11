@@ -47,6 +47,20 @@
             transform: translateY(-2px); /* Slight lift effect */
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
+    .invisible-link {
+        /* Makes the link and its text completely invisible */
+        opacity: 0;
+        /* Ensures the link cannot be highlighted, focused, or interacted with visually */
+        color: transparent !important;
+        text-decoration: none !important;
+        /* Crucial: prevents the cursor from changing and the link from reacting to clicks/hovers */
+        pointer-events: none;
+        /* Optionally make it hard to select its content with the mouse */
+        user-select: none;
+        /* Optional: hide from screen readers and keyboard navigation (if you want it truly hidden) */
+        /* display: none; */
+        /* visibility: hidden; */
+    }
     </style>
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col">
@@ -194,7 +208,9 @@ Visually, each canvas is the result of Dora's semiographic research, where she i
             <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-yellow-500 hover:underline mx-2" target="_blank">Privacy Policy</a>
         </div>
     </footer>
-
+<a href="http://luciama.altervista.org/perceptrum-duo.html" target="_blank" class="invisible-link">
+    Perceptrum old page
+</a>
 </body>
 </html>
 
