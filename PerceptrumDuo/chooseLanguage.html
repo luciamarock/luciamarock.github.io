@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perceptrum Duo - Select Language</title>
+    <title>Perceptrum² - Sound, Image & Touch</title>
     <!-- Favicon -->
     <link rel="icon" href="favicon/logo.jpg" type="image/jpeg">
 
@@ -37,26 +37,31 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "VisualArtwork",
-  "name": "Sounding Canvas",
-  "creator": [
+  "@type": "Organization",
+  "@id": "https://www.perceptrum.net",
+  "name": "Perceptrum",
+  "alternateName": "Perceptrum Duo",
+  "description": "Perceptrum is an artistic duo exploring sound, image, and touch through augmented paintings and interactive works.",
+  "url": "https://www.perceptrum.net",
+  "sameAs": [
+    "https://www.wikidata.org/wiki/Q136547945",
+    "https://www.instagram.com/perceptrumduo/",
+    "https://www.youtube.com/@perceptrumduo"
+  ],
+  "member": [
     {
       "@type": "Person",
       "name": "Dora Motèque",
-      "role": "Artist, Designer",
       "url": "https://doramoteque-faf94c.webflow.io/"
     },
     {
       "@type": "Person",
       "name": "Luciano Ciamarone",
-      "role": "Artist, Physicist, Sound Designer",
       "url": "https://luciamarock.github.io/"
     }
-  ],
-  "artform": ["Interactive painting", "Augmented Painting"],
-  "description": "Interactive paintings equipped with touch sensors that respond with sound, allowing global networked interaction.",
-  "url": "https://www.perceptrum.net/projects/sounding-canvas"
+  ]
 }
+
 </script>
 
     <style>
@@ -68,14 +73,26 @@
             --color-bg-white: #FFFFFF;
         }
         /* Custom styles to ensure full height and centering */
+
         .full-screen-center {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--color-bg-white); /* White background */
+            background-image: url("./content/images/background.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
             color: var(--color-text-black); /* Black text */
         }
+        .full-screen-center::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.75); /* light veil over image */
+    z-index: 1;
+}
         .flag-container a {
             border-color: var(--color-text-black); /* Black border for flags */
             transition: all 0.3s ease-in-out;
@@ -92,28 +109,29 @@
 </head>
 <body class="bg-white text-black">
     <div class="full-screen-center p-4">
-        <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-12">Select Your Language</h1>
-
+        <div class="text-center relative z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Perceptrum</h1>
+            <h2 class="text-lg md:text-xl opacity-80 mb-12">Select your language</h2>
+            <p class="text-sm opacity-70 mb-10">An augmented painting studio by Dora Motèque & Luciano Ciamarone</p>
             <div class="flex flex-col items-center gap-y-8 flag-container">
                 <!-- UK Flag for English -->
                 <a href="content/engHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
-                    <img src="flags/UK.png" alt="English Flag" class="w-full h-full">
+                    <img src="flags/UK.png" alt="English version of the Perceptrum website" class="w-full h-full">
                 </a>
 
                 <!-- ES Flag for Spanish -->
                 <a href="content/esHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
-                    <img src="flags/ES.png" alt="Spanish Flag" class="w-full h-full">
+                    <img src="flags/ES.png" alt="Spanish version of the Perceptrum website" class="w-full h-full">
                 </a>
 
                 <!-- IR Flag for Iranian (Persian) -->
                 <a href="content/irHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
-                    <img src="flags/IR.png" alt="Iranian Flag" class="w-full h-full">
+                    <img src="flags/IR.png" alt="Persian version of the Perceptrum website" class="w-full h-full">
                 </a>
 
                 <!-- IT Flag for Italian -->
                 <a href="content/itaHomepage.html" class="block w-28 h-28 rounded-full border-4 hover:bg-yellow-100 flex items-center justify-center overflow-hidden shadow-lg">
-                    <img src="flags/IT.webp" alt="Italian Flag" class="w-full h-full">
+                    <img src="flags/IT.webp" alt="Italian version of the Perceptrum website" class="w-full h-full">
                 </a>
             </div>
         </div>
