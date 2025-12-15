@@ -5,84 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luciano Ciamarone</title>
   <link rel="icon" type="image/x-icon" href="./favicon/chats.ico"> 
-  <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+            position: relative; /* Ensure submenus are positioned relative to this parent */
+            white-space: nowrap; /* Prevent text from breaking into multiple lines */
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute; /* Make submenu position relative to parent */
+            background-color: #444;
+            padding: 10px;
+            list-style-type: none;
+            margin: 0;
+            top: 100%; /* Position submenu below the parent item */
+            left: 0; /* Align submenu to the left of the parent item */
+            z-index: 1000;
+        }
+        nav ul li ul li {
+            display: block;
+            margin: 0;
+        }
+        nav ul li ul li ul {
+            top: 0;
+            left: 100%; /* Place nested submenus to the right of their parent */
+        }
+        nav ul li:hover > ul {
+            display: block;
+        }
+        nav ul li ul li:hover > ul {
+            display: block;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        pre {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
   <h1>Luciano Ciamarone</h1>
-
-  <nav>
-    <button class="menu-toggle">☰ Menu</button>
-    <ul class="menu">
-      <li><a href="index.html">Home</a></li>
-      <li>
-        <a href="#">Academics</a>
+  
+    <nav>
         <ul>
-          <li><a href="Academics/Publications.html">Publications</a></li>
-          <li><a href="Academics/OtherWorks.html">Other Works</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li>
+                Academics
+                <ul>
+                    <li><a href="Academics/Publications.html">Publications</a></li>
+                    <li><a href="Academics/OtherWorks.html">Other Works</a></li>
+                </ul>
+            </li>
+            <li>
+                Musical Works
+                <ul>
+                    <li><a href="MusicalWorks/Concerts.html">Concerts</a></li>
+                    <li><a href="MusicalWorks/Cortometraggi.html">Cortometraggi</a></li>
+                    <li><a href="MusicalWorks/Plays.html">Plays</a></li>
+                    <li>
+                        Recordings
+                        <ul>
+                            <li><a href="MusicalWorks/Recordings/DemoElectronics.html">Demo Electronics</a></li>
+                            <li><a href="MusicalWorks/Recordings/GuitarElectronics.html">Guitar Electronics</a></li>
+                            <li><a href="MusicalWorks/Recordings/LoveSongs.html">Love Songs</a></li>
+                            <li><a href="MusicalWorks/Recordings/StudiElettronici.html">Studi Elettronici</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Scores
+                        <ul>
+                            <li><a href="MusicalWorks/Scores/bass_clarinet.html">Bass Clarinet</a></li>
+                            <li><a href="MusicalWorks/Scores/clarinet.html">Clarinet</a></li>
+                            <li><a href="MusicalWorks/Scores/electric_guitar.html">Electric Guitar</a></li>
+                            <li><a href="MusicalWorks/Scores/string_quartet.html">String Quartet</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="MusicalWorks/SoundInstallations.html">Sound Installations</a></li>
+                </ul>
+            </li>
+            <li>
+                Projects
+                <ul>
+                    <li><a href="Projects/AccroccoSonic.html">AccroccoSonic</a></li>
+                    <li><a href="Projects/Addicted2Rndom.html">Addicted 2 Rndom</a></li>
+                    <li><a href="Projects/BodyMusic.html">Body Music</a></li>
+                    <li><a href="Projects/FeedGuitar.html">Feed Guitar</a></li>
+                    <li><a href="Projects/SoundingCanvas.html">Sounding Canvas</a></li>
+                    <li><a href="Projects/StompBox.html">Stomp Box</a></li>
+                </ul>
+            </li>
+            <li>
+                Signal Processing
+                <ul>
+                    <li><a href="SignalProcessing/Morphing.html">Morphing</a></li>
+                    <li><a href="SignalProcessing/PolyphonicPitchDetection_4Guitars.html">Polyphonic Pitch Detection (Guitars)</a></li>
+                    <li><a href="SignalProcessing/SoundSynthesis.html">Sound Synthesis</a></li>
+                </ul>
+            </li>
         </ul>
-      </li>
-      <li>
-        <a href="#">Musical Works</a>
-        <ul>
-          <li><a href="MusicalWorks/Concerts.html">Concerts</a></li>
-          <li><a href="MusicalWorks/Cortometraggi.html">Cortometraggi</a></li>
-          <li><a href="MusicalWorks/Plays.html">Plays</a></li>
-          <li>
-            <a href="#">Recordings</a>
-            <ul>
-              <li><a href="MusicalWorks/Recordings/DemoElectronics.html">Demo Electronics</a></li>
-              <li><a href="MusicalWorks/Recordings/GuitarElectronics.html">Guitar Electronics</a></li>
-              <li><a href="MusicalWorks/Recordings/LoveSongs.html">Love Songs</a></li>
-              <li><a href="MusicalWorks/Recordings/StudiElettronici.html">Studi Elettronici</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#">Scores</a>
-            <ul>
-              <li><a href="MusicalWorks/Scores/bass_clarinet.html">Bass Clarinet</a></li>
-              <li><a href="MusicalWorks/Scores/clarinet.html">Clarinet</a></li>
-              <li><a href="MusicalWorks/Scores/electric_guitar.html">Electric Guitar</a></li>
-              <li><a href="MusicalWorks/Scores/string_quartet.html">String Quartet</a></li>
-            </ul>
-          </li>
-          <li><a href="MusicalWorks/SoundInstallations.html">Sound Installations</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">Projects</a>
-        <ul>
-          <li><a href="Projects/AccroccoSonic.html">AccroccoSonic</a></li>
-          <li><a href="Projects/Addicted2Rndom.html">Addicted 2 Rndom</a></li>
-          <li><a href="Projects/BodyMusic.html">Body Music</a></li>
-          <li><a href="Projects/FeedGuitar.html">Feed Guitar</a></li>
-          <li><a href="Projects/SoundingCanvas.html">Sounding Canvas</a></li>
-          <li><a href="Projects/StompBox.html">Stomp Box</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">Signal Processing</a>
-        <ul>
-          <li><a href="SignalProcessing/Morphing.html">Morphing</a></li>
-          <li><a href="SignalProcessing/PolyphonicPitchDetection_4Guitars.html">Polyphonic Pitch Detection (Guitars)</a></li>
-          <li><a href="SignalProcessing/SoundSynthesis.html">Sound Synthesis</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-
-  <figure>
-      <img src="images/unnamed.jpg" alt="Profile Photo">
-      <figcaption></figcaption>
-  </figure>
-
-  <p>I'm a multidisciplinary creator working at the crossroads of music, technology, and engineering...</p>
-
-  <h3>Contacts</h3>
-  <p><a href="http://luciama.altervista.org/contatti.html" target="_blank">Write me an email</a></p>
-  <h3>Links</h3>
-  <p><a href="http://luciama.altervista.org/luciamarock.html?cb=1753431443606" target="_blank">All my links @luciamarock</a></p>
-
-  <script src="script.js"></script>
-</body>
+    </nav>
+    <figure>
+        <img src="images/unnamed.jpg" alt="Profile Photo">
+        <figcaption></figcaption>
+    </figure>
+  <p>I'm a multidisciplinary creator working at the crossroads of music, technology, and engineering. With a background in Physics and Music Technology, my work spans from developing satellite systems and control software in the aerospace and fusion energy sectors, to crafting immersive, interactive audio-visual experiences.
+<br>
+Over the years, I’ve designed custom pitch detection algorithms, real-time audio analysis tools, and augmented instruments, bringing together creativity, signal processing, and embedded systems. I’m especially drawn to spatialization, physical modeling, and the emotional potential of sound.
+<br>
+Whether it's through research, composition, or hands-on projects, my aim is to create experiences that invite people to listen, touch, and engage on a deeper level. I thrive in interdisciplinary spaces where curiosity leads the way and boundaries between art and technology blur.
+</p>
+<h3>Contacts</h3>
+<p><a href="http://luciama.altervista.org/contatti.html" target="_blank">Write me an email</a></p>
+<h3>Links</h3>
+<p><a href="http://luciama.altervista.org/luciamarock.html?cb=1753431443606" target="_blank">All my links @luciamarock</a></p>
+  </body>
 </html>
-
