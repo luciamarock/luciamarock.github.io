@@ -17,34 +17,31 @@
             background-color: #333;
             color: white;
             padding: 10px;
-            /* Use flexbox to align toggle and list horizontally on desktop */
-            display: flex; 
-            align-items: center;
+            display: flex; 
+            align-items: center;
         }
 
-        /* NEW: Style for the mobile menu toggle button */
-        .menu-toggle {
-            display: none; /* Hidden by default on desktop */
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5em;
-            cursor: pointer;
-            padding: 5px 10px;
-            order: 1; /* Keep it on the left on desktop, though hidden */
-        }
-        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px 10px;
+            order: 1;
+        }
+        
         nav ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
-            order: 2; /* Main navigation list */
-            /* NEW: Add transition for smoother open/close on mobile */
-            transition: max-height 0.3s ease-out; 
+            order: 2;
+            transition: max-height 0.3s ease-out; 
         }
-        
+        
         nav ul li {
-            display: inline-block; /* Desktop: Horizontal layout */
+            display: inline-block;
             margin-right: 20px;
             position: relative;
             white-space: nowrap;
@@ -54,10 +51,10 @@
             text-decoration: none;
             padding: 5px 10px;
         }
-        
+        
         nav ul li ul {
-            display: none;
-            position: absolute; /* Desktop: Dropdown positioning */
+            display: none; /* <-- FIX: Hides submenus by default on desktop */
+            position: absolute;
             background-color: #444;
             padding: 10px;
             list-style-type: none;
@@ -65,30 +62,30 @@
             top: 100%;
             left: 0;
             z-index: 1000;
-            min-width: 150px; /* Ensure dropdown has enough width */
+            min-width: 150px;
         }
         nav ul li ul li {
             display: block;
             margin: 5px 0;
-            white-space: normal;
+            white-space: normal;
         }
         nav ul li ul li ul {
             top: 0;
             left: 100%;
         }
-        
-        /* Desktop Hover States (Keep for desktop functionality) */
+        
+        /* Desktop Hover States (Overrides display: none on hover) */
         nav ul li:hover > ul {
             display: block;
         }
         nav ul li ul li:hover > ul {
             display: block;
         }
-        
+        
         nav ul li a:hover {
             background-color: #555;
         }
-        
+        
         h1, h2 {
             color: #333;
         }
@@ -105,89 +102,78 @@
             margin-bottom: 30px;
         }
 
-        /* --- MEDIA QUERIES FOR MOBILE RESPONSIVENESS (<= 768px) --- */
-        @media (max-width: 768px) {
-            nav {
-                display: block; /* Stack items vertically */
-                padding: 0; /* Remove padding from nav container */
-            }
+        /* --- MEDIA QUERIES FOR MOBILE RESPONSIVENESS (<= 768px) --- */
+        @media (max-width: 768px) {
+            nav {
+                display: block;
+                padding: 0;
+            }
 
-            /* Show the hamburger button and make it visible */
-            .menu-toggle {
-                display: block; 
-                float: right; /* Align to the right */
-                order: 1;
-                line-height: 40px; /* Center '☰' vertically */
-                height: 40px;
-            }
-            
-            nav ul {
-                display: block;
-                width: 100%;
-                /* Hidden state: use max-height to hide the list with transition */
-                max-height: 0; 
-                overflow: hidden; 
-                background-color: #333;
-                clear: both; /* Clear the float from the toggle button */
-            }
+            .menu-toggle {
+                display: block; 
+                float: right;
+                order: 1;
+                line-height: 40px;
+                height: 40px;
+            }
+            
+            nav ul {
+                display: block;
+                width: 100%;
+                max-height: 0; 
+                overflow: hidden; 
+                background-color: #333;
+                clear: both;
+            }
 
-            /* State when the menu is OPEN (toggled by JS) */
-            nav ul.active {
-                max-height: 500px; /* Arbitrarily large value to show all content */
-            }
+            nav ul.active {
+                max-height: 500px;
+            }
 
-            /* Make all top-level items stack vertically */
-            nav ul li {
-                display: block; 
-                margin: 0;
-                border-bottom: 1px solid #555;
-            }
+            nav ul li {
+                display: block; 
+                margin: 0;
+                border-bottom: 1px solid #555;
+            }
 
-            nav ul li a {
-                display: block; /* Make the whole area clickable */
-                padding: 10px 15px;
-            }
+            nav ul li a {
+                display: block;
+                padding: 10px 15px;
+            }
 
-            /* Submenus: Remove absolute positioning and stack them */
-            nav ul li ul {
-                position: static; /* Submenus flow normally below the parent */
-                width: 100%;
-                background-color: #555;
-                padding: 0 0 0 20px; /* Indentation */
-                
-                /* Submenu Mobile State: Hidden by default, toggled by JS */
-                max-height: 0; 
-                overflow: hidden;
-                transition: max-height 0.3s ease-in-out;
-            }
-            
-            /* Active state for submenus */
-            nav ul li ul.active {
-                max-height: 500px; /* Show sub-menu */
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
-            
-            /* Nested Submenus (e.g., Recordings/Scores) */
-            nav ul li ul li ul {
-                padding-left: 20px; /* Further indentation */
-                background-color: #666;
-            }
+            nav ul li ul {
+                position: static;
+                width: 100%;
+                background-color: #555;
+                padding: 0 0 0 20px;
+                max-height: 0; 
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+            
+            nav ul li ul.active {
+                max-height: 500px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            
+            nav ul li ul li ul {
+                padding-left: 20px;
+                background-color: #666;
+            }
 
-            /* Prevent hover display on touch devices */
-            nav ul li:hover > ul,
-            nav ul li ul li:hover > ul {
-                display: none; 
-            }
-            
-            /* Style for list items that are NOT links (like 'Academics') */
-            nav ul li:not(:has(a)) {
-                padding: 10px 15px;
-                color: white;
-                cursor: pointer;
-                display: block; /* Ensure it is a clickable block */
-            }
-        }
+            nav ul li:hover > ul,
+            nav ul li ul li:hover > ul {
+                display: none; 
+            }
+            
+            nav ul li:not(:has(a)) {
+                padding: 10px 15px;
+                color: white;
+                cursor: pointer;
+                display: block;
+            }
+        }
 
     </style>
 </head>
@@ -195,7 +181,7 @@
   <h1>Luciano Ciamarone</h1>
   
     <nav>
-        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">☰</button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">☰</button>
         <ul id="main-nav-list">
             <li><a href="index.html">Home</a></li>
             <li>
@@ -269,44 +255,38 @@ Whether it's through research, composition, or hands-on projects, my aim is to c
 <p><a href="http://luciama.altervista.org/luciamarock.html?cb=1753431443606" target="_blank">All my links @luciamarock</a></p>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButton = document.getElementById('menu-toggle');
-        const navList = document.getElementById('main-nav-list');
-        
-        if (!toggleButton || !navList) return; 
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('menu-toggle');
+        const navList = document.getElementById('main-nav-list');
+        
+        if (!toggleButton || !navList) return; 
 
-        // 1. Main Menu Toggle (Hamburger)
-        toggleButton.addEventListener('click', function() {
-            // Toggle the 'active' class on the main UL to show/hide it
-            navList.classList.toggle('active');
-            
-            // Close any open submenus when the main menu is toggled
-            const activeSubmenus = navList.querySelectorAll('ul.active');
-            activeSubmenus.forEach(submenu => {
-                submenu.classList.remove('active');
-            });
-        });
+        // 1. Main Menu Toggle (Hamburger)
+        toggleButton.addEventListener('click', function() {
+            navList.classList.toggle('active');
+            
+            // Close any open submenus when the main menu is toggled
+            const activeSubmenus = navList.querySelectorAll('ul.active');
+            activeSubmenus.forEach(submenu => {
+                submenu.classList.remove('active');
+            });
+        });
 
-        // 2. Submenu Toggles (for mobile/touch)
-        // Find all top-level list items that contain a submenu
-        const parentItems = navList.querySelectorAll('li');
+        // 2. Submenu Toggles (for mobile/touch)
+        const parentItems = navList.querySelectorAll('li');
 
-        parentItems.forEach(item => {
-            const submenu = item.querySelector('ul');
-            
-            // Check if the item has a submenu AND if its first child is NOT an anchor tag 
-            // (i.e., it's a parent link-less item like 'Academics' or 'Musical Works')
-            if (submenu && (!item.firstElementChild || item.firstElementChild.tagName !== 'A')) {
-                item.addEventListener('click', function(e) {
-                    // Prevent the click event from immediately closing the main menu if it bubbles up
-                    e.stopPropagation(); 
-                    
-                    // Toggle the 'active' class on the submenu
-                    submenu.classList.toggle('active');
-                });
-            }
-        });
-    });
+        parentItems.forEach(item => {
+            const submenu = item.querySelector('ul');
+            
+            if (submenu && (!item.firstElementChild || item.firstElementChild.tagName !== 'A')) {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation(); 
+                    
+                    submenu.classList.toggle('active');
+                });
+            }
+        });
+    });
 </script>
   </body>
 </html>
