@@ -6,6 +6,10 @@ body {
     color: #333;
 }
 
+.content-center {
+    text-align: center;
+}
+
 h1, h2, h3 {
     color: #0056b3;
 }
@@ -30,6 +34,12 @@ img {
     height: auto;   /* Maintains aspect ratio */
     display: block;  /* Removes extra space below images */
     margin: 0 auto;  /* Centers images if they are smaller than 100% width */
+}
+
+iframe, video {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
 }
 
 /* Optional: Add a class for specific image styling if needed */
