@@ -1,0 +1,126 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333; /* Dark gray text for better contrast */
+        }
+
+main {
+    max-width: 900px; /* Constrains text width for readability */
+    margin: 0 auto; /* Centers the content block horizontally */
+    /* Vertical padding (20px) and responsive horizontal padding (5%) */
+    padding: 20px 5%; 
+}
+
+.content-center {
+    text-align: center;
+}
+
+.content-center figcaption {
+    text-align: center;
+}
+        
+    header, footer {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+        h1, h2 {
+            color: #333; /* Dark gray titles matching the old nav background */
+        }
+        h1 {
+            text-align: center;
+        }
+        
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+    }
+    nav a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+        img {
+            max-width: 100%; /* Makes image responsive */
+            max-height: 500px; /* Example maximum height */
+            height: auto;
+            display: block; /* Prevents image from affecting line height */
+            margin: 0 auto; /* Centers the image */
+        }
+        figure {
+    display: block; /* Or block, depending on your layout */
+    margin: 20px auto; /* Centers the figure */
+    text-align: center; /* Centers the caption text */
+    max-width: fit-content; /* Optional: keeps the caption from stretching wider than the image */
+}
+
+figcaption {
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #777; /* A lighter gray color */
+    margin-top: 5px; /* Adds a small space above the caption */
+}
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            max-width: 800px; /* Example maximum width */
+            max-height: 450px; /* Example maximum height (optional, but recommended) */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* ADD THIS NEW BLOCK */
+a.invisible-link {
+    color: #f4f4f9; 
+    text-decoration: none;
+}
+
+a.invisible-link:visited {
+    color: #f4f4f9; 
+    text-decoration: none;
+}
+
+a.invisible-link:hover,
+a.invisible-link:active {
+    color: #f4f4f9;
+    text-decoration: none;
+    cursor: default;
+}
+/* END NEW BLOCK */
+        a {
+            color: #007bff; /* Standard blue link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Dark gray background */
+    color: #fff; /* White text */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Bold text */
+    border: none; /* Removes border */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 20px; /* Adds some space above the button */
+}
+
+.home-button:hover {
+    background-color: #444; /* Darker gray on hover */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
