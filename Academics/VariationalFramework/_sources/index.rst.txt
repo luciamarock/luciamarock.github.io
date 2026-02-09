@@ -1,0 +1,14 @@
+SimplesModel Documentation
+==========================
+
+SimplesModel is the third-generation Event Manager for the Sounding Canvas,
+based on a Variational Geometric Network of interacting surfaces (Simples).
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   overview
+   theory
+   api
+

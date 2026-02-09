@@ -1,0 +1,20 @@
+Theoretical Framework
+=====================
+
+The SimplesModel is built on the idea that geometry itself can act as an agent
+of action and materialization.
+
+A *Simple* is a closed, deformable surface whose behavior is governed entirely
+by energetic minimization under strict area conservation.
+
+Key principles:
+
+- Each Simple tends toward a spherical configuration
+- Surface area is conserved per Simple
+- Interactions occur via shared surface patches
+- Local deformations induce global rearrangements
+- Evolution is variational, not time-driven
+
+This framework serves as a conceptual bridge between discrete geometric
+networks and emergent compositional structures for music and art.
+
