@@ -10,7 +10,8 @@
       <link rel="stylesheet" type="text/css" href="static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="static/css/theme.css?v=9edc463e" />
 
-  
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       <script src="static/jquery.js?v=5d32c60e"></script>
       <script src="static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="static/documentation_options.js?v=2709fde1"></script>
@@ -77,42 +78,47 @@
     <h1>Variational Geometric Network Framework<a class="headerlink" href="#theoretical-framework" title="Link to this heading"></a></h1>
     
     <p>
-        The <strong>SimplesModel</strong> is founded on the radical premise that geometry is not merely a passive container for physical processes, but an <strong>active agent of action and materialization</strong>. Within this framework, we move away from traditional simulations of matter and toward a pure, variational evolution of form.
+        The <strong>SimplesModel</strong> is built on the premise that geometry itself can act as an agent of action and materialization. Here, a <em>Simple</em> is defined as a smooth, closed, oriented two-dimensional surface \( \Sigma \) embedded in \( \mathbb{R}^3 \), whose evolution is governed by its intrinsic state \( (\Sigma, H, K) \).
     </p>
 
-    <h2>The Ontology of the Simple</h2>
+    <h2>The Energy Landscape of an Agent</h2>
     <p>
-        A <em>Simple</em> is defined as a closed, deformable surface whose existence is entirely characterized by its intrinsic geometry. Existing without a surrounding physical medium, it possesses a form of "geometric agency" driven by the minimization of its internal energy. Every movement or deformation is a variational response to its own curvature and area—an inherent drive toward equilibrium.
-    </p>
-
-    
-
-    <h2>Core Governing Principles</h2>
-    <p>
-        The behavior of these agents is governed by a set of interlocking principles that ensure both local integrity and global connectivity:
+        The "agency" of a Simple is mathematically expressed through a surface energy functional \( E[\Sigma] \). This functional determines the agent's preference for certain configurations over others:
     </p>
     
+    <div class="math-display" style="margin: 20px 0; text-align: center;">
+        \[ E[\Sigma] = \int_{\Sigma} \gamma \, dA + \int_{\Sigma} k \, (H - H_0)^2 \, dA \]
+    </div>
+
     <p>
-        <strong>Intrinsic Drive and Morphogenesis:</strong> Each Simple is motivated by a surface energy functional that penalizes deviations from a reference state. Primarily, this manifests as a tendency toward spherical configurations, where surface tension and bending rigidity reach a geometric truce.
+        In this expression, \( \gamma \) represents surface tension and \( k \) represents bending rigidity. The agent permits transitions only to states where the first variation of energy is non-positive (\( \delta E \le 0 \)), replacing linear time with a variational ordering of states.
+    </p>
+
+    <h2>Force as Geometric Bias</h2>
+    <p>
+        The variational structure induces a <strong>Geometric Force Density</strong> \( \mathcal{F} \), characterized as the functional derivative of the energy. This represents the "intrinsic bias" of the agent at any given surface point:
+    </p>
+
+    <div class="math-display" style="margin: 20px 0; text-align: center;">
+        \[ \mathcal{F} = \gamma H - 2k\Delta_{\Sigma}(H - H_0) - 2k(H - H_0)(H^2 - K) \]
+    </div>
+    
+    <p>
+        This force is composed of a <strong>surface-tension term</strong> (\( \gamma H \)) and a <strong>bending term</strong> involving the Laplace–Beltrami operator \( \Delta_{\Sigma} \). These terms dictate how the surface responds to local perturbations and manages higher-order geometric smoothing.
+    </p>
+
+    <h2>The Constraint of Area Conservation</h2>
+    <p>
+        A defining characteristic of this framework is <strong>Per-Simple Area Conservation</strong>. Every agent must maintain a constant total area \( A_0 = \int_{\Sigma} dA \). This constraint transforms local geometric changes into global redistributions. 
     </p>
     
     <p>
-        <strong>The Constraint of Area Invariance:</strong> Unlike a physical bubble that might expand or contract based on pressure, a Simple adheres to strict <em>Per-Simple Area Conservation</em>. This constraint is the engine of the model’s complexity: because the total area is fixed, a local deformation in one region must be instantaneously compensated by an inverse adjustment elsewhere. 
+        Mathematically, this is handled via a Lagrange multiplier \( \lambda \), resulting in a constrained force \( \mathcal{F}_{\mathrm{constrained}} = \mathcal{F} + \lambda \). Because \( \lambda \) is determined globally, any local deformation forces an instantaneous, compensatory adjustment elsewhere on the surface.
     </p>
 
+    <h2>Network Interactions and Path Dependence</h2>
     <p>
-        <strong>Connectivity and Shared Materiality:</strong> When Simples meet, they do not merely collide; they form shared surface patches or films. These interactions introduce extrinsic forces that couple the agents into a network. In this state, the "will" of one Simple becomes inextricably linked to the geometry of its neighbors, creating a unified, responsive system.
-    </p>
-
-    <p>
-        <strong>Variational Evolution over Linear Time:</strong> The model replaces the standard notion of physical time with a logical sequence of energy-decreasing states. Evolution is not a march along a clock, but a branching path through an <em>Energy Landscape</em>. Each transition selects a new state that lowers the total energy, fundamentally altering the map of all future possibilities.
-    </p>
-
-    
-
-    <h2>A Bridge to Compositional Logic</h2>
-    <p>
-        This framework serves as a conceptual bridge between discrete geometric networks and emergent structures in music and art. By treating geometry as an agent, we can observe <strong>non-local branching</strong> and <strong>history-dependent growth</strong>—phenomena where a single geometric "nudge" triggers a cascade of structural reconfigurations. The result is a system that does not simply exist in space, but actively participates in its own becoming.
+        When multiple Simples interact, the total network energy \( E_{\mathrm{tot}} \) includes interaction terms \( E_{\mathrm{int}} \) arising from shared films. As proved in the framework, any transition that modifies the curvature field alters the set of future accessible states \( \mathcal{S}(\Sigma_{n+1}) \). This ensures that the system is <strong>history-dependent</strong>: each state transition selects one branch of evolution and simultaneously generates a new set of future possibilities.
     </p>
 </section>
 
