@@ -7,7 +7,7 @@ designed to model energy-driven interactions and surface-mediated dynamics.
 This project is part of the Sounding Canvas framework and is based on a
 Variational Geometric Network formalized in the following document:
 
-`Compositional Framework PDF <https://github.com/luciamarock/SoundingCanvas/blob/development/documentation/conceptual_framework/compositional_framework_20251120.pdf>`_
+`Compositional Framework PDF <https://github.com/luciamarock/SoundingCanvas/blob/development/documentation/document_version_history/compositional_framework_20251120.pdf>`_
 
 The model explores how local deformations propagate through a lattice of
 interacting surfaces, producing emergent, path-dependent behavior suitable
