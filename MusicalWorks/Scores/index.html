@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musical Scores | Luciano Ciamarone</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../style_1.css">
+    <link rel="stylesheet" href="../../style_2.css">
+    <style>
+        .score-graphic {
+            width: 120px;
+            height: 80px;
+            margin: 20px auto;
+            border-top: 2px solid #333;
+            border-bottom: 2px solid #333;
+            position: relative;
+            background: repeating-linear-gradient(#f4f4f9, #f4f4f9 18px, #333 18px, #333 20px);
+        }
+        .note {
+            position: absolute;
+            width: 12px;
+            height: 10px;
+            background: #0056b3;
+            border-radius: 50%;
+            transform: rotate(-20deg);
+        }
+        .n1 { top: 10px; left: 20%; }
+        .n2 { top: 30px; left: 50%; }
+        .n3 { top: 50px; left: 80%; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav><ul><li><a href="../../index.html">Main Home</a></li><li><a href="../index.html">Musical Works</a></li></ul></nav>
+    </header>
+
+    <main>
+        <section class="content-center">
+            <div class="score-graphic">
+                <div class="note n1"></div><div class="note n2"></div><div class="note n3"></div>
+            </div>
+            <h1>Musical Scores</h1>
+            <p>Manuscripts and sheet music for various ensembles and soloists.</p>
+        </section>
+
+        <div class="image-gallery">
+            <div class="section content-center">
+                <a href="clarinet.html"><h3>Clarinet</h3><p>Solo works for Bb Clarinet.</p></a>
+            </div>
+            <div class="section content-center">
+                <a href="bass_clarinet.html"><h3>Bass Clarinet</h3><p>Deep register explorations.</p></a>
+            </div>
+            <div class="section content-center">
+                <a href="electric_guitar.html"><h3>Electric Guitar</h3><p>Notated works for amplified guitar.</p></a>
+            </div>
+            <div class="section content-center">
+                <a href="string_quartet.html"><h3>String Quartet</h3><p>Chamber music compositions.</p></a>
+            </div>
+        </div>
+
+        <div class="content-center">
+            <a href="../index.html" class="home-button">Back to Music Hub</a>
+        </div>
+    </main>
+</body>
+</html>

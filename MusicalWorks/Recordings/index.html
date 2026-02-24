@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recordings | Luciano Ciamarone</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../style_1.css">
+    <link rel="stylesheet" href="../../style_2.css">
+    <style>
+        .audio-graphic {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .bar {
+            width: 12%;
+            background: linear-gradient(to top, #333, #0056b3);
+            border-radius: 5px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        .bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+        .bar:nth-child(2) { height: 80%; animation-delay: 0.3s; }
+        .bar:nth-child(3) { height: 50%; animation-delay: 0.2s; }
+        .bar:nth-child(4) { height: 90%; animation-delay: 0.5s; }
+        @keyframes pulse {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.6); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav><ul><li><a href="../../index.html">Main Home</a></li><li><a href="../index.html">Musical Works</a></li></ul></nav>
+    </header>
+
+    <main>
+        <section class="content-center">
+            <div class="audio-graphic">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <h1>Audio Recordings</h1>
+            <p>A curated selection of electronic explorations and instrumental recordings.</p>
+        </section>
+
+        <div class="image-gallery">
+            <div class="section content-center">
+                <a href="StudiElettronici.html"><h3>Studi Elettronici</h3><p>Purely synthetic soundscapes.</p></a>
+            </div>
+            <div class="section content-center">
+                <a href="GuitarElectronics.html"><h3>Guitar & Electronics</h3><p>Hybrid acoustic-digital works.</p></a>
+            </div>
+            <div class="section content-center">
+                <a href="LoveSongs.html"><h3>Love Songs</h3><p>Vocal and melodic compositions.</p></a>
+            </div>
+            <div class="section content-center">
+                <a href="DemoElectronics.html"><h3>Demo Electronics</h3><p>Work-in-progress and sketches.</p></a>
+            </div>
+        </div>
+
+        <div class="content-center">
+            <a href="../index.html" class="home-button">Back to Music Hub</a>
+        </div>
+    </main>
+</body>
+</html>
