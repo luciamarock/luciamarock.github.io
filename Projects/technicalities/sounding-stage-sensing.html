@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sounding Stage - Advanced Sensing Technology</title>
+    <meta name="description" content="Technical deep-dive into the sensing evolution of the Sounding Stage: transitioning from Arduino software libraries to dedicated CAP1114 hardware for large-scale interactive environments.">
+    <meta name="keywords" content="Sounding Stage, CAP1114, Capacitive Sensing, Arduino Shield, Interactive Stage, EMI Filtering, Level Shifting, Perceptrum²">
+    <meta name="author" content="Luciano Ciamarone">
+    <link rel="stylesheet" href="../../style_2.css">
+</head>
+<body>
+<header>
+    <h1>Sounding Stage: Sensing Evolution</h1>
+</header>
+<main>
+
+<section>
+    <header>
+        <h2>1. The Scaling Challenge</h2>
+    </header>
+    <article>
+        <p>
+            The transition from the <strong>Sounding Canvas</strong> to the <strong>Sounding Stage</strong> necessitated a fundamental rethink of our sensing architecture. While the <code>CapacitiveSensor</code> library served us well for individual artworks, the physical scale of a stage environment, featuring vertical curtains and horizontal floor planes, introduced physical constraints that software-based sensing could no longer compensate for.
+        </p>
+        <p>
+            In this context, sensing is not merely a technical requirement, but a core component of the performative language of the system.
+        </p>
+    </article>
+</section>
+
+<section>
+    <header>
+        <h2>2. Limitations of Software-Based RC Timing</h2>
+    </header>
+    <article>
+        <p>
+            In our previous reports, we detailed the use of 1.4 MΩ resistors and RC time-constant measurements. However, in the Sounding Stage, two primary physical limitations emerged:
+        </p>
+        <ul>
+            <li><strong>Parasitic Capacitance:</strong> Long cable runs (exceeding 3–5 meters) required to reach stage boundaries behave as capacitive loads themselves. This baseline often exceeds the dynamic range of the Arduino’s digital sensing method.</li>
+            <li><strong>Environmental Noise:</strong> Large sensitive surfaces act as antennas. In a stage environment, 50/60Hz hum from lighting systems and power amplifiers significantly degrades the signal-to-noise ratio (SNR).</li>
+        </ul>
+        <p>
+            These effects do not simply degrade performance; they fundamentally alter the temporal behavior of the signal, making it unsuitable for extracting higher-level features such as gesture velocity or spatial continuity.
+        </p>
+    </article>
+</section>
+
+<section>
+    <header>
+        <h2>3. Hardware Solution: The CAP1114 Controller</h2>
+    </header>
+    <article>
+        <p>
+            To address these issues, we designed a custom <strong>Touch Module Shield</strong> for Arduino Uno R3 (and compatible boards such as Arduino 2009). By offloading the sensing logic to a dedicated <strong>CAP1114-1-EZK-TR</strong> controller, we gained hardware-level signal conditioning that software-based approaches cannot replicate.
+        </p>
+
+        <h3>3.1 Dedicated Signal Processing</h3>
+        <p>
+            The CAP1114 integrates an Analog Front End (AFE) providing:
+        </p>
+        <ul>
+            <li><strong>Automatic Calibration:</strong> The system continuously compensates for baseline capacitance introduced by long cables and large electrodes.</li>
+            <li><strong>Digital Filtering:</strong> Built-in noise suppression reduces environmental electromagnetic interference (EMI).</li>
+            <li><strong>14-Channel Density:</strong> A single shield manages 14 independent sensing channels (CS1–CS14), enabling scalable spatial segmentation of the stage surface and reliable detection across large areas.</li>
+        </ul>
+        <p>
+            This shift marks a transition from software-interpreted sensing to hardware-conditioned signals, ensuring consistent behavior across varying environmental conditions.
+        </p>
+
+        <h3>3.2 Level Shifting and Logic Safety</h3>
+        <p>
+            The CAP1114 operates at 3.3V logic levels, while the Arduino ecosystem commonly uses 5V. The module incorporates <strong>2N7002 MOSFET-based bidirectional level shifters</strong> on the I²C bus (SDA/SCL), ensuring reliable communication without exposing the sensor to overvoltage.
+        </p>
+    </article>
+</section>
+
+<section>
+    <header>
+        <h2>4. Visual Feedback Integration</h2>
+    </header>
+    <article>
+        <p>
+            Interaction within the Sounding Stage is both auditory and visual. The module leverages the CAP1114’s integrated LED drivers to control 11 surface-mount LEDs (D1–D11).
+        </p>
+        <p>
+            This enables <strong>near-zero-latency feedback</strong>: visual responses are driven directly by the sensing hardware, without requiring a round-trip through the central processing system. The performer receives immediate confirmation of interaction, reinforcing the perception of a responsive environment.
+        </p>
+    </article>
+</section>
+
+<section>
+    <header>
+        <h2>5. Integrated System Architecture</h2>
+    </header>
+    <article>
+        <p>
+            The sensing system is interrupt-driven. The <strong>ALERT</strong> pin notifies the microcontroller only when relevant changes occur, reducing computational overhead and allowing the Arduino to manage higher-level interaction logic.
+        </p>
+        <p>
+            In this configuration, the sensing module acts as a local proprioceptive layer within the distributed sensing architecture of the Sounding Stage, maintaining responsiveness independently of the central audio engine.
+        </p>
+    </article>
+</section>
+
+<section>
+    <header>
+        <h2>6. Toward Sensing 2.0</h2>
+    </header>
+    <article>
+        <p>
+            While the CAP1114-based module provides a robust and scalable solution for large interactive surfaces, it remains primarily optimized for stable touch and proximity detection. The next phase of development focuses on extending the system toward continuous gesture sensing.
+        </p>
+
+        <p>
+            Future iterations will integrate dedicated capacitive sensing controllers such as the MPR121, positioned closer to the sensing surfaces to preserve signal dynamics. This will enable the extraction of higher-level features such as gesture velocity, directionality, and spatial continuity.
+        </p>
+
+        <p>
+            In this evolving architecture, sensing is no longer limited to detecting presence, but becomes a real-time signal capable of driving dynamic sound transformations. This marks the transition toward what we define as <strong>Sensing 2.0</strong>: a paradigm in which interaction is understood as the flow of energy across a surface rather than discrete activation events.
+        </p>
+    </article>
+</section>
+
+<footer>
+    <p><a href="../index.html" class="home-button">Back to Projects</a></p>
+</footer>
+
+</main>
+</body>
+</html>
