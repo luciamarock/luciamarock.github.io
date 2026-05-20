@@ -7,6 +7,12 @@
             --color-bg-white: #FFFFFF;
         }
         /* Custom styles to ensure full height and centering */
+        /* Make the central content column wider on desktop screens */
+main .max-w-5xl {
+    max-w-width: none !important; /* Reset the original 1024px limit */
+    width: 90% !important;        /* Let it take up 90% of the screen width... */
+    max-width: 1400px !important; /* ...but cap it at 1400px so text doesn't stretch infinitely */
+}
 
         .full-screen-center {
             min-height: 100vh;
