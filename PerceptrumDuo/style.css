@@ -1,47 +1,57 @@
-
-        body {
-            font-family: 'Inter', sans-serif;
-            /* Customizing Tailwind colors if needed, or just using existing ones */
-            --color-primary-yellow: #FFD700; /* Gold/Yellow */
-            --color-text-black: #1A1A1A; /* Darker black for better contrast */
-            --color-bg-white: #FFFFFF;
-        }
-        /* Custom styles to ensure full height and centering */
-        /* Make the central content column wider on desktop screens */
-main .max-w-5xl {
-    max-w-width: none !important; /* Reset the original 1024px limit */
-    width: 90% !important;        /* Let it take up 90% of the screen width... */
-    max-width: 1400px !important; /* ...but cap it at 1400px so text doesn't stretch infinitely */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Customizing Tailwind colors if needed, or just using existing ones */
+    --color-primary-yellow: #FFD700; /* Gold/Yellow */
+    --color-text-black: #1A1A1A; /* Darker black for better contrast */
+    --color-bg-white: #FFFFFF;
 }
 
-        .full-screen-center {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-image: url("./content/images/background.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-            color: var(--color-text-black); /* Black text */
-        }
-        .full-screen-center::before {
+/* FIX: Targets the direct container child inside main and removes the squeeze */
+main div.max-w-5xl {
+    max-width: 1400px !important; /* Overrides Tailwind's 1024px constraint safely */
+    width: 95% !important;        /* Uses up to 95% of available screen real estate */
+}
+
+/* Optional Enhancement: Ensures your article layout images scale gracefully to fill their wide blocks */
+article img {
+    width: 100% !important;
+    max-width: 900px !important;  /* Stops standalone images from getting cartoonishly huge on ultrawides */
+    object-fit: cover;
+}
+
+/* Custom styles to ensure full height and centering */
+.full-screen-center {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("./content/images/background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    color: var(--color-text-black); /* Black text */
+}
+
+.full-screen-center::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(255, 255, 255, 0.75); /* light veil over image */
     z-index: 1;
 }
-        .flag-container a {
-            border-color: var(--color-text-black); /* Black border for flags */
-            transition: all 0.3s ease-in-out;
-        }
-        .flag-container a:hover {
-            border-color: var(--color-primary-yellow); /* Yellow border on hover */
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px -3px rgba(255, 215, 0, 0.3), 0 4px 6px -2px rgba(255, 215, 0, 0.1); /* Yellow shadow */
-        }
-        .flag-container a img {
-            object-fit: cover; /* Ensure flags fill their circular container */
-        }
+
+.flag-container a {
+    border-color: var(--color-text-black); /* Black border for flags */
+    transition: all 0.3s ease-in-out;
+}
+
+.flag-container a:hover {
+    border-color: var(--color-primary-yellow); /* Yellow border on hover */
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px -3px rgba(255, 215, 0, 0.3), 0 4px 6px -2px rgba(255, 215, 0, 0.1); /* Yellow shadow */
+}
+
+.flag-container a img {
+    object-fit: cover; /* Ensure flags fill their circular container */
+}
