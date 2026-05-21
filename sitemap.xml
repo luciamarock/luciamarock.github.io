@@ -82,6 +82,19 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://luciamarock.github.io/PerceptrumDuo/press.html</loc>
+        <lastmod>2025-11-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://luciamarock.github.io/PerceptrumDuo/about.html</loc>
+        <lastmod>2025-11-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://luciamarock.github.io/PerceptrumDuo/content/engHomepage.html</loc>
     </url>
     <url>
