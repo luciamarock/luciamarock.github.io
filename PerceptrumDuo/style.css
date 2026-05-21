@@ -66,3 +66,18 @@ article img {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Custom CTA Button Styling */
+.cta-button {
+    background-color: var(--color-primary-yellow);
+    color: var(--color-text-black);
+    transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover {
+    background-color: var(--color-text-black);
+    color: var(--color-primary-yellow);
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px -3px rgba(255, 215, 0, 0.3), 0 4px 6px -2px rgba(255, 215, 0, 0.1);
+}
+
