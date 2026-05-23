@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories — PerceptrumDuo</title>
+    <!-- Linking back cleanly to your root style.css relative path -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="blog-nav">
+        <a href="../index.html" class="logo-text">Perceptrum<span>Duo</span></a>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="index.html" class="active">Stories</a>
+        </div>
+    </nav>
+
+    <main class="content-wrapper">
+        <h1 class="page-title">Duo Chronicles</h1>
+        <p class="page-subtitle">Behind the scenes, artistic theories, and real-time logs from our creative universe.</p>
+        
+        <!-- This grid element receives target nodes injection from our JS layout compiler -->
+        <div class="stories-grid" id="stories-target">
+            <!-- Loading placeholder -->
+            <p>Gathering archives...</p>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 PerceptrumDuo. All rights reserved.
+    </footer>
+
+    <script>
+        // Execution engine to pull structure metadata and build user interfaces dynamically
+        async function loadStories() {
+            const container = document.getElementById('stories-target');
+            try {
+                // Fetch our dynamic manifest
+                const response = await fetch('stories.json');
+                if (!response.ok) throw new Error("Could not load tracking register.");
+                const stories = await response.json();
+                
+                // Erase fallback layout state
+                container.innerHTML = '';
+                
+                if(stories.length === 0) {
+                    container.innerHTML = '<p>No stories posted yet. Check back soon!</p>';
+                    return;
+                }
+
+                // Parse records and map layouts contextually
+                stories.forEach(story => {
+                    const card = document.createElement('a');
+                    card.className = 'story-card';
+                    // Sets route relative to the context of stories/ folder execution
+                    card.href = story.filename;
+
+                    card.innerHTML = `
+                        <div class="card-image-wrapper">
+                            <img src="../images/${story.image}" alt="${story.title}" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-date">${story.date}</span>
+                            <h2 class="card-title">${story.title}</h2>
+                            <p class="card-excerpt">${story.excerpt}</p>
+                            <span class="card-more">Read Story</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Index compilation error:", error);
+                container.innerHTML = '<p style="color:red;">Error syncing latest entries. Please refresh.</p>';
+            }
+        }
+
+        // Trigger on load
+        document.addEventListener('DOMContentLoaded', loadStories);
+    </script>
+</body>
+</html>
