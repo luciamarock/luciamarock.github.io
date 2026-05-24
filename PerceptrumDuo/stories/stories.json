@@ -1,16 +1,9 @@
 [
   {
-    "title": "Quantum Foam Musings",
-    "filename": "quantum-foam-musings.html",
+    "title": "The Origins of Sounding Canvas",
+    "filename": "sounding-canvas-origins.html",
     "date": "May 20, 2026",
-    "image": "quantum_foam.png",
+    "image": "sounding-canvas-preview.png",
     "excerpt": "Exploring the microscopic topology of spacetime through collaborative algorithmic music and modular patches."
-  },
-  {
-    "title": "The Turandot Metamorphosis",
-    "filename": "turandot-metamorphosis.html",
-    "date": "April 14, 2026",
-    "image": "turandot.png",
-    "excerpt": "Deconstructing Puccini's final masterpiece into an avant-garde soundscape landscape using custom acoustic arrays."
   }
 ]
