@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sounding Canvas – Augmented Paintings by Perceptrum Duo</title>
+    <title>Sounding Canvas - Interactive Art and Technology</title>
+    
     <link rel="icon" href="../PerceptrumDuo/favicon/logo.jpg" type="image/jpeg">
   
   <!-- SEO Meta -->
@@ -18,8 +19,13 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://luciamarock.github.io/Projects/SoundingCanvas.html">
 
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sounding Canvas - Interactive Art and Technology">
+    <meta name="twitter:description" content="Explore the Sounding Canvas project: augmented paintings responding to touch, powered by capacitive sensors and Raspberry Pi. Learn about the hardware, software, and inter-canvas network communication.">
+    <meta name="twitter:image" content="https://luciamarock.github.io/PerceptrumDuo/images/sounding-canvas-preview.png">
+
   <link rel="canonical" href="https://www.perceptrum.net/works/sounding-canvas.html" />
-  <link rel="next" href="https://luciamarock.github.io/Projects/technicalities/tech_report.html">
   
   <!-- Structured Data for AI and Search Engines -->
   <script type="application/ld+json">
@@ -86,135 +92,263 @@
 </head>
 <body>
     <header>
-    <h1>Sounding Canvas Series</h1>
+    <h1>Sounding Canvas Project Report</h1>
     <p>Interactive paintings that transform touch into sound.</p>
-    <nav>
-      <ul>
-        <li><a href="#overview">Overview</a></li>
-        <li><a href="#story">The Origin</a></li>
-        <li><a href="#novelty">Novelty</a></li>
-        <li><a href="#social">A Social Artwork</a></li>
-        <li><a href="#useful">Useful Links</a></li>
-      </ul>
-    </nav>
   </header>
     
     <main>
-    <article id="overview">
-    <h2>Overview</h2>
-    <p>Sounding Canvas is a series of Interactive Paintings created by the artistic duo <a href="../PerceptrumDuo" target="_blank">Perceptrum</a>, the Duo is composed by the Iranian Artist and Stage Designer <a href="https://doramoteque-faf94c.webflow.io/" target="_blank">Dora Motèque</a> and the Italian Physicist, Sound Engineer and Musician <a href="https://luciamarock.github.io/" target="_blank">Luciano Ciamarone</a></p>
-<figure class="content-center">
-  <img src="images/sc_pair.jpeg" alt="Perceptrum duo, presenting networked Sounding Canvases installation exploring artistic entanglement through interactive sound">
-  <figcaption>Two paired Sounding Canvases; "Calligraph of Absence" and "Rhythmic Interference"</figcaption>
+    <article>
+    <h2>1. Project Overview and Goals</h2>
+    <p>
+        The Sounding Canvas project integrates capacitive sensing technology with a Raspberry Pi 4 Model B for interactive sound generation. The core objective was to develop a system where touch or proximity to the canvas surface, detected by changes in capacitance, triggers corresponding audio output through connected speakers. This report details the hardware setup, software implementation, underlying electronics, and the progression from initial sensor testing to the final integrated artwork. 
+    </p>
+    
+</article>
+
+<section>
+    <h2>2. Hardware Architecture and Connections</h2>
+  <article>
+    <h3>2.1 Components:</h3>
+    <ul>
+        <li>Arduino Uno Rev 3 (or Duemilanove): Microcontroller responsible for reading capacitive sensor data and communicating with the Raspberry Pi via USB.</li>
+        <li>Raspberry Pi 4 Model B with HiFiBerry Amp2 HAT: Single-board computer for audio processing, sound file playback, and amplification, powered through the HiFiBerry Amp2 HAT.</li>
+        <li>Capacitive Sensors: Constructed from copper (or aluminum) foil pads strategically cut and placed on the back of the canvas.</li>
+        <li>Resistors: 1 to 1.4 MΩ resistors (optimized through testing) used in each sensor circuit to control sensitivity.</li>
+        <li>Loudspeakers: Two 4-inch speakers (20-40 W, 4 Ω impedance) for audio output, mounted to the wooden back panel.</li>
+        <li>Breadboard and Wires: Used for prototyping and connecting initial circuits. Cabling within the final assembly is managed for cleanliness and safety.</li>
+        <li>Wooden Back Panel: Provides structural support and mounting points for electronic components behind the canvas, with a 3 cm gap to accommodate them.</li>
+    </ul>
+
+    <h3>2.2 Sensor Connections:</h3>
+    <p>
+        Each of the four capacitive sensors utilizes a shared "send" pin (Arduino pin 2) and an individual "receive" pin (Arduino pins 4, 6, 8, and 10). A 1.4 MΩ resistor is connected between the send and the respective receive pin for each sensor.
+    </p>
+  </article>
+</section>
+<section>
+    <h2>3. Capacitive Sensing Technology</h2>
+  <article>
+    <h3>3.1 Circuit Explanation:</h3>
+    <p>
+        The capacitive sensing circuit operates by measuring the time delay in an RC (resistor-capacitor) network.
+    </p>
+    <ul>
+        <li><strong>Send Pin:</strong> Outputs a pulsed signal to charge and discharge the capacitive sensor.</li>
+        <li><strong>Receive Pin:</strong> Monitors the voltage changes resulting from the charging and discharging cycles.</li>
+        <li><strong>Resistor (R):</strong> The 1.4 MΩ resistor controls the rate at which the capacitor charges. Optimization determined this value provided the best balance of sensitivity and stability.</li>
+        <li><strong>Capacitor (C):</strong> The capacitance is influenced by the aluminum foil sensor, environmental factors, and, crucially, the proximity or touch of a user.</li>
+    </ul>
+    In the next picture you can see how the sensors are cabled and fixed to the canvas, they are made using resistors and aluminum foil.</p>
+    <figure class="content-center">
+  <img src="images/sc_sensors.png" alt="Back view of the Sounding Canvas showing the capacitive sensors wiring with aluminum foil and resistors.">
+  <figcaption>How the sensors are connected.</figcaption>
 </figure>
-    <p>Our <a href="https://www.perceptrum.net/works/sounding-canvas-series.html" target="_blank">Augmented Paintings</a> are Interlocutors that engage in a non-verbal communication with the people who touch them. </p>
-    <p>Visually, they are the result of Dora’s semiographic research, in which she fuses Persian characters with elements of musical notation. The shapes are invisibly and elegantly equipped with sensors that detect the user’s gestures and forward the information to a central “Electronic Brain” which, using AI and sophisticated algorithms, generates sounds in response to the history of interactions and their intrinsic meanings. Two or more Sounding Canvases can also be connected over the Internet, enabling emotional and perceptual communication between human beings who interact with them locally. Each person can “feel” the presence of others through their local Sounding Canvas, which constantly receives “touch events” from its peer canvases, even if they are thousands of kilometers away.</p>
-    <p>In our <a href="https://www.perceptrum.net/manifesto/" target="_blank">Manifesto</a>, we describe our creative process and our mission. We believe that humanity’s ability to understand one another is key to our future as a species. Through our art, we invite people to nurture their empathy, perception, and relational awareness. We believe that relationship lies at the core of what we call consciousness, intelligence, and ultimately, life. We are what emerges from the framework of our connections.</p>
-    <p>The power of the Sounding Canvas series lies in their simplicity: they are “just” paintings, neat, clean, precise, and effortless to interact with. They require no screens, projectors, lights, cameras, or other technical devices. These are truly Augmented Paintings: the technology is invisible, fully embedded within the work. They are easy to install and easy to experience. The technology remains transparent; the people are the real protagonists of the Sounding Canvas experience.</p>
-    <p>At the end of this webpage there is a video description of the project, you are also invited to check <a href="https://www.youtube.com/@perceptrumduo/playlists" target="_blank">our Youtube Playlists</a></p>
+    <p> Then a wooden cover has been mounted upon to host loudspeakers and boards. </p>
+    <figure class="content-center">
+  <img src="images/sc_back.png" alt="Rear wooden cover hosting loudspeakers and electronics of Sounding Canvas.">
+  <figcaption>The closed back of the Sounding Canvas.</figcaption>
+</figure>
+
+    <h3>3.2 RC Delay and Sensitivity:</h3>
+    <p>
+        The RC time constant (<code>τ = R × C</code>) dictates the charging and discharging speed. Changes in capacitance (C) due to interaction alter this time constant, which is detected by the Arduino. Sensitivity was fine-tuned by adjusting the resistor value and the sampling rate within the <strong>CapacitiveSensor</strong> library. The aluminum foil sensor area of approximately <strong>40 square centimeters</strong> was found to offer reliable detection.
+    </p>
+  </article>
+</section>
+<section>
+    <h2>4. Software Implementation</h2>
+  <article>
+    <h3>4.1 Arduino Firmware:</h3>
+    <p>
+        The Arduino Uno Rev.3 utilizes the <strong>CapacitiveSensor</strong> library by Paul Stoffregen to measure capacitance changes. The core initialization in the Arduino sketch is:
+    </p>
+    <pre>
+CapacitiveSensor cs_sensorX = CapacitiveSensor(sendPin, receivePinX); // For each sensor
+    </pre>
+    <p>
+        Sensitivity is managed through the number of samples taken by the library. Threshold values for sensor activation were determined experimentally via the Arduino IDE Serial Monitor to ensure accurate detection and minimize false triggers.
+    </p>
+
+    <h3>4.2 Raspberry Pi Software:</h3>
+    <p>
+        A Python program running on the Raspberry Pi 4 Model B is responsible for processing sensor data received from the Arduino and triggering audio playback. Key features include:
+    </p>
+    <ol>
+        <li><strong>Serial Communication:</strong> Establishes communication with the Arduino over USB to receive sensor readings.</li>
+        <li><strong>Threshold-Based Activation:</strong> Detects sensor activation when received values exceed auto discovered thresholds.</li>
+        <li><strong>Debouncing:</strong> Implements a minimum two second delay between successive activations of the same sensor to prevent rapid re-triggering.</li>
+        <li><strong>Randomized Sound Selection:</strong> For each of the four sensors, the program intelligently selects one of several distinct sound samples from a corresponding folder. The sounds were created using sustained electric guitar recordings and other digital instruments to provide sonic variety.</li>
+        <li><strong>Parallel Playback:</strong> Allows for the simultaneous playback of sounds triggered by multiple sensor activations.</li>
+    </ol>
     
-</article>
-<!--
-    <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <h3>4.3 Arduino Interface & Event Manager</h3>
+    <p>
+        The Arduino Interface plays a crucial role in bridging the physical sensing hardware with the higher-level
+        software logic running on the Raspberry Pi. It collects raw capacitive touch data from the sensor electrodes
+        mounted behind the canvas and transmits meaningful interaction events to the main system.
+    </p>
+    <p>
+        The Arduino aggregates <strong>CapacitiveSensor</strong> data and periodically transmits it over a USB serial
+        connection to the Raspberry Pi. A custom Python module on the Raspberry Pi acts as a listener and parser for this
+        serial data stream. The module maintains a queue of recent readings and applies event detection logic to identify
+        new touch events, sustained contact, or release events.
+    </p>
+    <p>
+        To ensure responsiveness and avoid false triggers, the system employs a hysteresis mechanism and configurable
+        thresholds. For example, a touch is only registered if the measured signal exceeds a given activation threshold
+        for a sustained number of readings. This reduces noise and ensures reliable operation even in environments with
+        fluctuating electromagnetic conditions.
+    </p>
+    <p>
+        Once events are detected, they are forwarded to the <em>Event Manager</em>, a central coordination module
+        responsible for triggering corresponding actions within the system. These actions include activating sound
+        playback through the Audio Engine, forwarding touch events trhough websocket, or logging interaction data.
+    </p>
+    <p>
+        Beyond simple event forwarding, the Event Manager also performs adaptive learning based on user interaction
+        patterns. Earlier versions of the system employed adaptive <strong>Markov models</strong> to infer probabilities
+        of sequential gestures and transitions over time. This probabilistic model enabled context-aware reactions,
+        anticipating likely next events and tailoring the sonic or visual response accordingly.
+    </p>
+    <p>
+        Current development explores the use of <strong>Recurrent Neural Networks (RNNs)</strong> as a more powerful
+        approach for modeling and detecting complex, temporally extended interaction sequences. This opens the
+        possibility of deeper temporal understanding of user behavior, enriching the perceptual and expressive potential
+        of the artwork.
+    </p>
+    <p>
+        The modular design of the Arduino Interface and Event Manager ensures a clear separation between low-level
+        hardware communication and high-level behavioral logic. This makes the system maintainable and extensible, so new
+        sensor types or behaviors can be added with minimal impact on the overall architecture.
+    </p>
+  </article>
+</section>
+
+<section>
+    <h2>5. Mounting and Running</h2>
+  <article>
+    <p>
+        In "Echo of Lines", four capacitive sensors, made from aluminum foil pads, are mounted on the back of the canvas using adhesive to ensure they remain flat and secure. A non-conductive layer is placed between the foil and the canvas to prevent unintended triggers due to external electrical interference. The sensors are connected to the Arduino as described in Section 2.2.
+    </p>
+    <p>
+        All electronic components, including the Arduino, Raspberry Pi with HiFiBerry Amp2, and loudspeakers, are securely mounted to a wooden back panel positioned behind the canvas. The loudspeakers are fixed using screws within circular recesses for stability. Cabling is carefully managed to ensure a clean and safe internal layout, with easy access for potential maintenance.
+    </p>
+    <p>
+        Initial testing with a single sensor confirmed the successful detection of capacitance changes with fast and consistent readings. Subsequent testing with four sensors demonstrated the system's ability to detect individual sensor activations without interference. Threshold calibration ensured reliable responsiveness and minimized false positives.
+    </p>
+<div class="content-center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/D-_uQ7EWdfk?si=tJvAfXpfIp5dCwFd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
+    <p>This interactive Sounding Canvas represents the fusion of art and technology, offering a dynamic platform for creative expression. It exemplifies the potential of collaborative efforts between humans and AI in the realization of artistic and technical visions.</p>
+  </article>
+</section>
 
-    <p>A paragraph after the embedded video.</p>
--->
-<article id="story">
-<h2>The Story Behind The Vision</h2>
-<p>
-From a very young age, Dora had a peculiar way of seeing the world. While other children might have rushed past a broken toy or a scuffed chair, she noticed their “feelings.” If she sensed that an object had been treated roughly, or left abandoned, she would gently pick it up, stroke it, and whisper to it. She believed that everything, every toy, every cup, every piece of paper, carried a kind of soul, and that it could be comforted by kindness.<br>
-Years later, that childhood intuition became the seed for Sounding Canvas. Dora envisioned paintings that weren’t just meant to be seen, but touched, caressed, and engaged with. The canvases would respond only to gentle, attentive gestures, transforming touch into sound. In this way, the artwork itself could “open up” and communicate its feelings to the person interacting with it. <br>
-Just as she had learned as a child, Dora understood that true dialogue, whether with people or with objects, requires patience, care, and empathy. Only with kindness can another being, human or not, feel safe enough to reveal their inner voice. Sounding Canvas is a celebration of that philosophy: it asks viewers not to strike or prod, but to engage with the art as they would with a friend, through gentle, thoughtful caresses that awaken a responsive, living soundscape.
-</p>
-</article>
-<article id="novelty">
-<h2>Novelty</h2>
-<p>
-  <strong>SoundingCanvas</strong> represents a unique convergence of visual art, tactile interaction, and sound synthesis. Unlike traditional interactive artworks that rely on pre-programmed responses or isolated media, SoundingCanvas integrates capacitive sensing, real-time audio manipulation, and semantic image-sound mapping into a single, coherent system.
-</p>
-
-<p>
-  At its core, SoundingCanvas transforms static visual elements into dynamic sonic expressions. Touching the canvas activates a complex chain of processes: sensor data is interpreted in real time, user interaction is learned and modeled through adaptive systems (such as Markov models and neural networks), and the result is expressed sonically using both pre-recorded audio and signal processing techniques.
-</p>
-
-<p>
-  What sets SoundingCanvas apart is not only its technological integration but its conceptual depth. The project uses techniques from artificial intelligence, physics-inspired decision making and computer vision to create a new semantic space where visual stimuli and audio output are interlinked. This allows each canvas to behave like a living instrument, one that reacts to human presence and evolves through interaction.
-</p>
-
-<p>
-  Additionally, the installation is designed for autonomy and robustness, capable of operating continuously with automatic startup, thermal protection, and minimal user intervention. This makes SoundingCanvas suitable for gallery exhibitions and long-term deployments, without compromising artistic complexity.
-</p>
-
-<p>
-  SoundingCanvas is more than a fusion of disciplines,it is a redefinition of the canvas itself: not as a surface to observe, but as an interface to experience, question, and transform.
-</p>
-</article>
-<article id="social">
-<h2>A Social Artwork</h2>
-<p>
-  SoundingCanvas is not just a tactile and sonic artwork , it is a living, social interface. Each canvas can <strong>communicate in real time</strong> with others, creating a poetic bridge between distant spaces and people. 
-  This is enabled by a networked system where each unique canvas acts as a module in a network. When canvases are linked, they engage in a <strong>Modular Dialogue</strong>, a dynamic conversation in which the gestures on one canvas influence the sonic output of another. <br>
-  On the concept of "Modular Dialogue" and "Variations" there is a dedicated page that the reader is strongly invited to visit: <a href="../PerceptrumDuo/content/variations/engVariations.html" target="_blank">VISIT IT HERE</a>
-</p>
-<p>
-  Imagine a mother in Italy, on a quiet Sunday evening. She gently touches her canvas, sending a signal across the network. In that moment, her son’s canvas in the United States and her daughter’s in Germany come to life , playing soft, familiar sounds that signal her presence. Touched by the gesture, the children respond: each places a hand on their own canvas, and the mother’s artwork sings back to her, echoing their affection across continents.
-</p>
-<p>
-  This is the essence of SoundingCanvas: <em>a sensory dialogue</em> that transcends geography, a way of saying “I’m here” without words, through sound, space, and touch.
-</p>
-<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1090972398?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Sounding Canvas"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-</article>
+    <section>
+    <h2>6. Communication Between Canvases</h2>
     
-    <article id="useful">
-  <h2>Useful Links</h2>
-  <p>
-    For those interested in the technical side, you can explore 
-    <a href="technicalities/tech_report.html" target="_blank">
-      the detailed technical report
-    </a>.
-  </p>
-  <p>
-  I also keep a collection of <a href="https://luciamarock.github.io/PerceptrumDuo/press.html" target="_blank"> Technical Discussions</a> where you can find forum articles explaining the things I do but above all, we (as Perceptrum), keep pushing the boundaries of the ongoing <a href="https://www.perceptrum.net/research/" target="_blank"> RESEARCH</a> in the field of Augmented Painting, Perception, Spatial Experience and Interaction Design. 
-  </p>
-  <p>
-  This Sounding Canvas project evolved into a real artistic work, this is why I have created the artistic duo Perceptrum together with my wife Dora. 
-  <a href="https://luciamarock.github.io/PerceptrumDuo/old_portfolios.html" target="_blank">
-      Our background 
-    </a>
-    naturally led us to this adventure and we are excited to continue working and shaping the field of Augmented Paintings. 
-  </p>
-  <p>
-    Visit the 
-    <a href="https://www.perceptrum.net/chronicle/exhibitions.html" target="_blank">
-      Exhibitions page
-    </a>
-    to see all past and upcoming events featuring the Sounding Canvas.
-  </p>
-  <p>
-    Read what others have written about us on the 
-    <a href="https://www.perceptrum.net/chronicle/press.html" target="_blank">
-      Press page
-    </a>.
-  </p>
-  <p>
-      Sounding Canvas as 
-      <a href="https://drive.google.com/file/d/1Hlc5bC-b1TVGAG0chSbzxsmeT-M-b2rT/view?usp=sharing" target="_blank">
-      a new artistic concept: Augmented Painting 
-      </a>
-  </p>
-  <p>
-      Sounding Canvases as 
-      <a href="https://drive.google.com/file/d/1xa3HGJqU0Th3JJRYbKLDBes3z3S0umSx/view?usp=sharing" target="_blank">
-      Instruments of Wellbeing and Mental Health Support
-      </a>
-  </p>
-  <p>
-    <a href="http://luciama.altervista.org/sounding-canvas.html" class="invisible-link" target="_blank">old webpage</a>
+    <article>
+    <p>
+        A unique and powerful aspect of the Sounding Canvas series is its ability to communicate across multiple artworks, creating a networked, collaborative experience. This inter-canvas communication is facilitated by a central <strong>Python server</strong> that acts as a hub for all connected Sounding Canvases.
+    </p>
+
+    <h3>6.1 WebSocket-Based Connectivity</h3>
+    <p>
+        Each individual Sounding Canvas establishes a persistent connection to the Python server using <strong>WebSockets</strong>. WebSockets provide a full-duplex communication channel over a single TCP connection, allowing for real-time, low-latency data exchange between the canvases and the server. This is crucial for the responsive and synchronous interaction desired across the networked artworks.
+    </p>
+
+    <h3>6.2 Routing Touch Events</h3>
+    <p>
+        When a user interacts with a specific Sounding Canvas (e.g., touches a sensor), the following communication flow occurs:
+    </p>
+    <ol>
+        <li><strong>Event Detection:</strong> The touched canvas detects the sensor activation and processes it locally (as described in the "Software Implementation" section).</li>
+        <li><strong>Event Transmission to Server:</strong> The canvas immediately sends a message to the central Python server via its established WebSocket connection. This message contains information about the touch event, such as the canvas ID and the activated sensor.</li>
+        <li><strong>Server Routing:</strong> Upon receiving a touch event from any canvas, the Python server acts as a router. It takes the incoming event and <strong>broadcasts it to all other currently connected Sounding Canvases</strong>. This ensures that every canvas in the network is aware of interactions happening on any other canvas.</li>
+        <li><strong>Reception and Response:</strong> Each receiving canvas processes the incoming event from the server. This allows for synchronized auditory responses across the entire network of artworks, enabling complex, multi-canvas compositions or shared interactive experiences.</li>
+    </ol>
+    <p>
+        This server-client architecture, powered by WebSockets, allows the Sounding Canvas series to transcend individual artworks, transforming them into a cohesive, interactive network where a touch on one canvas can resonate and influence the sonic landscape of all others.
+    </p>
+
+        <h4>Communication Logs:</h4>
+        <p>Below are terminal logs illustrating the communication flow between the canvases and the central server.</p>
+        <figure class="content-center">
+            <img src="images/canvas-rome-log.png" 
+                 alt="Terminal log of the Sounding Canvas in Rome, showing its connection as the first client and received touch events."
+                 loading="lazy">
+            <figcaption>Figure 5.1: Terminal Log - Canvas in Rome (Client 1)</figcaption>
+        </figure>
+        <figure class="content-center">
+            <img src="images/canvas-barcelona-log.png" 
+                 alt="Terminal log of the Sounding Canvas in Barcelona, showing its connection as the second client and received touch events."
+                 loading="lazy">
+            <figcaption>Figure 5.2: Terminal Log - Canvas in Barcelona (Client 2)</figcaption>
+        </figure>
+        <figure class="content-center">
+            <img src="images/server-log.png" 
+                 alt="Terminal log of the central Python server, showing incoming client connections and the routing of touch events to all connected canvases."
+                 loading="lazy">
+            <figcaption>Figure 5.3: Terminal Log - Central Python Server</figcaption>
+        </figure>
+        <div class="content-center">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/fp2zlIqmafU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    </article>
+</section>
+
+    <section>
+
+    <h2>7. Distributed Minds</h2>
+
+<article>
+<p>
+  The <em>Event Manager</em> doesn’t just trigger a sound; it makes a decision.
+  In our RNN-based setup, the canvas maintains an internal goal and selects
+  the next sound to maximize the probability of a desired future touch. This is
+  why we call it a <em>Mind</em>,it reasons over history and projects into what comes next.
 </p>
-</article>
-    <a href="https://luciamarock.github.io/" class="home-button">Back to Home</a>
+
+<p>
+  By contrast, the Markov-based variant adapts transition probabilities on the fly,
+  constantly rebalancing its expectations as interactions unfold. It chooses sounds
+  according to these evolving adjustments, yielding a system that is responsive,
+  lightweight, and context-aware.
+</p>
+
+<p>
+  Personalization is built in. Owners may contribute additional
+  <em>vectorialized information</em>,from preferences to session context,so the RNN can
+  shape behavior to a specific person or place. Over time, each canvas can embody a
+  distinct identity while preserving core interaction principles.
+</p>
+
+<p>
+  The Event Manager also acts as a <strong>hub</strong> for inter-canvas communication.
+  It can forward and receive events across the network, allowing multiple works to
+  synchronize and influence one another. A gesture on one canvas can ripple across
+  others,across a room or across the globe,so interaction is no longer confined to a
+  single body or object, but becomes a shared, distributed experience.
+</p>
+
+<p>
+  In this networked ecology, the canvases’ <em>Minds</em> are not only local
+  interlocutors,responding to the person in front of them,but also
+  <strong>mediators</strong> between distant participants. They translate local touch
+  into distributed resonance, weaving separate encounters into a collective
+  conversation of gestures and sounds.
+</p>
+<div class="content-center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_cPSDONYloE?si=I3an9WYwm7nNsWRa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <h4>April 2026 Sensing Update</h4>
+    <p>
+    The Sounding Canvas project became an artistic work and also led to the creation of the 
+    <a href="https://www.perceptrum.net/works/sounding-stage.html" target="_blank"> Sounding Stage</a> in which the borders of a Sonding Canvas get expanded and a dancer can come and live in that space. Spatial augmentation brought the necessity of a more sophisticated sensing technique; this is why I came up with <a href="https://luciamarock.github.io/Projects/technicalities/sounding-stage-sensing.html" target="_blank"> this new solution</a> which allowed us to solve this new challenge. 
+    </p>
+  </article>
+    </section>
+<!-- Final part of the article -->
+    <a href="https://luciamarock.github.io/Projects" class="home-button">Back to Projects</a>
     </main>
     <footer>
     <p>
