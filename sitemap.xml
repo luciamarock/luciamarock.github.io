@@ -118,6 +118,14 @@
     <url>
         <loc>https://luciamarock.github.io/PerceptrumDuo/content/variations/itaVariations.html</loc>
     </url>
+    
+    <url>
+        <loc>https://luciamarock.github.io/PerceptrumDuo/stories/</loc>
+    </url>
+    
+    <url>
+        <loc>https://luciamarock.github.io/PerceptrumDuo/stories/sounding-canvas-origins.html</loc>
+    </url>
 
     <url>
         <loc>https://luciamarock.github.io/Projects/</loc>
@@ -144,9 +152,7 @@
     <url>
         <loc>https://luciamarock.github.io/Projects/technicalities/feedback_ballet.html</loc>
     </url>
-    <url>
-        <loc>https://luciamarock.github.io/Projects/technicalities/tech_report.html</loc>
-    </url>
+    
 
     <url>
         <loc>https://luciamarock.github.io/SignalProcessing/</loc>
