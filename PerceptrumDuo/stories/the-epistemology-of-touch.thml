@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Replace with your actual Story Title -->
+    <title>The Epistemology of Touch: Reclaiming the Relational Object</title>
+    <!-- Favicon -->
+    <link rel="icon" href="../favicon/logo.jpg" type="image/jpeg">
+    
+    <link rel="canonical" href="https://luciamarock.github.io/PerceptrumDuo/stories/the-epistemology-of-touch.html">
+    
+    
+<!-- Meta Description -->
+<meta name="description" content="The Epistemology of Touch explores relational objects, augmented paintings, and post-immersive scenography through the artistic research of Perceptrum².">
+<!-- Keywords -->
+<meta name="keywords" content="Perceptrum, Luciano Ciamarone, Dora Motèque, relational object, augmented painting, sounding canvas, sounding stage, interactive art, haptic art, touch epistemology, post-immersive scenography, sound art, media art, capacitive sensing">
+<!-- Author -->
+<meta name="author" content="Perceptrum²">
+<!-- Robots -->
+<meta name="robots" content="index, follow">
+
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luciamarock.github.io/PerceptrumDuo/stories/the-epistemology-of-touch.html">
+<meta property="og:title" content="The Epistemology of Touch: Reclaiming the Relational Object">
+<meta property="og:description" content="An exploration of relational objects, augmented paintings, touch interaction, and post-immersive scenography through the artistic research of Perceptrum².">
+<meta property="og:image" content="https://luciamarock.github.io/PerceptrumDuo/images/SilentScore.png">
+<meta property="og:site_name" content="Perceptrum²">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Epistemology of Touch: Reclaiming the Relational Object">
+<meta name="twitter:description" content="Perceptrum² reflects on touch, relational objects, augmented paintings, and post-immersive interactive art.">
+<meta name="twitter:image" content="https://luciamarock.github.io/PerceptrumDuo/images/SilentScore.png">
+    
+    <!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://luciamarock.github.io/PerceptrumDuo/stories/the-epistemology-of-touch.html",
+  "headline": "The Epistemology of Touch: Reclaiming the Relational Object",
+  "description": "A theoretical reflection on touch, relational objects, augmented paintings, and post-immersive scenography developed through the artistic research of Perceptrum².",
+  "image": "https://luciamarock.github.io/PerceptrumDuo/images/SilentScore.png",
+  "datePublished": "2026-05-25",
+  "dateModified": "2026-05-25",
+  "author": {
+    "@type": "Organization",
+    "name": "Perceptrum²",
+    "sameAs": [
+      "https://www.wikidata.org/wiki/Q136547945",
+      "https://www.perceptrum.net/"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Perceptrum²",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.perceptrum.net/favicon/logo.jpg"
+    }
+  },
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "Augmented Painting",
+      "sameAs": "https://www.wikidata.org/wiki/Q137104541"
+    },
+    {
+      "@type": "Thing",
+      "name": "Sounding Canvas",
+      "sameAs": "https://www.wikidata.org/wiki/Q136547884"
+    },
+    {
+      "@type": "Thing",
+      "name": "Sounding Stage",
+      "sameAs": "https://www.wikidata.org/wiki/Q137104746"
+    },
+    {
+      "@type": "Thing",
+      "name": "Augmented Physical Objects",
+      "sameAs": "https://www.wikidata.org/wiki/Q138713278"
+    }
+  ],
+  "keywords": [
+    "Relational Object",
+    "Augmented Painting",
+    "Sounding Canvas",
+    "Sounding Stage",
+    "Interactive Art",
+    "Touch Interaction",
+    "Post-Immersive Scenography",
+    "Haptic Media",
+    "Media Art",
+    "Sound Art"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://luciamarock.github.io/PerceptrumDuo/stories/the-epistemology-of-touch.html"
+  }
+}
+</script>
+    
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="blog-nav">
+        <a href="../index.html" class="logo-text">Perceptrum<span>Duo</span></a>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="index.html">Stories</a>
+        </div>
+    </nav>
+
+    <article>
+        <header class="story-header">
+            <!-- Story Metadata context -->
+            <div class="story-meta">May 25, 2026 &bull; Perceptrum</div>
+            <h1 class="story-main-title">The Epistemology of Touch: Reclaiming the Relational Object</h1>
+        </header>
+
+        <!-- Main Feature Asset matching file references inside your assets hierarchy -->
+        <div class="story-hero-image">
+            <img src="../content/images/SilentScore.png" alt="Silent Score, touched by a visitor during a Sounding Canvas exhibition in Barcelona (Spain)">
+        </div>
+
+        <!-- Readable content wrapper layout boundaries -->
+        <div class="story-body">
+            <p>
+                In the contemporary digital landscape, we are experiencing a crisis of presence. The hyper-visual regime of modern technology has transformed the act of "seeing" into a form of consumption, where the subject and the object are perpetually separated by the screen, a barrier that flattens experience and isolates the human body. As screens and projectors dominate our interfaces, we have lost the most fundamental way of knowing the world: the tactile encounter..
+            </p>
+
+            <h2>The Relational Object</h2>
+            <p>At Perceptrum², we argue that touch is not merely a sensory input; it is an epistemic act. To touch an object is to enter into a dialogue with it; it is an exchange of intention, history, and spatial awareness. When the interface is a screen, this dialogue is binary, a command and a response. But when the interface is an Augmented Painting, the dialogue becomes relational.</p>
+    <p>Our practice centers on the concept of the Relational Object. These are static surfaces, canvases, that possess an interior life. By integrating invisible capacitive sensing into the very fabric of the painting, we remove the "technological noise" that usually defines digital art. There are no screens, no visible sensors, and no intrusive machinery. There is only the painting and the person.</p>
+    <p>When a viewer touches the canvas, they are not operating a machine; they are participating in an unfolding narrative. The AI-driven algorithms behind the surface do not simply trigger sounds; they interpret the viewer’s touch as a gesture. By analyzing the speed, duration, and rhythm of the contact, the work constructs a sonic environment that is unique to that specific encounter.</p>
+    
+<h2>Beyond Immersion</h2>
+<p>
+The prevailing trend in new media is immersion, the attempt to overwhelm the senses with virtual environments (VR, AR). Immersion, however, is a solitary and isolating experience. It creates a closed loop where the user is subsumed by the machine.
+</p>
+<p>
+Perceptrum² proposes a move toward Post-Immersive Scenography. Instead of placing the human inside a synthetic world, we bring the "intelligence" of the machine into the physical space of the human. Our Sounding Stages and Sounding Canvases do not seek to hide the physical reality of the room; they seek to activate it. They require the human to inhabit the space and to co-create the composition through movement and touch.
+</p>
+
+<h2>Conclusion</h2>
+<p>
+  The "Third State of Painting" is not found in the image alone, nor in the sound, but in the interaction that bridges the two. By reclaiming touch as a primary method of knowledge, we restore the "aura" to the digital object. We invite the observer to stop being a spectator of technology and become an interlocutor, a vital component of a networked, haptic archive that bridges distances and reclaims the agency of the body in a digital age.
+</p>
+
+
+<!--
+            <blockquote>
+                If you want to use pullquotes or emphasize critical philosophies, use standard blockquotes. They visually anchor deep artistic context gracefully.
+            </blockquote>
+-->
+        </div>
+    </article>
+
+    <footer>
+        &copy; 2026 PerceptrumDuo. All rights reserved.
+    </footer>
+</body>
+</html>
