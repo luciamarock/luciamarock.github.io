@@ -6,11 +6,6 @@ body {
     --color-bg-white: #FFFFFF;
 }
 
-/* FIX: Targets the direct container child inside main and removes the squeeze */
-main div.max-w-5xl {
-    max-width: 1400px !important; /* Overrides Tailwind's 1024px constraint safely */
-    width: 95% !important;        /* Uses up to 95% of available screen real estate */
-}
 
 /* Optional Enhancement: Ensures your article layout images scale gracefully to fill their wide blocks */
 article img {
