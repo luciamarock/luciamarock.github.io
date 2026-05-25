@@ -6,11 +6,13 @@ body {
     --color-bg-white: #FFFFFF;
 }
 
-
-/* Optional Enhancement: Ensures your article layout images scale gracefully to fill their wide blocks */
+main article,
+main section {
+    width: 100%;
+}
 article img {
-    width: 100% !important;
-    max-width: 900px !important;  /* Stops standalone images from getting cartoonishly huge on ultrawides */
+    width: 100%;
+    height: auto;
     object-fit: cover;
 }
 
