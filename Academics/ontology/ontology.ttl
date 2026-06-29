@@ -1,0 +1,64 @@
+@prefix : <https://luciamarock.github.io/Academics/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://luciamarock.github.io/Academics/ontology>
+    rdf:type owl:Ontology ;
+    rdfs:label "Perceptrum Ontology"@en ;
+    dcterms:creator :LucianoCiamarone ;
+    dcterms:publisher :Perceptrum2 ;
+    owl:versionInfo "1.1" .
+
+###########
+# ENTITIES #
+###########
+
+:Perceptrum2
+    rdf:type owl:NamedIndividual ;
+    rdfs:label "Perceptrum²"@en .
+
+:LucianoCiamarone
+    rdf:type owl:NamedIndividual ;
+    rdfs:label "Luciano Ciamarone"@en .
+
+####################
+# CORE CLASS LAYER #
+####################
+
+:AugmentedPhysicalObject
+    rdf:type owl:Class ;
+    rdfs:label "Augmented Physical Object"@en ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html> ;
+    rdfs:comment "A physical object that integrates sensing, computation, communication, or actuation technologies to extend its behavior beyond its passive material properties."@en .
+
+:AugmentedPainting
+    rdf:type owl:Class ;
+    rdfs:subClassOf :AugmentedPhysicalObject ;
+    rdfs:label "Augmented Painting"@en ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html> ;
+    dcterms:creator :Perceptrum2 ;
+    rdfs:comment "An augmented physical object that combines a painted surface with sensing, computation, communication, or actuation technologies."@en .
+
+:AugmentedMusicalInstrument
+    rdf:type owl:Class ;
+    rdfs:subClassOf :AugmentedPhysicalObject ;
+    rdfs:label "Augmented Musical Instrument"@en ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html> ;
+    dcterms:creator :LucianoCiamarone ;
+    rdfs:comment "An augmented physical object designed for musical performance that integrates sensing, computation, communication, or actuation technologies."@en .
+
+#################
+# INSTANCES LAYER
+#################
+
+:SoundingCanvas
+    rdf:type :AugmentedPainting ;
+    rdfs:label "Sounding Canvas"@en ;
+    dcterms:creator :Perceptrum2 .
+
+:FeedGuitar
+    rdf:type :AugmentedMusicalInstrument ;
+    rdfs:label "Feed Guitar"@en ;
+    dcterms:creator :LucianoCiamarone .

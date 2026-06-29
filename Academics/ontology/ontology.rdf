@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label xml:lang="en">Luciano Ciamarone</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label xml:lang="en">Perceptrum Ontology</rdfs:label>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+    <dcterms:publisher rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum2"/>
+    <owl:versionInfo>1.1</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Augmented Physical Object</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html"/>
+    <rdfs:comment xml:lang="en">A physical object that integrates sensing, computation, communication, or actuation technologies to extend its behavior beyond its passive material properties.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedPainting">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"/>
+    <rdfs:label xml:lang="en">Augmented Painting</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum2"/>
+    <rdfs:comment xml:lang="en">An augmented physical object that combines a painted surface with sensing, computation, communication, or actuation technologies.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"/>
+    <rdfs:label xml:lang="en">Augmented Musical Instrument</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+    <rdfs:comment xml:lang="en">An augmented physical object designed for musical performance that integrates sensing, computation, communication, or actuation technologies.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#SoundingCanvas">
+    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPainting"/>
+    <rdfs:label xml:lang="en">Sounding Canvas</rdfs:label>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#FeedGuitar">
+    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"/>
+    <rdfs:label xml:lang="en">Feed Guitar</rdfs:label>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#Perceptrum2">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label xml:lang="en">Perceptrum²</rdfs:label>
+  </rdf:Description>
+</rdf:RDF>

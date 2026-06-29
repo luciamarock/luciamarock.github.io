@@ -1,0 +1,176 @@
+[
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPainting",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#Perceptrum2"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "An augmented physical object that combines a painted surface with sensing, computation, communication, or actuation technologies."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Augmented Painting"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#SoundingCanvas",
+    "@type": [
+      "https://luciamarock.github.io/Academics/ontology#AugmentedPainting"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#Perceptrum2"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Sounding Canvas"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "A physical object that integrates sensing, computation, communication, or actuation technologies to extend its behavior beyond its passive material properties."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Augmented Physical Object"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#Perceptrum2",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Perceptrum²"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#FeedGuitar",
+    "@type": [
+      "https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Feed Guitar"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "An augmented physical object designed for musical performance that integrates sensing, computation, communication, or actuation technologies."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Augmented Musical Instrument"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology#LucianoCiamarone",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Luciano Ciamarone"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Ontology"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"
+      }
+    ],
+    "http://purl.org/dc/terms/publisher": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#Perceptrum2"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Perceptrum Ontology"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#versionInfo": [
+      {
+        "@value": "1.1"
+      }
+    ]
+  }
+]
