@@ -286,3 +286,19 @@
         #legend table.entity {
             width: 25%;
         }
+        #toc a{
+    color:#444;
+    text-decoration:none;
+    transition:all .25s;
+}
+
+#toc a:hover{
+    color:#005A9C;
+}
+
+#toc a.active{
+    color:#005A9C;
+    font-weight:bold;
+    border-left:4px solid #005A9C;
+    padding-left:6px;
+}
