@@ -1,55 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF
+   xmlns="https://luciamarock.github.io/Academics/ontology#"
+   xmlns:bibo="http://purl.org/ontology/bibo/"
    xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
    xmlns:owl="http://www.w3.org/2002/07/owl#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 >
-  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdfs:label xml:lang="en">Luciano Ciamarone</rdfs:label>
-  </rdf:Description>
   <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
     <rdfs:label xml:lang="en">Perceptrum Ontology</rdfs:label>
+    <dcterms:title xml:lang="en">Perceptrum Ontology</dcterms:title>
+    <dcterms:description xml:lang="en">A lightweight ontology describing Augmented Physical Objects, Augmented Paintings and Augmented Musical Instruments.</dcterms:description>
     <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
-    <dcterms:publisher rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum2"/>
-    <owl:versionInfo>1.1</owl:versionInfo>
+    <dcterms:publisher rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum"/>
+    <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
+    <dcterms:language rdf:resource="http://id.loc.gov/vocabulary/iso639-1/en"/>
+    <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2026</dcterms:issued>
+    <owl:versionIRI rdf:resource="https://luciamarock.github.io/Academics/ontology/versions/1.0"/>
+    <owl:versionInfo>1.0</owl:versionInfo>
   </rdf:Description>
-  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Augmented Physical Object</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html"/>
-    <rdfs:comment xml:lang="en">A physical object that integrates sensing, computation, communication, or actuation technologies to extend its behavior beyond its passive material properties.</rdfs:comment>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#hasExample">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label xml:lang="en">has example</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates a concept or class layer to a specific representative individual instance or exemplary resource.</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedPainting">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:subClassOf rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"/>
     <rdfs:label xml:lang="en">Augmented Painting</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q137104541"/>
     <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html"/>
-    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum2"/>
-    <rdfs:comment xml:lang="en">An augmented physical object that combines a painted surface with sensing, computation, communication, or actuation technologies.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.perceptrum.net/ontology/augmented-painting.html"/>
+    <introducedBy rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum"/>
+    <hasExample rdf:resource="https://luciamarock.github.io/Academics/ontology#SoundingCanvas"/>
+    <rdfs:comment xml:lang="en">An ontological category in contemporary art defining an art form that combines traditional painting with embedded technology, sensors, and artificial intelligence to create interactive, responsive, and networked experiences where touch and visual interaction generate evolving sounds and behaviors.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Augmented Physical Object</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q138713278"/>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html"/>
+    <introducedBy rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum"/>
+    <hasExample rdf:resource="https://luciamarock.github.io/Academics/ontology#InteractiveStageSetElement"/>
+    <rdfs:comment xml:lang="en">Physical objects enhanced with embedded computational systems that enable responsive, interactive behavior through human gesture. Unlike traditional objects whose behavior is passive and fixed, augmented physical objects introduce a layer of computational agency that allows them to participate in interaction.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#FeedGuitar">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"/>
+    <rdfs:label xml:lang="en">Feed Guitar</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q138757459"/>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/examples/feed-guitar.html"/>
+    <rdfs:seeAlso rdf:resource="https://luciamarock.github.io/Projects/FeedGuitar.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+    <documentedIn rdf:resource="https://luciamarock.github.io/Academics/ontology#EnvironmentLikeStrings"/>
+    <rdfs:comment xml:lang="en">An augmented musical instrument created by Luciano Ciamarone for his Master's Degree thesis at CRM.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#MagneticResonatorPiano">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"/>
+    <rdfs:label xml:lang="en">Magnetic Resonator Piano</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q116953917"/>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/examples/magnetic-resonator-piano.html"/>
+    <rdfs:seeAlso rdf:resource="https://andrewmcpherson.org/project/mrp"/>
+    <rdfs:comment xml:lang="en">A hybrid acoustic-electronic instrument augmenting the grand piano.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#DoraMoteque">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:homepage rdf:resource="https://doramoteque-faf94c.webflow.io/"/>
+    <rdfs:label xml:lang="en">Dora Motèque</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#CentroRicercheMusicali">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
+    <foaf:homepage rdf:resource="https://www.crm-music.it/"/>
+    <rdfs:label xml:lang="en">CRM - Centro Ricerche Musicali, Rome</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#Perceptrum">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Group"/>
+    <rdfs:label xml:lang="en">Perceptrum²</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q136547945"/>
+    <foaf:homepage rdf:resource="https://www.perceptrum.net/"/>
+    <foaf:member rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+    <foaf:member rdf:resource="https://luciamarock.github.io/Academics/ontology#DoraMoteque"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#SoundingCanvasIS22025">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://purl.org/ontology/bibo/AcademicArticle"/>
+    <rdfs:label xml:lang="en">Sounding Canvas: A Networked Interactive Painting System Based on Touch, Sound, and Machine Learning</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q137426267"/>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/publications/sounding-canvas-is22025.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum"/>
+    <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2025</dcterms:issued>
+    <dcterms:bibliographicCitation xml:lang="en">Presented at the 2025 IEEE 6th International Symposium on the Internet of Sounds (IS2) - L'Aquila, Italy.</dcterms:bibliographicCitation>
+    <dcterms:identifier>doi:10.1109/IS264627.2025.11284659</dcterms:identifier>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#SoundingCanvasNIME2026">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://purl.org/ontology/bibo/AcademicArticle"/>
+    <rdfs:label xml:lang="en">Sounding Canvas: A Networked Social Artwork Bridging Distant Communities through Tactile Interaction</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/publications/sounding-canvas-nime2026.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum"/>
+    <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2026</dcterms:issued>
+    <dcterms:bibliographicCitation xml:lang="en">Presented at New Interfaces for Musical Expression (NIME) - London, UK.</dcterms:bibliographicCitation>
+    <dcterms:identifier>doi:10.5281/zenodo.20782028</dcterms:identifier>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#FeedDrum">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"/>
+    <rdfs:label xml:lang="en">Feed-Drum</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q5441166"/>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/examples/feed-drum.html"/>
+    <rdfs:seeAlso rdf:resource="https://en.wikipedia.org/wiki/Feed-Drum"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#MichelangeloLupone"/>
+    <dcterms:contributor rdf:resource="https://luciamarock.github.io/Academics/ontology#CentroRicercheMusicali"/>
+    <dcterms:contributor rdf:resource="https://luciamarock.github.io/Academics/ontology#IstitutoGramma"/>
+    <rdfs:comment xml:lang="en">An imperial bass drum with a system of electronic conditioning of the skin conceived by composer Michelangelo Lupone.</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:subClassOf rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"/>
     <rdfs:label xml:lang="en">Augmented Musical Instrument</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q138713305"/>
     <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html"/>
-    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
-    <rdfs:comment xml:lang="en">An augmented physical object designed for musical performance that integrates sensing, computation, communication, or actuation technologies.</rdfs:comment>
+    <introducedBy rdf:resource="https://luciamarock.github.io/Academics/ontology#MichelangeloLupone"/>
+    <hasExample rdf:resource="https://luciamarock.github.io/Academics/ontology#FeedDrum"/>
+    <hasExample rdf:resource="https://luciamarock.github.io/Academics/ontology#MagneticResonatorPiano"/>
+    <hasExample rdf:resource="https://luciamarock.github.io/Academics/ontology#FeedGuitar"/>
+    <rdfs:comment xml:lang="en">Musical instrument extended with sensors, computation, or actuators that modify or enhance its expressive capabilities. These systems expand traditional instrumental interaction by introducing computational mediation between gesture and sound production.</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#SoundingCanvas">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
     <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPainting"/>
     <rdfs:label xml:lang="en">Sounding Canvas</rdfs:label>
-    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum2"/>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q136547884"/>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/examples/sounding-canvas.html"/>
+    <rdfs:seeAlso rdf:resource="https://www.perceptrum.net/works/sounding-canvas.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#Perceptrum"/>
+    <documentedIn rdf:resource="https://luciamarock.github.io/Academics/ontology#SoundingCanvasIS22025"/>
+    <documentedIn rdf:resource="https://luciamarock.github.io/Academics/ontology#SoundingCanvasNIME2026"/>
+    <rdfs:comment xml:lang="en">The first body of work developed within Perceptrum, establishing Augmented Painting as a new artistic medium in which paintings acquire expanded expressive capabilities through embedded sensing, sound, and computation. They act as interlocutors: static surfaces that negotiate meaning through the tactile presence of the observer.</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#FeedGuitar">
-    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"/>
-    <rdfs:label xml:lang="en">Feed Guitar</rdfs:label>
-    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#introducedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:label xml:lang="en">introduced by</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates a class, conceptual paradigm, or artistic category to the individual, group, or organization that pioneered or originally introduced it.</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#Perceptrum2">
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#IstitutoGramma">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdfs:label xml:lang="en">Perceptrum²</rdfs:label>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
+    <rdfs:label xml:lang="en">Istituto Gramma, L'Aquila</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#documentedIn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">documented in</rdfs:label>
+    <rdfs:comment xml:lang="en">Relates an artwork instance or an instrument to a research paper or bibliographic resource documenting its system implementation.</rdfs:comment>
+    <rdfs:range rdf:resource="http://purl.org/ontology/bibo/Document"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:label xml:lang="en">Luciano Ciamarone</rdfs:label>
+    <foaf:homepage rdf:resource="https://luciamarock.github.io/"/>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q138757384"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#InteractiveStageSetElement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"/>
+    <rdfs:label xml:lang="en">Interactive Stage Set Element</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/examples/interactive-stage-set-element.html"/>
+    <rdfs:seeAlso rdf:resource="https://luciamarock.github.io/Projects/AccroccoSonic.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+    <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2015</dcterms:created>
+    <rdfs:comment xml:lang="en">A unique wooden sculpture designed as a relational scenographic element for dance performances. Its structure and functionality combine acoustic principles with artistic creativity, resulting in a versatile object that can also be connected to external augmented musical instruments.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#MichelangeloLupone">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:label xml:lang="en">Michelangelo Lupone</rdfs:label>
+    <owl:sameAs rdf:resource="https://www.wikidata.org/wiki/Q54932808"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#EnvironmentLikeStrings">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://purl.org/ontology/bibo/Chapter"/>
+    <rdfs:label xml:lang="en">Environment like strings</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://luciamarock.github.io/Academics/ontology/publications/environment-like-strings.html"/>
+    <dcterms:creator rdf:resource="https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"/>
+    <dcterms:isPartOf rdf:resource="https://luciamarock.github.io/Academics/ontology#MusiqueEtEcologiesDuSon"/>
+    <dcterms:identifier>doi:10.6084/m9.figshare.30903413</dcterms:identifier>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://luciamarock.github.io/Academics/ontology#MusiqueEtEcologiesDuSon">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book"/>
+    <rdfs:label xml:lang="en">Musique et écologies du son - Propositions théoriques pour une écoute du monde</rdfs:label>
+    <bibo:isbn13>9782140010897</bibo:isbn13>
+    <bibo:isbn10>2140010892</bibo:isbn10>
   </rdf:Description>
 </rdf:RDF>
