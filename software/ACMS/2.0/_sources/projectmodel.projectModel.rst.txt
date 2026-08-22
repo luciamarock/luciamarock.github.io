@@ -1,0 +1,8 @@
+projectmodel.projectModel module
+================================
+
+.. automodule:: projectmodel.projectModel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

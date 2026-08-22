@@ -1,0 +1,8 @@
+API.bridge module
+=================
+
+.. automodule:: API.bridge
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

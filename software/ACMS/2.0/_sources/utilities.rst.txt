@@ -1,0 +1,26 @@
+utilities package
+=================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   utilities.bob_parser
+   utilities.command_line_interface
+   utilities.db_query
+   utilities.rfq_calib_utils
+   utilities.scopelib
+   utilities.template_editor_gui
+   utilities.tool_internals
+   utilities.util_functions
+
+Module contents
+---------------
+
+.. automodule:: utilities
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

@@ -1,0 +1,24 @@
+Recipe Management System v1.1.0
+===============================
+
+Introduction
+------------
+This software was originally developed for **ITER** (specifically the **PBS31 Vacuum System**) to manage and control three types of Smart Devices (RGA, TPG, and Coresens) along with PLCs.
+
+.. note::
+   A newer version of this software (renamed **Automated Control and Management System**) is being developed for LIPAc. You can find the latest documentation and updates at the following link:
+   
+   `ACMS v2.0 Documentation <https://luciamarock.github.io/software/ACMS/2.0/>`_
+
+.. toctree::
+   :maxdepth: 4
+   :caption: Contents:
+
+   modules
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

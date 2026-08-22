@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workflows_interface &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">workflows_interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for workflows_interface</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Interace module for the Workflows </span>
+
+<span class="sd">Created on Thu Jan 26 15:47:32 2023 \n</span>
+<span class="sd">It explicitly uses the module-level entities of :obj:`utilities.util_functions` and :obj:`controllersInterface` \n</span>
+<span class="sd">This interface is called from the main_program and constitutes the operational beginning of the program. In fact, all the tasks performed </span>
+<span class="sd">before this module&#39;s call are stricty focused on the &quot;aquisition of knowledge&quot; of the Recipe Management System program about the real </span>
+<span class="sd">Smart Controllers components by means of the configuration files (resources .xml files). </span>
+
+<span class="sd">@author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># consider to get the settings and start a workflow class (or more)</span>
+<span class="c1"># create an instance of the workflow class e register into the utils</span>
+<span class="c1"># the workflow classes must have .json dumps methods (use prototypes, define here)</span>
+
+<span class="c1"># allow multithreading consider using process pool instead of threading</span>
+<span class="c1"># How to terminate a thread when main program ends (example in tests/test_thread)</span>
+<span class="c1">#  --&gt; https://stackoverflow.com/questions/2564137/how-to-terminate-a-thread-when-main-program-ends</span>
+
+<span class="n">subsystem</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">registered_workflows</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="kn">import</span> <span class="nn">utilities.util_functions</span> <span class="k">as</span> <span class="nn">UF</span>
+<span class="kn">import</span> <span class="nn">controllersInterface</span> <span class="k">as</span> <span class="nn">CI</span>
+<span class="kn">import</span> <span class="nn">editor_interface</span> <span class="k">as</span> <span class="nn">EI</span>
+<span class="kn">import</span> <span class="nn">gui_process_launcher</span> <span class="k">as</span> <span class="nn">GPL</span>
+
+<div class="viewcode-block" id="init">
+<a class="viewcode-back" href="../workflows_interface.html#workflows_interface.init">[docs]</a>
+<span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check existence of recipe files and directories </span>
+<span class="sd">    </span>
+<span class="sd">    In case not existing, this function generates the default recipes directories. </span>
+<span class="sd">    It also checks if, all the controller&#39;s type objects belong to the same substistem and if all the declared instances </span>
+<span class="sd">    belong to one and only one controller type.     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">subsystem</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;workflows interface started&quot;</span><span class="p">)</span>
+    <span class="n">complete</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># completeness flag to enable the start() from the main_program</span>
+    <span class="n">recipes_dir</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;workspace_dir&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;recipes&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">recipes_dir</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating recipe directory: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipes_dir</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">recipes_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ctype</span> <span class="ow">in</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">subsystem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">subsystem</span> <span class="o">=</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">[</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">subsystem</span>
+        <span class="k">elif</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">[</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">subsystem</span> <span class="o">!=</span> <span class="n">subsystem</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;controller type from another subsystem found, this could lead to future errors&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cinst</span> <span class="ow">in</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">[</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">_registered_instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cinst</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_instances</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;instance </span><span class="si">{}</span><span class="s2"> is declared in type </span><span class="si">{}</span><span class="s2"> but not found among the registered instances&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cinst</span><span class="p">,</span><span class="n">ctype</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inst_dir</span> <span class="o">=</span> <span class="n">recipes_dir</span> <span class="o">+</span> <span class="n">cinst</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">inst_dir</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating instance sub-folder </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inst_dir</span><span class="p">))</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">inst_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;AutoConditioningWorkflow&quot;</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">act_instance</span> <span class="o">=</span> <span class="n">registered_workflows</span><span class="p">[</span><span class="s2">&quot;AutoConditioningWorkflow&quot;</span><span class="p">]</span>
+        <span class="n">complete</span> <span class="o">=</span> <span class="n">act_instance</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">complete</span> </div>
+
+
+<div class="viewcode-block" id="start">
+<a class="viewcode-back" href="../workflows_interface.html#workflows_interface.start">[docs]</a>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Starts the program workflow </span>
+<span class="sd">    </span>
+<span class="sd">    It loads the available recipes in the corresponding Controller&#39;s instance and start the User Interface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">CI</span><span class="o">.</span><span class="n">create_validators</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">workflow_name</span><span class="p">,</span> <span class="n">workflow_instance</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">workflow_name</span> <span class="o">==</span> <span class="s2">&quot;automatic_workflow&quot;</span><span class="p">:</span>
+            <span class="n">auto_mode_mapping</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;auto_mode_mapping.json&quot;</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">auto_mode_mapping</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+            <span class="n">workflow_instance</span><span class="o">.</span><span class="n">set_auto_mode_mapping_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">workflow_instance</span><span class="o">.</span><span class="n">general_settings</span><span class="p">(</span><span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">workflow_instance</span><span class="p">)</span> <span class="c1"># , args=(1,)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">workflow_instance</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># , args=(1,), daemon=True</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GUI&quot;</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting ACMS API Service for LCM communication...&quot;</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">API.runner</span> <span class="kn">import</span> <span class="n">start_api_server</span>
+        
+        <span class="n">host</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_host&quot;</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">)</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_port&quot;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">))</span>
+        <span class="n">start_api_server</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+        
+        <span class="c1"># Keep main thread alive if running strictly in API mode</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">time</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stopping ACMS API service...&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">registered_workflows</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CLI&quot;</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;using the CLI&quot;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">utilities.command_line_interface</span> <span class="k">as</span> <span class="nn">cli</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">command_help</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;help&quot;</span><span class="p">:</span> <span class="s2">&quot;print this message&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;shows the status of the workers&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;exit&quot;</span><span class="p">:</span> <span class="s2">&quot;exit the program&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;editor&quot;</span><span class="p">:</span> <span class="s2">&quot;opens the template editor&quot;</span>
+            <span class="p">}</span>
+            <span class="n">Uinp</span> <span class="o">=</span> <span class="s2">&quot;init&quot;</span>
+            <span class="k">while</span> <span class="n">Uinp</span> <span class="o">!=</span> <span class="s2">&quot;exit&quot;</span><span class="p">:</span>
+                <span class="n">Uinp</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">start</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Received command: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Uinp</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">Uinp</span> <span class="o">==</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">registered_workflows</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">talk</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="n">Uinp</span> <span class="o">==</span> <span class="s2">&quot;exit&quot;</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stopping Registered Workflows&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">Uinp</span> <span class="o">==</span> <span class="s2">&quot;editor&quot;</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scanning Archive Network&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;home&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]:</span>
+                        <span class="n">resources_dir</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;console_position&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span><span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">resources_dir</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span>
+                    <span class="n">payload</span> <span class="o">=</span> <span class="n">EI</span><span class="o">.</span><span class="n">scan_archive_network</span><span class="p">(</span><span class="n">resources_dir</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">payload</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Network sweep returned an empty payload. Aborting GUI launch.&quot;</span><span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Spawning Template Editor GUI process window safely...&quot;</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">GPL</span><span class="o">.</span><span class="n">launch_template_editor</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to execute external GUI process: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">Uinp</span> <span class="o">==</span> <span class="s2">&quot;help&quot;</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">command_help</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">command_help</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;command </span><span class="si">{}</span><span class="s2"> not recognised&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Uinp</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">registered_workflows</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Recipe Management System interrupted by the User&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">registered_workflows</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

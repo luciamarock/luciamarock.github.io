@@ -1,0 +1,29 @@
+utilities package
+=================
+
+Submodules
+----------
+
+utilities.command\_line\_interface module
+-----------------------------------------
+
+.. automodule:: utilities.command_line_interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+utilities.util\_functions module
+--------------------------------
+
+.. automodule:: utilities.util_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: utilities
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartControllers &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SmartControllers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SmartControllers</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Define the name of the function you want to call in each module</span>
+<span class="n">TARGET_FUNCTION_NAME</span> <span class="o">=</span> <span class="s2">&quot;create_instance&quot;</span>
+
+<div class="viewcode-block" id="discover_and_run_modules">
+<a class="viewcode-back" href="../SmartControllers.html#SmartControllers.discover_and_run_modules">[docs]</a>
+<span class="k">def</span> <span class="nf">discover_and_run_modules</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scans the current directory for .py files, imports them as modules,</span>
+<span class="sd">    and calls a predefined target function if it exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the directory of the current __init__.py file</span>
+    <span class="n">current_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">current_dir_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
+    <span class="n">current_dir</span> <span class="o">=</span> <span class="n">current_dir_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;SmartControllers&quot;</span><span class="p">,</span> <span class="s2">&quot;workflows&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Add the current directory to the system path to allow imports</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_dir</span><span class="p">))</span>
+
+    <span class="c1"># Iterate through all files in the current directory</span>
+    <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">):</span>
+        <span class="c1"># We only care about Python files and exclude __init__.py itself</span>
+        <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.py&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">file_name</span> <span class="o">!=</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">:</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># Remove the .py extension</span>
+            
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Dynamically import the module</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+
+                <span class="c1"># Check if the target function exists in the module</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">TARGET_FUNCTION_NAME</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">TARGET_FUNCTION_NAME</span><span class="p">)):</span>
+                    <span class="c1"># Call the function</span>
+                    <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">TARGET_FUNCTION_NAME</span><span class="p">)()</span>
+                    
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; Warning: Target function &#39;</span><span class="si">{</span><span class="n">TARGET_FUNCTION_NAME</span><span class="si">}</span><span class="s2">&#39; not found or is not callable.&quot;</span><span class="p">)</span>
+                    
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; Error importing or running module &#39;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+    <span class="c1"># Clean up the system path</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<span class="c1"># This is a common pattern to ensure the discovery logic runs when the package is imported</span>
+<span class="n">discover_and_run_modules</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

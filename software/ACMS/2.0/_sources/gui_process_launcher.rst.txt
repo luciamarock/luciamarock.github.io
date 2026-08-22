@@ -1,0 +1,8 @@
+gui\_process\_launcher module
+=============================
+
+.. automodule:: gui_process_launcher
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

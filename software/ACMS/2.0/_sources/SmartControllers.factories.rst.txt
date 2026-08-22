@@ -1,0 +1,20 @@
+SmartControllers.factories package
+==================================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   SmartControllers.factories.instances_factories
+   SmartControllers.factories.types_factories
+
+Module contents
+---------------
+
+.. automodule:: SmartControllers.factories
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

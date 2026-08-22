@@ -1,0 +1,21 @@
+projectmodel package
+====================
+
+Submodules
+----------
+
+projectmodel.projectModel module
+--------------------------------
+
+.. automodule:: projectmodel.projectModel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: projectmodel
+   :members:
+   :undoc-members:
+   :show-inheritance:

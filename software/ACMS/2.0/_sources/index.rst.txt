@@ -1,0 +1,52 @@
+Automated Control and Management System v1.0.0
+==============================================
+
+**Author:** `Luciano Ciamarone <https://luciamarock.github.io/>`_
+
+Welcome to the documentation for the **Automated Control and Management System (ACMS)**.
+
+Overview
+--------
+The ACMS is an automated execution engine designed to manage control system recipes, workflows, and low-level communication interfaces. It coordinates step-by-step recipe steps, softIoc process variables, and complex calibration routines.
+
+Key Capabilities
+----------------
+* **LIPAc Campaign Manager (LCM) Integration:** Operates as the backend orchestration engine for higher-level campaign management and monitoring.
+* **Automated Calibration Workflows:** Manages RF routines like multi-chain RFQ phase alignment with real-time field fitting and automated safety rollbacks.
+* **Flexible Communication:** Exposes both a Command Line Interface (CLI) and a FastAPI REST API for external control.
+
+System Architecture & Reference
+-------------------------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: System & Interfaces
+
+   main_program
+   workflows_interface
+   controllersInterface
+   editor_interface
+   gui_launcher
+   gui_process_launcher
+   notify
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Web API & Services
+
+   API
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Workflows & Automation
+
+   workflows
+   SmartControllers
+   validation
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Core Models & Utilities
+
+   projectmodel
+   utilities

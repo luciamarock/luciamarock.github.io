@@ -1,0 +1,8 @@
+utilities.command\_line\_interface module
+=========================================
+
+.. automodule:: utilities.command_line_interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

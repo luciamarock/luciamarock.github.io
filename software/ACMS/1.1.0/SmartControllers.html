@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartControllers package &mdash; Recipe Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SmartControllers.factories package" href="SmartControllers.factories.html" />
+    <link rel="prev" title="GUI package" href="GUI.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Recipe Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="GUI.html">GUI package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SmartControllers package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html">SmartControllers.factories package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html">SmartControllers.interfaces package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-SmartControllers.automatic_workflow">SmartControllers.automatic_workflow module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SmartControllers.automatic_workflow.RMSauto"><code class="docutils literal notranslate"><span class="pre">RMSauto</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SmartControllers.automatic_workflow.create_instance"><code class="docutils literal notranslate"><span class="pre">create_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SmartControllers.automatic_workflow.set_handler"><code class="docutils literal notranslate"><span class="pre">set_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-SmartControllers.controllersInterface">SmartControllers.controllersInterface module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SmartControllers.controllersInterface.create_validators"><code class="docutils literal notranslate"><span class="pre">create_validators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SmartControllers.controllersInterface.parse_xml_instances"><code class="docutils literal notranslate"><span class="pre">parse_xml_instances()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SmartControllers.controllersInterface.parse_xml_types"><code class="docutils literal notranslate"><span class="pre">parse_xml_types()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-SmartControllers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notify.html">notify module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">validation package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Recipe Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+      <li class="breadcrumb-item active">SmartControllers package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SmartControllers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="smartcontrollers-package">
+<h1>SmartControllers package<a class="headerlink" href="#smartcontrollers-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.factories.html">SmartControllers.factories package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.factories.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.factories.html#module-SmartControllers.factories.instances_factories">SmartControllers.factories.instances_factories module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance"><code class="docutils literal notranslate"><span class="pre">common_instance</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance.diagnose"><code class="docutils literal notranslate"><span class="pre">common_instance.diagnose()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance.get_PVs"><code class="docutils literal notranslate"><span class="pre">common_instance.get_PVs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance.monitor_actions"><code class="docutils literal notranslate"><span class="pre">common_instance.monitor_actions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance.set_PVs"><code class="docutils literal notranslate"><span class="pre">common_instance.set_PVs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance.set_auto_mode_mapping"><code class="docutils literal notranslate"><span class="pre">common_instance.set_auto_mode_mapping()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.common_instance.start"><code class="docutils literal notranslate"><span class="pre">common_instance.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.create_instance"><code class="docutils literal notranslate"><span class="pre">create_instance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.xml_to_dict"><code class="docutils literal notranslate"><span class="pre">xml_to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.factories.html#module-SmartControllers.factories.types_factories">SmartControllers.factories.types_factories module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.common_type"><code class="docutils literal notranslate"><span class="pre">common_type</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.common_type.get_registered_instances_keys"><code class="docutils literal notranslate"><span class="pre">common_type.get_registered_instances_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.common_type.get_settings"><code class="docutils literal notranslate"><span class="pre">common_type.get_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.common_type.register_instance"><code class="docutils literal notranslate"><span class="pre">common_type.register_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.common_type.set_project_properties"><code class="docutils literal notranslate"><span class="pre">common_type.set_project_properties()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.create_type"><code class="docutils literal notranslate"><span class="pre">create_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.factories.html#module-SmartControllers.factories">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.interfaces.html">SmartControllers.interfaces package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.interfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.interfaces.html#module-SmartControllers.interfaces.PLC_Interface">SmartControllers.interfaces.PLC_Interface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.PLC_Interface.PLC_settings"><code class="docutils literal notranslate"><span class="pre">PLC_settings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.PLC_Interface.PLC_settings.loadRecipe"><code class="docutils literal notranslate"><span class="pre">PLC_settings.loadRecipe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.PLC_Interface.PLC_settings.verifyRecipe"><code class="docutils literal notranslate"><span class="pre">PLC_settings.verifyRecipe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.PLC_Interface.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.interfaces.html#module-SmartControllers.interfaces.RGA_Interface">SmartControllers.interfaces.RGA_Interface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.rgaInterface"><code class="docutils literal notranslate"><span class="pre">rgaInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.rgaInterface.loadRecipe"><code class="docutils literal notranslate"><span class="pre">rgaInterface.loadRecipe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.rgaInterface.loadRecipe_test"><code class="docutils literal notranslate"><span class="pre">rgaInterface.loadRecipe_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.rgaInterface.populate_recipe_list"><code class="docutils literal notranslate"><span class="pre">rgaInterface.populate_recipe_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.rgaInterface.verifyRecipe"><code class="docutils literal notranslate"><span class="pre">rgaInterface.verifyRecipe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.RGA_Interface.run_bash_script"><code class="docutils literal notranslate"><span class="pre">run_bash_script()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.interfaces.html#module-SmartControllers.interfaces.TPG_Interface">SmartControllers.interfaces.TPG_Interface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.TPG_settings"><code class="docutils literal notranslate"><span class="pre">TPG_settings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.TPG_settings.loadRecipe"><code class="docutils literal notranslate"><span class="pre">TPG_settings.loadRecipe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.TPG_settings.verifyRecipe"><code class="docutils literal notranslate"><span class="pre">TPG_settings.verifyRecipe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.interfaces.html#module-SmartControllers.interfaces">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-SmartControllers.automatic_workflow">
+<span id="smartcontrollers-automatic-workflow-module"></span><h2>SmartControllers.automatic_workflow module<a class="headerlink" href="#module-SmartControllers.automatic_workflow" title="Link to this heading"></a></h2>
+<p>Created on Fri Feb  2 09:10:28 2024</p>
+<p>&#64;author: luciamarock</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SmartControllers.automatic_workflow.</span></span><span class="sig-name descname"><span class="pre">RMSauto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto.general_settings">
+<span class="sig-name descname"><span class="pre">general_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto.general_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto.general_settings" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto.set_auto_mode_mapping_data">
+<span class="sig-name descname"><span class="pre">set_auto_mode_mapping_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto.set_auto_mode_mapping_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto.set_auto_mode_mapping_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto.stop" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto.talk">
+<span class="sig-name descname"><span class="pre">talk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto.talk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto.talk" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto.wait_please">
+<span class="sig-name descname"><span class="pre">wait_please</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto.wait_please"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto.wait_please" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.RMSauto.work">
+<span class="sig-name descname"><span class="pre">work</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#RMSauto.work"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.RMSauto.work" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.create_instance">
+<span class="sig-prename descclassname"><span class="pre">SmartControllers.automatic_workflow.</span></span><span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#create_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.create_instance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SmartControllers.automatic_workflow.set_handler">
+<span class="sig-prename descclassname"><span class="pre">SmartControllers.automatic_workflow.</span></span><span class="sig-name descname"><span class="pre">set_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/automatic_workflow.html#set_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.automatic_workflow.set_handler" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SmartControllers.controllersInterface">
+<span id="smartcontrollers-controllersinterface-module"></span><h2>SmartControllers.controllersInterface module<a class="headerlink" href="#module-SmartControllers.controllersInterface" title="Link to this heading"></a></h2>
+<p>Controllers Interface module</p>
+<p>Created on Thu Jan  5 11:57:03 2023</p>
+<p>This module is firstly imported by the main_program right after the _init function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param registered_types<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A module-level dictionary containing all the instantiated Smart Controller’s types</p>
+</dd>
+<dt class="field-even">param registered_instances<span class="colon">:</span></dt>
+<dd class="field-even"><p>A module-level dictionary containing all the Smart Controller’s instantiated (as read from the .xml files)</p>
+</dd>
+<dt class="field-odd">param Project<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an instance of <a class="reference internal" href="projectmodel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a> class.</p>
+</dd>
+</dl>
+<p>&#64;author: luciamarock</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="SmartControllers.controllersInterface.create_validators">
+<span class="sig-prename descclassname"><span class="pre">SmartControllers.controllersInterface.</span></span><span class="sig-name descname"><span class="pre">create_validators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/controllersInterface.html#create_validators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.controllersInterface.create_validators" title="Link to this definition"></a></dt>
+<dd><p>Recipes (from file .json) loaders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>errors</strong> a list of error messages</p>
+</dd>
+</dl>
+<p>At the beginning this function tries to create the validator objects (<code class="xref py py-obj docutils literal notranslate"><span class="pre">utilities.validation.validation_engine.create</span></code>),
+if the creation is successfull it register the object in the
+module level validators dictionary (in case to be reused by other modules).
+The validators are declared in the settings.ini file.</p>
+<p>call the validate method like this:</p>
+<p>errors = validators[validator_name].validate(registered_instances[instance],PVs,os.path.splitext(filename)[0])</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SmartControllers.controllersInterface.parse_xml_instances">
+<span class="sig-prename descclassname"><span class="pre">SmartControllers.controllersInterface.</span></span><span class="sig-name descname"><span class="pre">parse_xml_instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/controllersInterface.html#parse_xml_instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.controllersInterface.parse_xml_instances" title="Link to this definition"></a></dt>
+<dd><p>Called right after parse_xml_types function by the main_program.</p>
+<blockquote>
+<div><p>This function mirrors parse_xml_types but parses the .xml configuration files for the Controller’s instances.
+Unlikely the parse_xml_types, this function “walks” also the sub-directories of the UF.settings[“controller_instances_location”].
+This allows the users to create their own organization structure in the file-system.</p>
+<p>When parsing the xml files, if the instance name is not found in the module-level registered_instances dictionary, this function
+proceed to the call of <a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.instances_factories.create_instance" title="SmartControllers.factories.instances_factories.create_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.factories.instances_factories.create_instance</span></code></a> creation function for the Instances.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Later on, if the returned instance is not None, it register the object in the registered_instance dictionary and</dt><dd><p>it calls the project model class to add the new created object among the  ProjectModel nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SmartControllers.controllersInterface.parse_xml_types">
+<span class="sig-prename descclassname"><span class="pre">SmartControllers.controllersInterface.</span></span><span class="sig-name descname"><span class="pre">parse_xml_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/controllersInterface.html#parse_xml_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.controllersInterface.parse_xml_types" title="Link to this definition"></a></dt>
+<dd><p>It gets called immediately from the main_program</p>
+<p>This function is responsible for collecting the .xml files describing the Controller’s types.</p>
+<p>It goes into the directory specified in UF.settings[“controller_types_location”] and collects all the .xml files in the root folder,
+please notice it does not walk the sub-folders !</p>
+<p>For each type .xml file it retrieves the root node and with that, it invokes the <a class="reference internal" href="SmartControllers.factories.html#SmartControllers.factories.types_factories.create_type" title="SmartControllers.factories.types_factories.create_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.factories.types_factories.create_type</span></code></a>
+function in order to create a class object representing the current type of Smart Controller.</p>
+<p>Once the software object is created it register it in the module level registered_types dictionary.</p>
+<p>At the beginning this function also initializes the log (writing all the settings) and instantiates the <a class="reference internal" href="projectmodel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a>
+software object (Project).</p>
+</dd></dl>
+
+</section>
+<section id="module-SmartControllers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SmartControllers" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GUI.html" class="btn btn-neutral float-left" title="GUI package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SmartControllers.factories.html" class="btn btn-neutral float-right" title="SmartControllers.factories package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ITER.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

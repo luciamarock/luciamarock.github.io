@@ -1,0 +1,8 @@
+SmartControllers.factories.instances\_factories module
+======================================================
+
+.. automodule:: SmartControllers.factories.instances_factories
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

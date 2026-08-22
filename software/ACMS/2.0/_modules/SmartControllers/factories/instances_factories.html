@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartControllers.factories.instances_factories &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../SmartControllers.html">SmartControllers</a></li>
+      <li class="breadcrumb-item active">SmartControllers.factories.instances_factories</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SmartControllers.factories.instances_factories</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;instance_factories module</span>
+
+<span class="sd">Created on Wed Jan 25 17:28:38 2023 \n</span>
+<span class="sd">This module is very similar to the instance_types module and follows the same principles, it has a creation function </span>
+<span class="sd">and a generic class for creating the Controller&#39;s software objects. </span>
+
+<span class="sd">@author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">epics</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">controllersInterface</span> <span class="k">as</span> <span class="nn">CI</span>
+<span class="kn">from</span> <span class="nn">notify</span> <span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="n">error</span>
+<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="xml_to_dict">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.xml_to_dict">[docs]</a>
+<span class="k">def</span> <span class="nf">xml_to_dict</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml_to_dict</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="common_instance">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance">[docs]</a>
+<span class="k">class</span> <span class="nc">common_instance</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic class for representing a Physical component.</span>
+<span class="sd">    </span>
+<span class="sd">    :param attributes: initially read from the xml configuration file they become here real class attibutes  </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attributes</span><span class="p">,</span><span class="n">root</span><span class="p">,</span><span class="n">itstype</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;self.&quot;</span> <span class="o">+</span> <span class="n">attribute</span> <span class="o">+</span> <span class="s2">&quot; = &quot;</span> <span class="o">+</span> <span class="n">temp</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">exec</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">itstype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_auto_load</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_load</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_save</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_combo</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_compare_with_current</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_PVs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_feedback</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;clean&quot;</span><span class="p">,</span><span class="s2">&quot;loaded&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span><span class="s2">&quot;to_load&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span><span class="s2">&quot;mapping&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;clean&quot;</span><span class="p">,</span><span class="s2">&quot;json&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span><span class="s2">&quot;desired_name&quot;</span><span class="p">:</span><span class="s2">&quot;Empty&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verification_timeout</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verification_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plc_element</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//PLC&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span> <span class="o">=</span> <span class="n">xml_to_dict</span><span class="p">(</span><span class="n">plc_element</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;no PLC node defined for this instance&quot;</span><span class="p">)</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;instance </span><span class="si">{}</span><span class="s2"> of type </span><span class="si">{}</span><span class="s2"> does not have PLC actions defined&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">codac_element</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//CODAC&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span> <span class="o">=</span> <span class="n">xml_to_dict</span><span class="p">(</span><span class="n">codac_element</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;no CODAC node defined for this instance&quot;</span><span class="p">)</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;instance </span><span class="si">{}</span><span class="s2"> of type </span><span class="si">{}</span><span class="s2"> does not have CODAC actions defined&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">interface_element</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//Interface&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span> <span class="o">=</span> <span class="n">xml_to_dict</span><span class="p">(</span><span class="n">interface_element</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: no Interface node defined for this instance&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span> <span class="o">=</span> <span class="p">{}</span>
+    
+<div class="viewcode-block" id="common_instance.set_auto_mode_mapping">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.set_auto_mode_mapping">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_auto_mode_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">recipe</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;recipes&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">==</span> <span class="n">recipe</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipe</span></div>
+
+    
+<div class="viewcode-block" id="common_instance._set_combo_list">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._set_combo_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">_set_combo_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combo_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path_obj</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="p">)</span>
+            <span class="n">recipe_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">stem</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">path_obj</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.json&quot;</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_combo_list</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">recipe_names</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="common_instance.monitor_actions">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.monitor_actions">[docs]</a>
+    <span class="k">def</span> <span class="nf">monitor_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#for key in self._recipes:</span>
+            <span class="c1">#print(&quot;{} --&gt; {} = {}&quot;.format(self.instance, key,self._recipes[key]))</span>
+        <span class="n">recipe_to_load</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;to_load&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">recipe_to_load</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;compare&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_compare_PV</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span><span class="o">.</span><span class="n">compare_with_current</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;clean&quot;</span>
+        <span class="k">if</span> <span class="n">recipe_to_load</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verification_start</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_verification_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span><span class="o">.</span><span class="n">verifyRecipe</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="s2">&quot;success&quot;</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verification_start</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verification_timeout</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;failed to load </span><span class="si">{}</span><span class="s2"> on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;failed to load </span><span class="si">{}</span><span class="s2"> on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_feedback</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;to_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;loaded&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipe_to_load</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;clean&quot;</span>
+                <span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> successfully loaded on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> successfully loaded on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">recipe_to_load</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;dirty&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_combo_PV</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span><span class="o">.</span><span class="n">loadRecipe</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pending&quot;</span> <span class="c1"># pending verification</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;could not upload requested recipe </span><span class="si">{}</span><span class="s2"> to instance </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;could not upload requested recipe </span><span class="si">{}</span><span class="s2"> to instance </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_to_load</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;dirty&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]:</span>
+            <span class="n">recipe_object</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="s2">&quot;prefix&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_to_get</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="p">[</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">key</span>
+                    <span class="n">current_pv</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_to_get</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_pv</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">():</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;unable to connect to PV </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_to_get</span><span class="p">))</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;unable to connect to PV </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_to_get</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_value</span> <span class="o">=</span> <span class="n">current_pv</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">current_value</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                            <span class="n">current_value</span> <span class="o">=</span> <span class="n">current_value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                        <span class="n">recipe_object</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_value</span>
+                    <span class="n">current_pv</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">pv_to_get</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">current_pv</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_to_get</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_pv</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">():</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;unable to connect to PV </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_to_get</span><span class="p">))</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;unable to connect to PV </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_to_get</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_value</span> <span class="o">=</span> <span class="n">current_pv</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                        <span class="n">recipe_object</span><span class="p">[</span><span class="n">pv_to_get</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_value</span>
+                    <span class="n">current_pv</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="p">):</span>
+                <span class="c1">#TODO do the validation here, use CI.validators</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;desired_name&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">recipe_file</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">recipe_object</span><span class="p">,</span> <span class="n">recipe_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+                <span class="n">info</span><span class="p">(</span><span class="s2">&quot;successfully saved recipe </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;successfully saved recipe </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;can&#39;t save desired recipe, path </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;can&#39;t save desired recipe, path </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_combo_list</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;clean&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_PV</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="common_instance.start">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.start">[docs]</a>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not have specified path to interface class&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not have specified path to interface class&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;path to interface class not found for instance </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;path to interface class not found for instance </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]))</span>
+                <span class="n">module_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="o">+</span> <span class="s2">&quot;_Interface&quot;</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Interface</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;interface class not found for instance </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                    <span class="n">error</span><span class="p">(</span><span class="s2">&quot;interface class not found for instance </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;skipping </span><span class="si">{}</span><span class="s2"> because it does not have a class interface specified&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+            <span class="n">warning</span><span class="p">(</span><span class="s2">&quot;skipping </span><span class="si">{}</span><span class="s2"> because it does not have a class interface specified&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interface_class</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;combo&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;trigger_PV&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;combo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;combo&quot;</span><span class="p">][</span><span class="s2">&quot;trigger_PV&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_combo_PV</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combo_PV</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_combo_PV</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_action</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="s2">&quot;combo_selection&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;combo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;combo&quot;</span><span class="p">][</span><span class="s2">&quot;combo_selection&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_combo_selection</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combo_selection</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_combo_selection</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combo_action</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="s2">&quot;compare_PV&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;combo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;combo&quot;</span><span class="p">][</span><span class="s2">&quot;compare_PV&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_compare_PV</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compare_PV</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_compare_PV</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_compare_with_current_action</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;save&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;trigger_PV&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">][</span><span class="s2">&quot;trigger_PV&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_save_PV</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span> 
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_PV</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_save_PV</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_action</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="s2">&quot;path_to_validate&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">][</span><span class="s2">&quot;path_to_validate&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;combo_list&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CODAC</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">][</span><span class="s2">&quot;combo_list&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_combo_list</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combo_list</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_combo_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;load&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;trigger_PV&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">[</span><span class="s2">&quot;load&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">[</span><span class="s2">&quot;load&quot;</span><span class="p">][</span><span class="s2">&quot;trigger_PV&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_load_PV</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span> 
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_PV</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_load_PV</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_load_action</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="s2">&quot;wait&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">[</span><span class="s2">&quot;load&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_verification_timeout</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">[</span><span class="s2">&quot;load&quot;</span><span class="p">][</span><span class="s2">&quot;wait&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;feedback_PV&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">[</span><span class="s2">&quot;load&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">fb_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PLC</span><span class="p">[</span><span class="s2">&quot;load&quot;</span><span class="p">][</span><span class="s2">&quot;feedback_PV&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_feedback</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">fb_pv_name</span><span class="p">)</span> 
+                    <span class="n">is_connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feedback</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_connected</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> connected to PLC feedback PV </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span><span class="n">fb_pv_name</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fb_pv_name</span><span class="p">))</span>
+                        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fb_pv_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_combo_list</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="common_instance._compare_with_current_action">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._compare_with_current_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">_compare_with_current_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_compare_with_current</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_compare_with_current</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;compare&quot;</span></div>
+
+    
+<div class="viewcode-block" id="common_instance._auto_load_action">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._auto_load_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">_auto_load_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_auto_load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_auto_load</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verification_start</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">recipe_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dirty&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;to_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipe_dict</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+                <span class="c1">#action_thread = threading.Thread(target=self.make_test, args=(recipe_dict,))</span>
+                <span class="c1">#action_thread.start() # if threads are needed, do this in work() method of RMSauto</span>
+                <span class="c1">#action_thread.join() waiting the thread blocks pyepics </span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;clean&quot;</span>
+                <span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> has nothing to do&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> has nothing to do&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">))</span></div>
+
+    
+<div class="viewcode-block" id="common_instance._load_action">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._load_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">_load_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_load</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verification_start</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dirty&quot;</span></div>
+
+    
+<div class="viewcode-block" id="common_instance._combo_action">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._combo_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">_combo_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_combo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_combo</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;triggered combo action for instance </span><span class="si">{}</span><span class="s2">, value = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span>
+                    <span class="n">recipe_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;to_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipe_dict</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span> 
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">recipe_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">recipe_dict</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span>
+                <span class="n">recipe_dict</span><span class="p">[</span><span class="s2">&quot;priority&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">recipe_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;to_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipe_dict</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="common_instance._save_action">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._save_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">_save_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_save</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_save</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]:</span>
+                <span class="n">current_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span>
+                <span class="n">resources_dir</span> <span class="o">=</span> <span class="n">current_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">resources_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">):</span>
+                    <span class="n">resources_dir</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> 
+                <span class="n">template_dir</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="s2">&quot;templates&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> 
+                <span class="n">recipe_template_file</span> <span class="o">=</span> <span class="n">template_dir</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">+</span> <span class="s2">&quot;_recipe_template.json&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">recipe_template_file</span><span class="p">):</span>
+                    <span class="n">error</span><span class="p">(</span><span class="s2">&quot;cannot save because the template file </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_template_file</span><span class="p">))</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;cannot save because the template file </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">recipe_template_file</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">recipe_template_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">template</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dirty&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recipe_template</span><span class="p">[</span><span class="s2">&quot;desired_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    
+<div class="viewcode-block" id="common_instance.diagnose">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.diagnose">[docs]</a>
+    <span class="k">def</span> <span class="nf">diagnose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------ </span><span class="si">{}</span><span class="s2"> of type </span><span class="si">{}</span><span class="s2"> -------&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="o">.</span><span class="n">family</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recipes</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==================&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="common_instance.set_PVs">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.set_PVs">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_PVs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">pvs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called by all the other workflows </span>
+<span class="sd">        </span>
+<span class="sd">        It loads the parameters from the recipes (.json files) into the software instances </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_PVs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvs</span> </div>
+
+    
+<div class="viewcode-block" id="common_instance.get_PVs">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.get_PVs">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_PVs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PVs</span></div>
+</div>
+
+        
+    
+    
+<div class="viewcode-block" id="create_instance">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.create_instance">[docs]</a>
+<span class="k">def</span> <span class="nf">create_instance</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">controller_instance_name</span><span class="p">,</span><span class="n">registered_types</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Called by controllersinterface.parse_xml_instances function</span>
+<span class="sd">    </span>
+<span class="sd">    This function finds inside the root (xml root node) object all the required information. </span>
+<span class="sd">    In particular it first retrieves the &quot;family&quot; of the curren instance, using the family it retrieves the </span>
+<span class="sd">    Type software object from the parameter registered_types and from there it collects the instance_attributes</span>
+<span class="sd">    (these attributes are the one the user defines in the xml file of the Controller&#39;s Types); it means that those </span>
+<span class="sd">    attributes are considered &quot;mandatory&quot; and must be found in the instance configuration file. \n </span>
+<span class="sd">    Thus it then proceeds to find al the required and expected attributes inside the root element. It collects all the information </span>
+<span class="sd">    in the attributes dictionary. </span>
+<span class="sd">    </span>
+<span class="sd">    :param root: The xml root node </span>
+<span class="sd">    :param controller_instance_name: The name of the Controller&#39;s Instance (same as the nema of the xml configuration file)</span>
+<span class="sd">    :param registered_types: module level dictionary :obj:`controllersInterface.registered_types`</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: The instanciated software object representing the physical component</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;generating </span><span class="si">{}</span><span class="s2"> controller instance&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">controller_instance_name</span><span class="p">))</span>
+    <span class="n">family</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">familyNode</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//family&quot;</span><span class="p">):</span>
+        <span class="n">family</span> <span class="o">=</span> <span class="n">familyNode</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">break</span> <span class="c1"># taking only the first family attribute in case there is more then one</span>
+    <span class="k">if</span> <span class="n">family</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">family</span> <span class="ow">in</span> <span class="n">registered_types</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">instance_attributes</span> <span class="o">=</span> <span class="n">registered_types</span><span class="p">[</span><span class="n">family</span><span class="p">]</span><span class="o">.</span><span class="n">_arguments</span>
+            <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">family</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">controller_instance_name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">instance_attributes</span><span class="p">:</span> 
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">except</span><span class="p">:</span> 
+                    <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">):</span>
+                        <span class="n">node_text</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+                        <span class="k">if</span> <span class="n">node_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">temp</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">node_text</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">temp</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+                        <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span> 
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;attribute </span><span class="si">{}</span><span class="s2"> not present in the instance definition file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+            <span class="c1"># eventually extend the attributes with instance-specific &lt;attribute&gt; nodes --&gt; see function _additional_attributes</span>
+            <span class="n">currentInstance</span> <span class="o">=</span> <span class="n">common_instance</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span><span class="n">root</span><span class="p">,</span><span class="n">registered_types</span><span class="p">[</span><span class="n">family</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">registered_types</span><span class="p">[</span><span class="n">family</span><span class="p">]</span><span class="o">.</span><span class="n">register_instance</span><span class="p">(</span><span class="n">controller_instance_name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">currentInstance</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;specified family is not defined&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;family not specified&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="_additional_attributes">
+<a class="viewcode-back" href="../../../SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories._additional_attributes">[docs]</a>
+<span class="k">def</span> <span class="nf">_additional_attributes</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;not implemented at the moment </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># eventually extends the attributes with instance specific &lt;attribute&gt; nodes in the xml</span>
+    <span class="k">pass</span></div>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

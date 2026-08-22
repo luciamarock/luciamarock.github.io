@@ -1,0 +1,8 @@
+utilities.template\_editor\_gui module
+======================================
+
+.. automodule:: utilities.template_editor_gui
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

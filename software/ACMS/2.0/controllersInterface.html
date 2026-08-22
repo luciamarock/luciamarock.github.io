@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>controllersInterface module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="editor_interface module" href="editor_interface.html" />
+    <link rel="prev" title="workflows_interface module" href="workflows_interface.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">controllersInterface module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface._check_dir"><code class="docutils literal notranslate"><span class="pre">_check_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface._start_log"><code class="docutils literal notranslate"><span class="pre">_start_log()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.create_validators"><code class="docutils literal notranslate"><span class="pre">create_validators()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.parse_xml_instances"><code class="docutils literal notranslate"><span class="pre">parse_xml_instances()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.parse_xml_types"><code class="docutils literal notranslate"><span class="pre">parse_xml_types()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">controllersInterface module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/controllersInterface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-controllersInterface">
+<span id="controllersinterface-module"></span><h1>controllersInterface module<a class="headerlink" href="#module-controllersInterface" title="Link to this heading"></a></h1>
+<p>Controllers Interface module</p>
+<p>Created on Thu Jan  5 11:57:03 2023</p>
+<p>This module is firstly imported by the main_program right after the _init function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param registered_types<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A module-level dictionary containing all the instantiated Smart Controller’s types</p>
+</dd>
+<dt class="field-even">param registered_instances<span class="colon">:</span></dt>
+<dd class="field-even"><p>A module-level dictionary containing all the Smart Controller’s instantiated (as read from the .xml files)</p>
+</dd>
+<dt class="field-odd">param Project<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an instance of <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a> class.</p>
+</dd>
+</dl>
+<p>&#64;author: luciamarock</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="controllersInterface._check_dir">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">_check_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#_check_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface._check_dir" title="Link to this definition"></a></dt>
+<dd><p>Checks if the directory exists</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="controllersInterface._start_log">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">_start_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#_start_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface._start_log" title="Link to this definition"></a></dt>
+<dd><p>Function for starting the log</p>
+<p>Called by parse_xml_types function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="controllersInterface.create_validators">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">create_validators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#create_validators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface.create_validators" title="Link to this definition"></a></dt>
+<dd><p>Recipes (from file .json) loaders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>errors</strong> a list of error messages</p>
+</dd>
+</dl>
+<p>At the beginning this function tries to create the validator objects (<code class="xref py py-obj docutils literal notranslate"><span class="pre">utilities.validation.validation_engine.create</span></code>),
+if the creation is successfull it register the object in the
+module level validators dictionary (in case to be reused by other modules).
+The validators are declared in the settings.ini file.</p>
+<p>call the validate method like this:</p>
+<p>errors = validators[validator_name].validate(registered_instances[instance],PVs,os.path.splitext(filename)[0])</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="controllersInterface.parse_xml_instances">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">parse_xml_instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#parse_xml_instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface.parse_xml_instances" title="Link to this definition"></a></dt>
+<dd><p>Called right after parse_xml_types function by the main_program.</p>
+<blockquote>
+<div><p>This function mirrors parse_xml_types but parses the .xml configuration files for the Controller’s instances.
+Unlikely the parse_xml_types, this function “walks” also the sub-directories of the UF.settings[“controller_instances_location”].
+This allows the users to create their own organization structure in the file-system.</p>
+<p>When parsing the xml files, if the instance name is not found in the module-level registered_instances dictionary, this function
+proceed to the call of <a class="reference internal" href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.create_instance" title="SmartControllers.factories.instances_factories.create_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.factories.instances_factories.create_instance</span></code></a> creation function for the Instances.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Later on, if the returned instance is not None, it register the object in the registered_instance dictionary and</dt><dd><p>it calls the project model class to add the new created object among the  ProjectModel nodes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="controllersInterface.parse_xml_types">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">parse_xml_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#parse_xml_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface.parse_xml_types" title="Link to this definition"></a></dt>
+<dd><p>It gets called immediately from the main_program</p>
+<p>This function is responsible for collecting the .xml files describing the Controller’s types.</p>
+<p>It goes into the directory specified in UF.settings[“controller_types_location”] and collects all the .xml files in the root folder,
+please notice it does not walk the sub-folders !</p>
+<p>For each type .xml file it retrieves the root node and with that, it invokes the <a class="reference internal" href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.create_type" title="SmartControllers.factories.types_factories.create_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.factories.types_factories.create_type</span></code></a>
+function in order to create a class object representing the current type of Smart Controller.</p>
+<p>Once the software object is created it register it in the module level registered_types dictionary.</p>
+<p>At the beginning this function also initializes the log (writing all the settings) and instantiates the <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a>
+software object (Project).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="workflows_interface.html" class="btn btn-neutral float-left" title="workflows_interface module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="editor_interface.html" class="btn btn-neutral float-right" title="editor_interface module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

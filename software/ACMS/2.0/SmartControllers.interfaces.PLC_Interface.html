@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartControllers.interfaces.PLC_Interface module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SmartControllers.interfaces.RGA_Interface module" href="SmartControllers.interfaces.RGA_Interface.html" />
+    <link rel="prev" title="SmartControllers.interfaces package" href="SmartControllers.interfaces.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="SmartControllers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="SmartControllers.factories.html">SmartControllers.factories package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="SmartControllers.interfaces.html">SmartControllers.interfaces package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="SmartControllers.interfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SmartControllers.interfaces.html#module-SmartControllers.interfaces">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SmartControllers.html#module-SmartControllers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="SmartControllers.html">SmartControllers package</a></li>
+          <li class="breadcrumb-item"><a href="SmartControllers.interfaces.html">SmartControllers.interfaces package</a></li>
+      <li class="breadcrumb-item active">SmartControllers.interfaces.PLC_Interface module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SmartControllers.interfaces.PLC_Interface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-SmartControllers.interfaces.PLC_Interface">
+<span id="smartcontrollers-interfaces-plc-interface-module"></span><h1>SmartControllers.interfaces.PLC_Interface module<a class="headerlink" href="#module-SmartControllers.interfaces.PLC_Interface" title="Link to this heading"></a></h1>
+<p>Created on Mon Nov 25 14:21:34 2024</p>
+<p>&#64;author: luciamarock</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="SmartControllers.interfaces.PLC_Interface.PLC_settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SmartControllers.interfaces.PLC_Interface.</span></span><span class="sig-name descname"><span class="pre">PLC_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/interfaces/PLC_Interface.html#PLC_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.interfaces.PLC_Interface.PLC_settings" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.interfaces.PLC_Interface.PLC_settings._verify_step">
+<span class="sig-name descname"><span class="pre">_verify_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/interfaces/PLC_Interface.html#PLC_settings._verify_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.interfaces.PLC_Interface.PLC_settings._verify_step" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.interfaces.PLC_Interface.PLC_settings.loadRecipe">
+<span class="sig-name descname"><span class="pre">loadRecipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/interfaces/PLC_Interface.html#PLC_settings.loadRecipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.interfaces.PLC_Interface.PLC_settings.loadRecipe" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SmartControllers.interfaces.PLC_Interface.PLC_settings.verifyRecipe">
+<span class="sig-name descname"><span class="pre">verifyRecipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/interfaces/PLC_Interface.html#PLC_settings.verifyRecipe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.interfaces.PLC_Interface.PLC_settings.verifyRecipe" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SmartControllers.interfaces.PLC_Interface.create">
+<span class="sig-prename descclassname"><span class="pre">SmartControllers.interfaces.PLC_Interface.</span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SmartControllers/interfaces/PLC_Interface.html#create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SmartControllers.interfaces.PLC_Interface.create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SmartControllers.interfaces.html" class="btn btn-neutral float-left" title="SmartControllers.interfaces package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SmartControllers.interfaces.RGA_Interface.html" class="btn btn-neutral float-right" title="SmartControllers.interfaces.RGA_Interface module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

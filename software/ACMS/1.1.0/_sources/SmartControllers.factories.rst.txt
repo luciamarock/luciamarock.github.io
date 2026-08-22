@@ -1,0 +1,29 @@
+SmartControllers.factories package
+==================================
+
+Submodules
+----------
+
+SmartControllers.factories.instances\_factories module
+------------------------------------------------------
+
+.. automodule:: SmartControllers.factories.instances_factories
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+SmartControllers.factories.types\_factories module
+--------------------------------------------------
+
+.. automodule:: SmartControllers.factories.types_factories
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: SmartControllers.factories
+   :members:
+   :undoc-members:
+   :show-inheritance:

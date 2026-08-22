@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartControllers.interfaces.TPG_Interface &mdash; Recipe Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Recipe Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Recipe Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SmartControllers.interfaces.TPG_Interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SmartControllers.interfaces.TPG_Interface</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span> 
+<span class="kn">import</span> <span class="nn">epics</span>
+<span class="kn">import</span> <span class="nn">time</span> 
+
+<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;TPG_Interface&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TPG_settings">
+<a class="viewcode-back" href="../../../SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.TPG_settings">[docs]</a>
+<span class="k">class</span> <span class="nc">TPG_settings</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipes_base_dir</span><span class="p">):</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">recipes_base_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">separator</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recipes_base_dir</span> <span class="o">=</span> <span class="n">recipes_base_dir</span>  <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recipes_base_dir</span> <span class="o">=</span> <span class="n">recipes_base_dir</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span> <span class="nf">_calculate_readback_PV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">PVname</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">PVname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">readback_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">readback_name</span> <span class="o">+=</span> <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span>
+        <span class="n">readback_name</span> <span class="o">+=</span> <span class="s2">&quot;RB&quot;</span>
+        <span class="k">return</span> <span class="n">readback_name</span>
+
+    <span class="k">def</span> <span class="nf">_writePVs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">step_dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">PVname</span> <span class="ow">in</span> <span class="n">step_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">PVname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">PVname</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">currentPV</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">PVname</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">currentPV</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">():</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> failed to connect&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">currentPV</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">PVname</span><span class="p">][</span><span class="s2">&quot;PVinstance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">currentPV</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">currentPV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">PVname</span><span class="p">][</span><span class="s2">&quot;PVinstance&quot;</span><span class="p">]</span>
+            <span class="n">currentPV</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">step_dict</span><span class="p">[</span><span class="n">PVname</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">PVname</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unverified&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_verify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;unverified&quot;</span> <span class="ow">and</span> <span class="s2">&quot;COMMIT&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">currentPV</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;PVinstance&quot;</span><span class="p">]</span>
+                <span class="n">readback_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_readback_PV</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">readbackPV</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">readback_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">readbackPV</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">():</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> failed to connect&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">readback_name</span><span class="p">))</span>
+                <span class="n">current_value</span> <span class="o">=</span> <span class="n">currentPV</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">readback_value</span> <span class="o">=</span> <span class="n">readbackPV</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="c1">#logger.info(&quot;verifying {} = {}; readback = {}&quot;.format(key,current_value,readback_value))</span>
+                <span class="k">if</span> <span class="n">current_value</span> <span class="o">!=</span> <span class="n">readback_value</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.value != </span><span class="si">{}</span><span class="s2">.value; </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">readbackPV</span><span class="p">,</span><span class="n">currentPV</span><span class="p">,</span><span class="n">readback_value</span><span class="p">,</span><span class="n">current_value</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="kc">False</span> 
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_known_PVs</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;verified&quot;</span>
+                <span class="n">readbackPV</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span> 
+
+<div class="viewcode-block" id="TPG_settings.loadRecipe">
+<a class="viewcode-back" href="../../../SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.TPG_settings.loadRecipe">[docs]</a>
+    <span class="k">def</span> <span class="nf">loadRecipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">recipename</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;success&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">recipename</span><span class="p">:</span>
+            <span class="n">recipename</span> <span class="o">+=</span> <span class="s1">&#39;.json&#39;</span>
+        <span class="c1">#logger.info(&#39;loading %s&#39;, recipename)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recipes_base_dir</span> <span class="o">+</span> <span class="n">recipename</span>
+        <span class="c1">#print(filename)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">recipefile</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">recipefile</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;1&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">integer_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+                <span class="n">sorted_integer_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">integer_list</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">sorted_integer_list</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_writePVs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;failure&quot;</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1">#TODO handle the case in which there are not steps</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;flat structure to be done&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span><span class="p">:</span>
+                <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Elapsed time in putting settings is </span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;recipe </span><span class="si">{}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;failure&quot;</span>
+        <span class="k">return</span> <span class="n">result</span> </div>
+
+    
+<div class="viewcode-block" id="TPG_settings.verifyRecipe">
+<a class="viewcode-back" href="../../../SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.TPG_settings.verifyRecipe">[docs]</a>
+    <span class="k">def</span> <span class="nf">verifyRecipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">recipename</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;success&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verify</span><span class="p">():</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;failure&quot;</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+</div>
+
+
+<div class="viewcode-block" id="create">
+<a class="viewcode-back" href="../../../SmartControllers.interfaces.html#SmartControllers.interfaces.TPG_Interface.create">[docs]</a>
+<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+    <span class="n">tpgInterface_instance</span> <span class="o">=</span> <span class="n">TPG_settings</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;valid_recipe_path&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">tpgInterface_instance</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ITER.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

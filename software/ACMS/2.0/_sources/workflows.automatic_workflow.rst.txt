@@ -1,0 +1,8 @@
+workflows.automatic\_workflow module
+====================================
+
+.. automodule:: workflows.automatic_workflow
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

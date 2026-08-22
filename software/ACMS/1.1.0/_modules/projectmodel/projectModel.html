@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>projectmodel.projectModel &mdash; Recipe Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Recipe Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Recipe Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">projectmodel.projectModel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for projectmodel.projectModel</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;projectModel module </span>
+
+<span class="sd">Created on Wed Apr  5 15:04:38 2023 \n</span>
+<span class="sd">This module (more in general this package) allows to externalize data modelling with respect to the real Physical Component&#39;s </span>
+<span class="sd">representation. \n</span>
+<span class="sd">At the time of writing this code (and documentation) there are no clear requirements about the data modelling and how the data must be </span>
+<span class="sd">treated and used in the future; thus the programmer took advantage for foreseeing a whole &quot;spectra&quot; of possible models, in case to </span>
+<span class="sd">be written in this package. \n</span>
+<span class="sd">The only clear requirements we have (for now) are: \n</span>
+<span class="sd">1- It must be possible to &quot;group&quot; different instances of controllers (regardless of their type) based on the Plant System functionalities. \n</span>
+<span class="sd">2- It must be possible to &quot;arrange&quot; the software objects in a hierarchycal structure. \n</span>
+<span class="sd">Given these two constraints the Projectmodel class have been implemented as follows.</span>
+
+<span class="sd">@author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># provide possibility to rearrange the data structure in anyway </span>
+<span class="c1"># tree structure can be given to the names using anytree </span>
+
+<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">anytree</span> <span class="kn">import</span> <span class="n">NodeMixin</span><span class="p">,</span> <span class="n">RenderTree</span>
+<span class="kn">from</span> <span class="nn">anytree.exporter</span> <span class="kn">import</span> <span class="n">DotExporter</span>
+
+<div class="viewcode-block" id="NodeObject">
+<a class="viewcode-back" href="../../projectmodel.html#projectmodel.projectModel.NodeObject">[docs]</a>
+<span class="k">class</span> <span class="nc">NodeObject</span><span class="p">(</span><span class="n">NodeMixin</span><span class="p">):</span>  <span class="c1"># Add Node feature</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inherits from NodeMixin (anytree) python library</span>
+<span class="sd">    </span>
+<span class="sd">    This external library allows to create node objects to be connected in hierachies \n</span>
+<span class="sd">    See anytree documentation `here &lt;https://anytree.readthedocs.io/en/latest/&gt;`_</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NodeObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1"># children, descendants, leaves</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="k">if</span> <span class="n">children</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="n">children</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;NodeObject </span><span class="si">%s</span><span class="s2"> at 0x</span><span class="si">%x</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+
+    
+
+<div class="viewcode-block" id="projectmodel">
+<a class="viewcode-back" href="../../projectmodel.html#projectmodel.projectModel.projectmodel">[docs]</a>
+<span class="k">class</span> <span class="nc">projectmodel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The project model is the way the information is organized</span>
+<span class="sd">    </span>
+<span class="sd">    Currently the Smart Controller&#39;s can be grouped by &quot;Plant System Functionlity&quot; and can be (if needed) </span>
+<span class="sd">    organized in a hierachycal structure, based on parent-child relationship. \n</span>
+<span class="sd">    One important pre-requisite is that the Controller Instances&#39;s names are unique. \n </span>
+<span class="sd">    In the current implementation of the ProjecModel the dictionary called _registered_groups contains the </span>
+<span class="sd">    information about how the Controllers must be divided into Functional Groups while the dictionary _registered_nodes</span>
+<span class="sd">    contains all the &quot;nodes&quot; objects with connection capabilities in order to be arranged in a hierarchycal structure. \n </span>
+<span class="sd">    By design the node objects are different from the Instances objects but they duplicates the latters; this choice of</span>
+<span class="sd">    keeping separated the two software entities is mainly due to the lack of visibility about how this software will be used </span>
+<span class="sd">    in the near future, having the software entities separated allow a separate development and assures (at the same time) to always </span>
+<span class="sd">    recall a Controller Instance by its name based on the Model needs. </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">settings</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;project_name&quot;</span><span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;created project with name: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">NodeObject</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_registered_groups</span> <span class="o">=</span> <span class="p">{}</span>
+        
+    <span class="k">def</span> <span class="nf">_add_to_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">current_instance</span><span class="p">,</span><span class="n">parent_node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;adds and instance node to its parent</span>
+<span class="sd">        </span>
+<span class="sd">        If the node corresponding to the current_instance does not exist, the method creates it. \n</span>
+<span class="sd">        In any case the method attaches the Instance&#39;s node to the specified parent. </span>
+<span class="sd">        </span>
+<span class="sd">        :param current_instance: The controller&#39;s Instance (software object)</span>
+<span class="sd">        :param parent_node: the name of the parent node (equal to the name of the parent controller)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">parent_node</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">processed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">group</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_node</span> <span class="o">=</span> <span class="n">NodeObject</span><span class="p">(</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">parent_node</span><span class="p">])</span>
+            <span class="n">new_node</span><span class="o">.</span><span class="n">processed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">new_node</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">group</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">new_node</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_node</span> 
+        
+<div class="viewcode-block" id="projectmodel.add_node">
+<a class="viewcode-back" href="../../projectmodel.html#projectmodel.projectModel.projectmodel.add_node">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">current_instance</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is responsible for assembling the attributes dictionaries _registered_nodes and _registered_groups</span>
+<span class="sd">        </span>
+<span class="sd">        it first registers the group to which each controller instance belongs to, below each group it adds the instance name </span>
+<span class="sd">        (just the name, it is unique); then it tries to retrieve the &quot;parent&quot; controller object, if the parent is not found or it is</span>
+<span class="sd">        unspecified, the method registers the node and attaches it to the root node (_model).</span>
+<span class="sd">        If the current instance does not exist as registered node the method creates a new node object with the same name</span>
+<span class="sd">        of the current controller&#39;s instance. \n</span>
+<span class="sd">        If the node already exist (for example because it was previously created in quality of parent of another node) the method simply </span>
+<span class="sd">        assignes to it the proper parent (if different from _model) and marks it as processed (attribute processed = True). \n </span>
+<span class="sd">        The processed attribute will be used for checking possible anomalies. \n </span>
+<span class="sd">        The so implemented logic is able to build a complex hierarchycal tree regardless of the order of declaration of the nodes. </span>
+<span class="sd">        </span>
+<span class="sd">        :param current_instance: the current Controller&#39;s Instance (as returned by instances_factories)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">group</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registered_groups</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_groups</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_groups</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_groups</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parent_node</span> <span class="o">=</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">parent_node</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parent_node</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">processed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">group</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_node</span> <span class="o">=</span> <span class="n">NodeObject</span><span class="p">(</span><span class="n">current_instance</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">)</span>
+                <span class="n">new_node</span><span class="o">.</span><span class="n">processed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">new_node</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">current_instance</span><span class="o">.</span><span class="n">group</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">new_node</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_node</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parent_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">parent_temp</span> <span class="o">=</span> <span class="n">NodeObject</span><span class="p">(</span><span class="n">parent_node</span><span class="p">,</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_registered_nodes</span><span class="p">[</span><span class="n">parent_temp</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent_temp</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_parent</span><span class="p">(</span><span class="n">current_instance</span><span class="p">,</span><span class="n">parent_node</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="projectmodel.export">
+<a class="viewcode-back" href="../../projectmodel.html#projectmodel.projectModel.projectmodel.export">[docs]</a>
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Export method</span>
+<span class="sd">        </span>
+<span class="sd">        This method exports the tree model both in the form of textual file and image. </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;workspace_dir&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;projectmodel&quot;</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">modelfile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pre</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">RenderTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">modelfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pre</span><span class="p">,</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">modelfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">modelfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+            
+        <span class="c1">#DotExporter(self._model).to_picture(filename + &quot;.png&quot;)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ITER.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

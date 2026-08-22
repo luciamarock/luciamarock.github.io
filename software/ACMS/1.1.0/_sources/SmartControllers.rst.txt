@@ -1,0 +1,38 @@
+SmartControllers package
+========================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   SmartControllers.factories
+   SmartControllers.interfaces
+
+Submodules
+----------
+
+SmartControllers.automatic\_workflow module
+-------------------------------------------
+
+.. automodule:: SmartControllers.automatic_workflow
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+SmartControllers.controllersInterface module
+--------------------------------------------
+
+.. automodule:: SmartControllers.controllersInterface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: SmartControllers
+   :members:
+   :undoc-members:
+   :show-inheritance:

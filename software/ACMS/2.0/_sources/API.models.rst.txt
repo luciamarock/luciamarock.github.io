@@ -1,0 +1,8 @@
+API.models module
+=================
+
+.. automodule:: API.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

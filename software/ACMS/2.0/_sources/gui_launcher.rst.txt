@@ -1,0 +1,8 @@
+gui\_launcher module
+====================
+
+.. automodule:: gui_launcher
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

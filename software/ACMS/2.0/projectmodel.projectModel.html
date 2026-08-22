@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>projectmodel.projectModel module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utilities package" href="utilities.html" />
+    <link rel="prev" title="projectmodel package" href="projectmodel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="projectmodel.html">projectmodel package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="projectmodel.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">projectmodel.projectModel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#projectmodel.projectModel.NodeObject"><code class="docutils literal notranslate"><span class="pre">NodeObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#projectmodel.projectModel.projectmodel"><code class="docutils literal notranslate"><span class="pre">projectmodel</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="projectmodel.html#module-projectmodel">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="projectmodel.html">projectmodel package</a></li>
+      <li class="breadcrumb-item active">projectmodel.projectModel module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/projectmodel.projectModel.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-projectmodel.projectModel">
+<span id="projectmodel-projectmodel-module"></span><h1>projectmodel.projectModel module<a class="headerlink" href="#module-projectmodel.projectModel" title="Link to this heading"></a></h1>
+<p>projectModel module</p>
+<p>Created on Wed Apr  5 15:04:38 2023</p>
+<p>This module (more in general this package) allows to externalize data modelling with respect to the real Physical Component’s
+representation.</p>
+<p>At the time of writing this code (and documentation) there are no clear requirements about the data modelling and how the data must be
+treated and used in the future; thus the programmer took advantage for foreseeing a whole “spectra” of possible models, in case to
+be written in this package.</p>
+<p>The only clear requirements we have (for now) are:</p>
+<p>1- It must be possible to “group” different instances of controllers (regardless of their type) based on the Plant System functionalities.</p>
+<p>2- It must be possible to “arrange” the software objects in a hierarchycal structure.</p>
+<p>Given these two constraints the Projectmodel class have been implemented as follows.</p>
+<p>&#64;author: luciamarock</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="projectmodel.projectModel.NodeObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">projectmodel.projectModel.</span></span><span class="sig-name descname"><span class="pre">NodeObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/projectmodel/projectModel.html#NodeObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#projectmodel.projectModel.NodeObject" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NodeMixin</span></code></p>
+<p>Inherits from NodeMixin (anytree) python library</p>
+<p>This external library allows to create node objects to be connected in hierachies</p>
+<p>See anytree documentation <a class="reference external" href="https://anytree.readthedocs.io/en/latest/">here</a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="projectmodel.projectModel.projectmodel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">projectmodel.projectModel.</span></span><span class="sig-name descname"><span class="pre">projectmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/projectmodel/projectModel.html#projectmodel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#projectmodel.projectModel.projectmodel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The project model is the way the information is organized</p>
+<p>Currently the Smart Controller’s can be grouped by “Plant System Functionlity” and can be (if needed)
+organized in a hierachycal structure, based on parent-child relationship.</p>
+<p>One important pre-requisite is that the Controller Instances’s names are unique.</p>
+<p>In the current implementation of the ProjecModel the dictionary called _registered_groups contains the
+information about how the Controllers must be divided into Functional Groups while the dictionary _registered_nodes
+contains all the “nodes” objects with connection capabilities in order to be arranged in a hierarchycal structure.</p>
+<p>By design the node objects are different from the Instances objects but they duplicates the latters; this choice of
+keeping separated the two software entities is mainly due to the lack of visibility about how this software will be used
+in the near future, having the software entities separated allow a separate development and assures (at the same time) to always
+recall a Controller Instance by its name based on the Model needs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="projectmodel.projectModel.projectmodel._add_to_parent">
+<span class="sig-name descname"><span class="pre">_add_to_parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/projectmodel/projectModel.html#projectmodel._add_to_parent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#projectmodel.projectModel.projectmodel._add_to_parent" title="Link to this definition"></a></dt>
+<dd><p>adds and instance node to its parent</p>
+<p>If the node corresponding to the current_instance does not exist, the method creates it.</p>
+<p>In any case the method attaches the Instance’s node to the specified parent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>current_instance</strong> – The controller’s Instance (software object)</p></li>
+<li><p><strong>parent_node</strong> – the name of the parent node (equal to the name of the parent controller)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="projectmodel.projectModel.projectmodel.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/projectmodel/projectModel.html#projectmodel.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#projectmodel.projectModel.projectmodel.add_node" title="Link to this definition"></a></dt>
+<dd><p>This method is responsible for assembling the attributes dictionaries _registered_nodes and _registered_groups</p>
+<p>it first registers the group to which each controller instance belongs to, below each group it adds the instance name
+(just the name, it is unique); then it tries to retrieve the “parent” controller object, if the parent is not found or it is
+unspecified, the method registers the node and attaches it to the root node (_model).
+If the current instance does not exist as registered node the method creates a new node object with the same name
+of the current controller’s instance.</p>
+<p>If the node already exist (for example because it was previously created in quality of parent of another node) the method simply
+assignes to it the proper parent (if different from _model) and marks it as processed (attribute processed = True).</p>
+<p>The processed attribute will be used for checking possible anomalies.</p>
+<p>The so implemented logic is able to build a complex hierarchycal tree regardless of the order of declaration of the nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_instance</strong> – the current Controller’s Instance (as returned by instances_factories)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="projectmodel.projectModel.projectmodel.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/projectmodel/projectModel.html#projectmodel.export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#projectmodel.projectModel.projectmodel.export" title="Link to this definition"></a></dt>
+<dd><p>Export method</p>
+<p>This method exports the tree model both in the form of textual file and image.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="projectmodel.html" class="btn btn-neutral float-left" title="projectmodel package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.html" class="btn btn-neutral float-right" title="utilities package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

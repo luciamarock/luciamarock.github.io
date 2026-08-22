@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utilities.rfq_calib_utils module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utilities.scopelib module" href="utilities.scopelib.html" />
+    <link rel="prev" title="utilities.db_query module" href="utilities.db_query.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="utilities.html">utilities package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="utilities.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="utilities.bob_parser.html">utilities.bob_parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.command_line_interface.html">utilities.command_line_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.db_query.html">utilities.db_query module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">utilities.rfq_calib_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.F"><code class="docutils literal notranslate"><span class="pre">F()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.Ferr"><code class="docutils literal notranslate"><span class="pre">Ferr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.doFit"><code class="docutils literal notranslate"><span class="pre">doFit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.doScan"><code class="docutils literal notranslate"><span class="pre">doScan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.firstGuess"><code class="docutils literal notranslate"><span class="pre">firstGuess()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.getCurrentPhase"><code class="docutils literal notranslate"><span class="pre">getCurrentPhase()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.prepareScopeChannel"><code class="docutils literal notranslate"><span class="pre">prepareScopeChannel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.rfq_calib_utils.setPhase"><code class="docutils literal notranslate"><span class="pre">setPhase()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html">utilities.scopelib module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html">utilities.template_editor_gui module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.tool_internals.html">utilities.tool_internals module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.util_functions.html">utilities.util_functions module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-utilities">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="utilities.html">utilities package</a></li>
+      <li class="breadcrumb-item active">utilities.rfq_calib_utils module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utilities.rfq_calib_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-utilities.rfq_calib_utils">
+<span id="utilities-rfq-calib-utils-module"></span><h1>utilities.rfq_calib_utils module<a class="headerlink" href="#module-utilities.rfq_calib_utils" title="Link to this heading"></a></h1>
+<p>LIPAc RFQ Phase Alignment Utilities Library
+Path: src/utilities/rfq_calib_utils.py</p>
+<p>Contains mathematical fitting functions and hardware interface abstractions.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.F">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.F" title="Link to this definition"></a></dt>
+<dd><p>Theoretical Wave Interference Target Function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.Ferr">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">Ferr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utilities.rfq_calib_utils.Ferr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.doFit">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">doFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fguess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltages</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#doFit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.doFit" title="Link to this definition"></a></dt>
+<dd><p>Executes a Levenberg-Marquardt least-squares optimization fit.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.doScan">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">doScan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PV_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PV_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">UserIntentionsObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#doScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.doScan" title="Link to this definition"></a></dt>
+<dd><p>Uniformly sweeps N points across a full 360-degree circle.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.firstGuess">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">firstGuess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#firstGuess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.firstGuess" title="Link to this definition"></a></dt>
+<dd><p>Calculates an initial parameter estimation profile for the fit engine.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.getCurrentPhase">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">getCurrentPhase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PV_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#getCurrentPhase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.getCurrentPhase" title="Link to this definition"></a></dt>
+<dd><p>Queries the current phase value from the network in radians.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.prepareScopeChannel">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">prepareScopeChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#prepareScopeChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.prepareScopeChannel" title="Link to this definition"></a></dt>
+<dd><p>Configures remote ethernet oscilloscope parameters.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.rfq_calib_utils.setPhase">
+<span class="sig-prename descclassname"><span class="pre">utilities.rfq_calib_utils.</span></span><span class="sig-name descname"><span class="pre">setPhase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phase_rad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PV_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PV_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/rfq_calib_utils.html#setPhase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.rfq_calib_utils.setPhase" title="Link to this definition"></a></dt>
+<dd><p>Converts math radians to machine degrees and updates LLRF via EPICS.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utilities.db_query.html" class="btn btn-neutral float-left" title="utilities.db_query module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.scopelib.html" class="btn btn-neutral float-right" title="utilities.scopelib module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

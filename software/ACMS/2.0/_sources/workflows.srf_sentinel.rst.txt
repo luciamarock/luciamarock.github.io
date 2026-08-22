@@ -1,0 +1,8 @@
+workflows.srf\_sentinel module
+==============================
+
+.. automodule:: workflows.srf_sentinel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

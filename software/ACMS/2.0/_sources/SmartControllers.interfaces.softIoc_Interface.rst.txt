@@ -1,0 +1,8 @@
+SmartControllers.interfaces.softIoc\_Interface module
+=====================================================
+
+.. automodule:: SmartControllers.interfaces.softIoc_Interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

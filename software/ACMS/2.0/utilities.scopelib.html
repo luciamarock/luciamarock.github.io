@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utilities.scopelib module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utilities.template_editor_gui module" href="utilities.template_editor_gui.html" />
+    <link rel="prev" title="utilities.rfq_calib_utils module" href="utilities.rfq_calib_utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="utilities.html">utilities package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="utilities.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="utilities.bob_parser.html">utilities.bob_parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.command_line_interface.html">utilities.command_line_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.db_query.html">utilities.db_query module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.rfq_calib_utils.html">utilities.rfq_calib_utils module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">utilities.scopelib module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.scopelib.CreateScope"><code class="docutils literal notranslate"><span class="pre">CreateScope()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilities.scopelib.ScopeDevice"><code class="docutils literal notranslate"><span class="pre">ScopeDevice</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html">utilities.template_editor_gui module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.tool_internals.html">utilities.tool_internals module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.util_functions.html">utilities.util_functions module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-utilities">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="utilities.html">utilities package</a></li>
+      <li class="breadcrumb-item active">utilities.scopelib module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utilities.scopelib.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-utilities.scopelib">
+<span id="utilities-scopelib-module"></span><h1>utilities.scopelib module<a class="headerlink" href="#module-utilities.scopelib" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="utilities.scopelib.CreateScope">
+<span class="sig-prename descclassname"><span class="pre">utilities.scopelib.</span></span><span class="sig-name descname"><span class="pre">CreateScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#utilities.scopelib.ScopeDevice" title="utilities.scopelib.ScopeDevice"><span class="pre">ScopeDevice</span></a></span></span><a class="reference internal" href="_modules/utilities/scopelib.html#CreateScope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.CreateScope" title="Link to this definition"></a></dt>
+<dd><p>Factory function matching scopelib.CreateScope API.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilities.scopelib.</span></span><span class="sig-name descname"><span class="pre">ScopeDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Oscilloscope communication interface using SCPI over Ethernet sockets with mock fallback.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice._query">
+<span class="sig-name descname"><span class="pre">_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice._query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice._query" title="Link to this definition"></a></dt>
+<dd><p>Sends a SCPI query and reads the response string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice._send">
+<span class="sig-name descname"><span class="pre">_send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice._send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice._send" title="Link to this definition"></a></dt>
+<dd><p>Sends a SCPI command string to the hardware.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.channelScale">
+<span class="sig-name descname"><span class="pre">channelScale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.channelScale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.channelScale" title="Link to this definition"></a></dt>
+<dd><p>Sets vertical scale (Volts/div) for a given channel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.close" title="Link to this definition"></a></dt>
+<dd><p>Closes Ethernet connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.connect" title="Link to this definition"></a></dt>
+<dd><p>Establishes TCP connection with the oscilloscope.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.createMeasure">
+<span class="sig-name descname"><span class="pre">createMeasure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meas_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rms'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.createMeasure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.createMeasure" title="Link to this definition"></a></dt>
+<dd><p>Configures a measurement slot for a specific channel and type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.enableStatistics">
+<span class="sig-name descname"><span class="pre">enableStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.enableStatistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.enableStatistics" title="Link to this definition"></a></dt>
+<dd><p>Enables measurement statistics averaging over N samples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.getMeasValue">
+<span class="sig-name descname"><span class="pre">getMeasValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.getMeasValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.getMeasValue" title="Link to this definition"></a></dt>
+<dd><p>Reads current calculated measurement value from slot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.horizontalPosition">
+<span class="sig-name descname"><span class="pre">horizontalPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.horizontalPosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.horizontalPosition" title="Link to this definition"></a></dt>
+<dd><p>Sets horizontal delay/position time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.resetStatistics">
+<span class="sig-name descname"><span class="pre">resetStatistics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.resetStatistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.resetStatistics" title="Link to this definition"></a></dt>
+<dd><p>Resets accumulated measurement statistics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.timeScale">
+<span class="sig-name descname"><span class="pre">timeScale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds_per_div</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.timeScale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.timeScale" title="Link to this definition"></a></dt>
+<dd><p>Sets horizontal timebase scale (seconds/div).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utilities.scopelib.ScopeDevice.vbarPosition">
+<span class="sig-name descname"><span class="pre">vbarPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bar_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/scopelib.html#ScopeDevice.vbarPosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.scopelib.ScopeDevice.vbarPosition" title="Link to this definition"></a></dt>
+<dd><p>Sets vertical cursor bar position.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utilities.rfq_calib_utils.html" class="btn btn-neutral float-left" title="utilities.rfq_calib_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.template_editor_gui.html" class="btn btn-neutral float-right" title="utilities.template_editor_gui module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

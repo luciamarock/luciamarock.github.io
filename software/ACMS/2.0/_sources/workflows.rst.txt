@@ -1,0 +1,22 @@
+workflows package
+=================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   workflows.automatic_workflow
+   workflows.rfq_phase_alignment
+   workflows.srf_sentinel
+   workflows.workers_manager
+
+Module contents
+---------------
+
+.. automodule:: workflows
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

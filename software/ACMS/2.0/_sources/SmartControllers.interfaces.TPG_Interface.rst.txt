@@ -1,0 +1,8 @@
+SmartControllers.interfaces.TPG\_Interface module
+=================================================
+
+.. automodule:: SmartControllers.interfaces.TPG_Interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

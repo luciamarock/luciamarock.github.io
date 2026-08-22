@@ -1,0 +1,8 @@
+utilities.scopelib module
+=========================
+
+.. automodule:: utilities.scopelib
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

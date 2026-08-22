@@ -1,0 +1,8 @@
+workflows\_interface module
+===========================
+
+.. automodule:: workflows_interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

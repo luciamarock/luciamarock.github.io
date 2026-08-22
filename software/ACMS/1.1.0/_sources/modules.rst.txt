@@ -1,0 +1,14 @@
+src
+===
+
+.. toctree::
+   :maxdepth: 4
+
+   GUI
+   SmartControllers
+   main_program
+   notify
+   projectmodel
+   utilities
+   validation
+   workflows_interface

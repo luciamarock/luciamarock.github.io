@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main_program &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">main_program</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for main_program</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot; This is the main program </span>
+
+<span class="sd">Created on Wed Nov  2 15:14:01 2022 \n</span>
+<span class="sd">Please start the program passing your settings.ini file as an argument \n</span>
+
+<span class="sd">This document is intended to serve as a programmer Reference Manual. \n</span>
+<span class="sd">The format of this document follows the  Sphinx docstring format: \n</span>
+<span class="sd">https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html \n</span>
+<span class="sd">https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#external-links</span>
+<span class="sd">\n</span>
+<span class="sd">You can find the User Manual in pdf format in the documentation folder </span>
+
+<span class="sd">@author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span> 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">notify</span> <span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="n">error</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+
+<div class="viewcode-block" id="_init">
+<a class="viewcode-back" href="../main_program.html#main_program._init">[docs]</a>
+<span class="k">def</span> <span class="nf">_init</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Initialization function  </span>
+<span class="sd">    </span>
+<span class="sd">    Uses the global variable &quot;config&quot; which is the Configuration Parser \n</span>
+<span class="sd">    It first checks if the &quot;settings.ini&quot; file that you passed as an argument exists. \n</span>
+<span class="sd">    If that&#39;s the case it starts reading the .ini sections and building-up the settings dictionary. \n</span>
+<span class="sd">    Finally it stores the finalized settings dictionary into :obj:`utilities.util_functions.settings` from wich it can be accessed </span>
+<span class="sd">    by all the other modules of the program. \n</span>
+<span class="sd">    After this _init function the main program invokes the :obj:`controllersInterface` module. </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#global config</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;no given arguments, expected path to settings.ini&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    
+    <span class="n">main_position</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">console_position</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">settings_position</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">settings_position</span><span class="p">):</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">settings_position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">project_name</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="c1"># section object can be navigated as a dictionary</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;wrong format for project.name&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span> 
+                <span class="n">UI</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;wrong format for project.UI&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;no given project name&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;workspace&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ws_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;workspace&quot;</span><span class="p">][</span><span class="s2">&quot;ws_dir&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">ws_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">):</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ws_dir</span> <span class="o">=</span> <span class="n">ws_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ws_dir</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">ws_dir</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;wrong format for workspace settings&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;no workspace defined&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;logging&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">logfile</span> <span class="o">=</span> <span class="n">ws_dir</span> <span class="o">+</span> <span class="s2">&quot;logging&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">project_name</span> <span class="o">+</span> <span class="s2">&quot;.log&quot;</span> <span class="c1">#config[&quot;logging&quot;][&quot;filename&quot;]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">logfile</span><span class="p">)):</span> <span class="c1"># os.path.dirname extracts the directory only </span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">logfile</span><span class="p">))</span>
+                <span class="n">loglevel</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;logging.&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;logging&quot;</span><span class="p">][</span><span class="s2">&quot;log_level&quot;</span><span class="p">])</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(name)s</span><span class="s1">: </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                                    <span class="n">filename</span><span class="o">=</span><span class="n">logfile</span><span class="p">,</span><span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="n">loglevel</span><span class="p">,</span><span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+
+                
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;logging&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;terminal_handler&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+                        <span class="n">root_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span> 
+                        <span class="n">console_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(name)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1">: </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+                        <span class="n">console_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+                        <span class="n">console_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">loglevel</span><span class="p">)</span>
+                        <span class="n">root_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console_handler</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Added terminal log handler&quot;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;terminal_handler&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;False&quot;</span><span class="p">:</span>
+                        <span class="n">root_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+                        <span class="kn">import</span> <span class="nn">utilities.tool_internals</span> <span class="k">as</span> <span class="nn">internal_functions</span>
+                        <span class="n">epics_handler</span> <span class="o">=</span> <span class="n">internal_functions</span><span class="o">.</span><span class="n">get_epics_log_handler</span><span class="p">()</span>
+                        <span class="n">epics_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">loglevel</span><span class="p">)</span>
+                        <span class="n">root_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">epics_handler</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Added EPICS log handlers&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;wrong format for logging configuration&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;no logging configurations found&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;resources&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">resources_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;resources&quot;</span><span class="p">][</span><span class="s2">&quot;resources_dir&quot;</span><span class="p">]</span>                
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;wrong format for resources directory&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">resources_dir</span><span class="p">):</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;resource directory specified in the init file does not exist&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">resources_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">resources_dir</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+            <span class="n">cConfFiles</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="s2">&quot;types&quot;</span>
+            <span class="n">cInstFiles</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="s2">&quot;instances&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;no resources folder location provided&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;validation&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">validators</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;validation&quot;</span><span class="p">][</span><span class="s2">&quot;validators&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">validators</span><span class="p">)):</span>
+                    <span class="n">validators</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">validators</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s2">&quot;key </span><span class="si">{}</span><span class="s2"> not found in the validation section&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;vlidators not specified in the settigs.ini file&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;settings not found&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="kn">import</span> <span class="nn">utilities.util_functions</span> <span class="k">as</span> <span class="nn">UF</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;main_position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">main_position</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;console_position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">console_position</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;settings_position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">settings_position</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;workspace_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws_dir</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;logfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">logfile</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;loglevel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;logging&quot;</span><span class="p">][</span><span class="s2">&quot;log_level&quot;</span><span class="p">]</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;controller_types_location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cConfFiles</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;controller_instances_location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cInstFiles</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resources_dir</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;project_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_name</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UI</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;PID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;pyver&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;validators&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">validators</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">current_user</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getlogin</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="n">current_user</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;current_user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_user</span></div>
+
+
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">_init</span><span class="p">()</span>
+    <span class="kn">import</span> <span class="nn">controllersInterface</span> <span class="k">as</span> <span class="nn">CI</span>
+    <span class="n">CI</span><span class="o">.</span><span class="n">parse_xml_types</span><span class="p">()</span>
+    <span class="n">CI</span><span class="o">.</span><span class="n">parse_xml_instances</span><span class="p">()</span>
+    <span class="kn">import</span> <span class="nn">workflows_interface</span>
+    <span class="k">if</span> <span class="n">workflows_interface</span><span class="o">.</span><span class="n">init</span><span class="p">():</span>
+        <span class="n">workflows_interface</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

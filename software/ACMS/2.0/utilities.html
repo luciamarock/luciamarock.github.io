@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utilities package &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utilities.bob_parser module" href="utilities.bob_parser.html" />
+    <link rel="prev" title="projectmodel.projectModel module" href="projectmodel.projectModel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utilities package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utilities.bob_parser.html">utilities.bob_parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.command_line_interface.html">utilities.command_line_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.db_query.html">utilities.db_query module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.rfq_calib_utils.html">utilities.rfq_calib_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html">utilities.scopelib module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html">utilities.template_editor_gui module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.tool_internals.html">utilities.tool_internals module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.util_functions.html">utilities.util_functions module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-utilities">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">utilities package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utilities.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utilities-package">
+<h1>utilities package<a class="headerlink" href="#utilities-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="utilities.bob_parser.html">utilities.bob_parser module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.bob_parser.html#utilities.bob_parser.extract_pvs_from_bob"><code class="docutils literal notranslate"><span class="pre">extract_pvs_from_bob()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.command_line_interface.html">utilities.command_line_interface module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.command_line_interface.html#utilities.command_line_interface.start"><code class="docutils literal notranslate"><span class="pre">start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.db_query.html">utilities.db_query module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.db_query.html#utilities.db_query.get_list_of_pvs"><code class="docutils literal notranslate"><span class="pre">get_list_of_pvs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.rfq_calib_utils.html">utilities.rfq_calib_utils module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.F"><code class="docutils literal notranslate"><span class="pre">F()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.Ferr"><code class="docutils literal notranslate"><span class="pre">Ferr()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.doFit"><code class="docutils literal notranslate"><span class="pre">doFit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.doScan"><code class="docutils literal notranslate"><span class="pre">doScan()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.firstGuess"><code class="docutils literal notranslate"><span class="pre">firstGuess()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.getCurrentPhase"><code class="docutils literal notranslate"><span class="pre">getCurrentPhase()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.prepareScopeChannel"><code class="docutils literal notranslate"><span class="pre">prepareScopeChannel()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.setPhase"><code class="docutils literal notranslate"><span class="pre">setPhase()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.scopelib.html">utilities.scopelib module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.CreateScope"><code class="docutils literal notranslate"><span class="pre">CreateScope()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice"><code class="docutils literal notranslate"><span class="pre">ScopeDevice</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice._query"><code class="docutils literal notranslate"><span class="pre">ScopeDevice._query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice._send"><code class="docutils literal notranslate"><span class="pre">ScopeDevice._send()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.channelScale"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.channelScale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.close"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.connect"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.createMeasure"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.createMeasure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.enableStatistics"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.enableStatistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.getMeasValue"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.getMeasValue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.horizontalPosition"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.horizontalPosition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.resetStatistics"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.resetStatistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.timeScale"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.timeScale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.vbarPosition"><code class="docutils literal notranslate"><span class="pre">ScopeDevice.vbarPosition()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.template_editor_gui.html">utilities.template_editor_gui module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._add_to_list"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._add_to_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._export_to_file"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._export_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._get_max_depth"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._get_max_depth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._initialize_first_filter"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._initialize_first_filter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._remove_from_list"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._remove_from_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._setup_ui"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._setup_ui()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._update_filters"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._update_filters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._update_result_label"><code class="docutils literal notranslate"><span class="pre">JSONFilterApp._update_result_label()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.tool_internals.html">utilities.tool_internals module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler"><code class="docutils literal notranslate"><span class="pre">EPICSLogHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler.emit"><code class="docutils literal notranslate"><span class="pre">EPICSLogHandler.emit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.calculate_min_stable_time"><code class="docutils literal notranslate"><span class="pre">calculate_min_stable_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.element_to_dict"><code class="docutils literal notranslate"><span class="pre">element_to_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.element_to_list"><code class="docutils literal notranslate"><span class="pre">element_to_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.element_with_attributes_to_dict"><code class="docutils literal notranslate"><span class="pre">element_with_attributes_to_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.get_epics_log_handler"><code class="docutils literal notranslate"><span class="pre">get_epics_log_handler()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.parse_csv"><code class="docutils literal notranslate"><span class="pre">parse_csv()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.parse_epics_db"><code class="docutils literal notranslate"><span class="pre">parse_epics_db()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.tool_internals.html#utilities.tool_internals.parse_epics_xml_by_tag"><code class="docutils literal notranslate"><span class="pre">parse_epics_xml_by_tag()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.util_functions.html">utilities.util_functions module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.util_functions.html#utilities.util_functions.UserIntention"><code class="docutils literal notranslate"><span class="pre">UserIntention</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utilities.util_functions.html#utilities.util_functions.UserIntention.checkCommand"><code class="docutils literal notranslate"><span class="pre">UserIntention.checkCommand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.util_functions.html#utilities.util_functions.UserIntention.setCommand"><code class="docutils literal notranslate"><span class="pre">UserIntention.setCommand()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.util_functions.html#utilities.util_functions.getUserIntention"><code class="docutils literal notranslate"><span class="pre">getUserIntention()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-utilities">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utilities" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="projectmodel.projectModel.html" class="btn btn-neutral float-left" title="projectmodel.projectModel module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.bob_parser.html" class="btn btn-neutral float-right" title="utilities.bob_parser module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

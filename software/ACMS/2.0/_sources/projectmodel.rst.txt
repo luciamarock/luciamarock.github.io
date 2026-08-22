@@ -1,0 +1,19 @@
+projectmodel package
+====================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   projectmodel.projectModel
+
+Module contents
+---------------
+
+.. automodule:: projectmodel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

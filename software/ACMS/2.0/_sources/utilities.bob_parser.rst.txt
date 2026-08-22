@@ -1,0 +1,8 @@
+utilities.bob\_parser module
+============================
+
+.. automodule:: utilities.bob_parser
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
