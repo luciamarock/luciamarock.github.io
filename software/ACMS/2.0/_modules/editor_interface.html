@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
 </ul>
@@ -92,6 +97,31 @@
   <h1>Source code for editor_interface</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Template Editor Network Profiler and PV Discovery Interface.</span>
+
+<span class="sd">This module provides the backend discovery, extraction, and Channel Access (CA) </span>
+<span class="sd">sweeping capabilities required by the ACMS Template Editor sub-application. </span>
+
+<span class="sd">In the Recipe Management System (RMS) inherited by ACMS, recipes are dynamically </span>
+<span class="sd">generated from high-level operational templates. To assist operators in editing and </span>
+<span class="sd">authoring these templates, this module profiles EPICS Process Variables (PVs) by:</span>
+
+<span class="sd">1. Extracting candidate PV lists from archive PostgreSQL databases or Display Builder</span>
+<span class="sd">   (Phoebus ``.bob``) HMI files.</span>
+<span class="sd">2. Executing concurrent multi-threaded EPICS CA network sweeps using a shared CA context loop.</span>
+<span class="sd">3. Collecting requested PV fields (e.g., limits, units, current values).</span>
+<span class="sd">4. Sanitizing telemetry payloads by converting IEEE floating-point ``NaN`` values into </span>
+<span class="sd">   JSON-compliant ``null`` literals to prevent serialization crashes.</span>
+<span class="sd">5. Formatting and delivering structured PV metadata dictionaries to the Template Editor GUI.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`epics`: PyEPICS Channel Access interface and thread context management.</span>
+<span class="sd">    - :mod:`utilities.bob_parser`: Utility for parsing Phoebus ``.bob`` XML screens.</span>
+<span class="sd">    - :mod:`utilities.db_query`: Query helper for fetching archived PV lists from SQL.</span>
+
+<span class="sd">:author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 
 <span class="kn">import</span> <span class="nn">epics</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -121,7 +151,23 @@
 <div class="viewcode-block" id="load_configuration">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.load_configuration">[docs]</a>
 <span class="k">def</span> <span class="nf">load_configuration</span><span class="p">(</span><span class="n">config_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Loads runtime variables and target fields from the config file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load runtime parameters and configuration fields from a JSON resource file.</span>
+
+<span class="sd">    :param config_path: File path to the JSON configuration file containing</span>
+<span class="sd">        Channel Access settings, field specifications, and HMI display paths.</span>
+<span class="sd">    :type config_path: str or Path</span>
+
+<span class="sd">    :return: A 4-element tuple containing:</span>
+<span class="sd">        </span>
+<span class="sd">        - **CA_TIMEOUT** (*float*): Network connection timeout in seconds per PV.</span>
+<span class="sd">        - **CA_PARALLELISM** (*int*): Maximum number of concurrent CA worker threads per batch.</span>
+<span class="sd">        - **PV_FIELDS** (*list of str*): List of EPICS PV attributes to retrieve.</span>
+<span class="sd">        - **HMI_FILES** (*dict*): Dictionary mapping display key identifiers to target ``.bob`` file paths.</span>
+<span class="sd">    :rtype: tuple</span>
+
+<span class="sd">    :raises SystemExit: If the configuration file is missing, contains invalid JSON syntax, </span>
+<span class="sd">        or lacks required keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
             <span class="n">config_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
@@ -147,7 +193,21 @@
 <div class="viewcode-block" id="scan_pv_worker">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.scan_pv_worker">[docs]</a>
 <span class="k">def</span> <span class="nf">scan_pv_worker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">results_dict</span><span class="p">,</span> <span class="n">fields_to_get</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Worker thread target to extract EPICS metadata safely via shared context.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Worker thread target to extract EPICS metadata safely via a shared CA context.</span>
+
+<span class="sd">    Attaches the executing thread to the global C library CA context (:data:`MAIN_CONTEXT`),</span>
+<span class="sd">    attempts connection to the specified PV, reads requested attributes, and populates</span>
+<span class="sd">    the shared results dictionary.</span>
+
+<span class="sd">    :param name: The EPICS Process Variable name to connect to.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param results_dict: Shared dictionary where scanned PV metadata is recorded.</span>
+<span class="sd">    :type results_dict: dict</span>
+<span class="sd">    :param fields_to_get: List of PV attributes/fields to query.</span>
+<span class="sd">    :type fields_to_get: list of str</span>
+<span class="sd">    :param timeout: Connection timeout threshold in seconds.</span>
+<span class="sd">    :type timeout: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Scanning </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Attach child thread to parent CA context loop</span>
@@ -173,7 +233,24 @@
 <div class="viewcode-block" id="run_network_sweep">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.run_network_sweep">[docs]</a>
 <span class="k">def</span> <span class="nf">run_network_sweep</span><span class="p">(</span><span class="n">pv_names</span><span class="p">,</span> <span class="n">parallelism</span><span class="p">,</span> <span class="n">fields_to_get</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Orchestrates concurrent thread batches to profile the PV network.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Orchestrate concurrent thread batches to profile online EPICS PV channels.</span>
+
+<span class="sd">    Initializes the C-level libca library context and spawns batch groups of </span>
+<span class="sd">    :class:`epics.ca.CAThread` threads bounded by the ``parallelism`` limit to safely query</span>
+<span class="sd">    the control network without overwhelming local socket descriptors.</span>
+
+<span class="sd">    :param pv_names: List of PV names to profile over Channel Access.</span>
+<span class="sd">    :type pv_names: list of str</span>
+<span class="sd">    :param parallelism: Number of concurrent worker threads allowed per execution batch.</span>
+<span class="sd">    :type parallelism: int</span>
+<span class="sd">    :param fields_to_get: PV attributes to fetch from connected channels.</span>
+<span class="sd">    :type fields_to_get: list of str</span>
+<span class="sd">    :param timeout: Channel connection timeout in seconds per PV.</span>
+<span class="sd">    :type timeout: float</span>
+
+<span class="sd">    :return: A dictionary mapping PV names to attribute dicts (or ``None`` if unreachable).</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">MAIN_CONTEXT</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connecting all </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pv_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> PVs safely using a shared CA Context...&quot;</span><span class="p">)</span>
     
@@ -207,7 +284,18 @@
 <div class="viewcode-block" id="sanitize_data">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.sanitize_data">[docs]</a>
 <span class="k">def</span> <span class="nf">sanitize_data</span><span class="p">(</span><span class="n">pv_map</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deeply cleans floating NaN math flags into valid JSON nulls.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sanitize scanned telemetry metadata by converting float NaN values to JSON nulls.</span>
+
+<span class="sd">    EPICS floating-point PVs returning ``NaN`` (Not a Number) cause serialization errors when </span>
+<span class="sd">    converting dictionaries into standard JSON strings. This function replaces all ``NaN`` float </span>
+<span class="sd">    values with ``None`` (which maps to JSON ``null``).</span>
+
+<span class="sd">    :param pv_map: The raw PV metadata dictionary produced by :func:`run_network_sweep`.</span>
+<span class="sd">    :type pv_map: dict</span>
+
+<span class="sd">    :return: The sanitized PV dictionary suitable for JSON serialization and GUI consumption.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sanitizing telemetry data fields...&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">fields</span> <span class="ow">in</span> <span class="n">pv_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -221,7 +309,16 @@
 <div class="viewcode-block" id="save_manifest">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.save_manifest">[docs]</a>
 <span class="k">def</span> <span class="nf">save_manifest</span><span class="p">(</span><span class="n">pv_map</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dumps the final, sanitized map cleanly to disk.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the sanitized PV metadata dictionary to a JSON file on disk.</span>
+
+<span class="sd">    Creates parent directories if missing and formats the JSON output with 4-space </span>
+<span class="sd">    indentation and sorted keys.</span>
+
+<span class="sd">    :param pv_map: Sanitized dictionary mapping PV names to field values.</span>
+<span class="sd">    :type pv_map: dict</span>
+<span class="sd">    :param output_path: Target file destination path.</span>
+<span class="sd">    :type output_path: Path or str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">output_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pv_map</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -231,7 +328,24 @@
 <div class="viewcode-block" id="scan_archive_network">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.scan_archive_network">[docs]</a>
 <span class="k">def</span> <span class="nf">scan_archive_network</span><span class="p">(</span><span class="n">resources_dir</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Scans the archive network and returns a list of PVs.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch all archived PVs from the SQL database and profile their live network status.</span>
+
+<span class="sd">    This function serves as the primary data payload builder when launching the Template Editor </span>
+<span class="sd">    from the main ACMS CLI or GUI interface. It:</span>
+
+<span class="sd">    1. Loads system settings from ``config.json``.</span>
+<span class="sd">    2. Retrieves the complete list of target PVs from the archive SQL database.</span>
+<span class="sd">    3. Executes a live Channel Access network sweep.</span>
+<span class="sd">    4. Sanitizes field data and returns the completed payload dictionary.</span>
+
+<span class="sd">    :param resources_dir: Base path to the application&#39;s resources directory containing ``config.json``.</span>
+<span class="sd">    :type resources_dir: str</span>
+
+<span class="sd">    :return: A sanitized map of all archived PV names and their live EPICS field attributes.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :raises SystemExit: If database connection or querying fails critically.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading configuration file&quot;</span><span class="p">)</span>
     <span class="n">config_file</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="s2">&quot;config.json&quot;</span>
     <span class="n">ca_timeout</span><span class="p">,</span> <span class="n">ca_parallelism</span><span class="p">,</span> <span class="n">pv_fields</span><span class="p">,</span> <span class="n">hmi_files</span> <span class="o">=</span> <span class="n">load_configuration</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
@@ -256,6 +370,23 @@
 <div class="viewcode-block" id="san_bob_file">
 <a class="viewcode-back" href="../editor_interface.html#editor_interface.san_bob_file">[docs]</a>
 <span class="k">def</span> <span class="nf">san_bob_file</span><span class="p">(</span><span class="n">resources_dir</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract PVs referenced inside a specific Phoebus Display (.bob) file and profile them.</span>
+
+<span class="sd">    Used when an operator requests template editing for a specific sub-system HMI display. </span>
+<span class="sd">    It parses the targeted ``.bob`` XML screen file, extracts all embedded PV identifiers, and </span>
+<span class="sd">    profiles their live EPICS network states.</span>
+
+<span class="sd">    :param resources_dir: Base path to the application&#39;s resources directory containing ``config.json``.</span>
+<span class="sd">    :type resources_dir: str</span>
+<span class="sd">    :param key: Lookup key in ``HMI_FILES`` corresponding to the target ``.bob`` display file.</span>
+<span class="sd">    :type key: str</span>
+
+<span class="sd">    :return: A sanitized dictionary of PVs extracted from the display file along with their </span>
+<span class="sd">        live field metadata.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :raises SystemExit: If the target ``.bob`` display file cannot be located or parsed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received Template Editor Request from </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading configuration file&quot;</span><span class="p">)</span>
     <span class="n">config_file</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="s2">&quot;config.json&quot;</span>
@@ -285,6 +416,11 @@
 <span class="c1"># ---------------------------------------------------------------------------------------------------------------------</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Standalone CLI entry point for testing and offline manifest generation.</span>
+<span class="sd">    </span>
+<span class="sd">    Executes a complete profiling pipeline against the local database archive and exports </span>
+<span class="sd">    the resulting manifest to ``PVINFO.json``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Step 1: Initialize environmental variables</span>
     <span class="n">ca_timeout</span><span class="p">,</span> <span class="n">ca_parallelism</span><span class="p">,</span> <span class="n">pv_fields</span> <span class="o">=</span> <span class="n">load_configuration</span><span class="p">(</span><span class="n">CONFIG_PATH</span><span class="p">)</span>
 

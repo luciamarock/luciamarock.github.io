@@ -38,9 +38,16 @@ System Architecture & Reference
 
 .. toctree::
    :maxdepth: 2
+   :caption: Automated Control & Management System's GUI
+
+   GUI
+
+.. toctree::
+   :maxdepth: 2
    :caption: Workflows & Automation
 
    workflows
+   workers
    SmartControllers
    validation
 

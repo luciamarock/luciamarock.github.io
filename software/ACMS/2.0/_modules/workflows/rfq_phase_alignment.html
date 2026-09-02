@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -91,11 +96,29 @@
              
   <h1>Source code for workflows.rfq_phase_alignment</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Mon Jul  20 09:10:28 2024</span>
+<span class="sd">&quot;&quot;&quot;Radio Frequency Quadrupole (RFQ) Phase Alignment Workflow Module.</span>
+
+<span class="sd">This module implements the ``RFQPhaseAlignment`` workflow execution class, which manages </span>
+<span class="sd">the configuration, lifetime loop, and delegate monitoring for RFQ phase alignment tasks.</span>
+
+<span class="sd">Key Functionality:</span>
+<span class="sd">    1. Configuration Ingestion: Reads JSON runtime settings from </span>
+<span class="sd">       ``rfq_phase_alignment_config.json`` using paths defined in general settings.</span>
+<span class="sd">    2. Worker Delegation: Instantiates and continuously executes monitoring loops </span>
+<span class="sd">       via :class:`workers.phase_alignment_worker.PhaseAlignmentWorker`.</span>
+<span class="sd">    3. Workflow Lifecycle Management: Implements standard workflow controls including </span>
+<span class="sd">       start (``__call__``), graceful exit (``stop``), status reporting (``talk``), </span>
+<span class="sd">       and registration with :mod:`workflows_interface`.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`workflows_interface`: Central workflow registry repository.</span>
+<span class="sd">    - :mod:`workers.phase_alignment_worker`: Delegate worker class executing phase alignment routines.</span>
+
+<span class="sd">Created on Mon Jul 20 09:10:28 2024</span>
 
 <span class="sd">@author: luciamarock</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">workflows_interface</span> <span class="k">as</span> <span class="nn">WFI</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -106,17 +129,40 @@
 <div class="viewcode-block" id="RFQPhaseAlignment">
 <a class="viewcode-back" href="../../workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment">[docs]</a>
 <span class="k">class</span> <span class="nc">RFQPhaseAlignment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RF Quadrupole Phase Alignment workflow management class.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        argument (int): Execution flag state. ``0`` keeps the continuous workflow loop </span>
+<span class="sd">            running; non-zero value stops execution loop.</span>
+<span class="sd">        _settings (dict): Configuration dictionary supplied by the application runner.</span>
+<span class="sd">        data (dict): Parsed JSON configuration loaded from ``rfq_phase_alignment_config.json``.</span>
+<span class="sd">        phase_alignment_worker (workers.phase_alignment_worker.PhaseAlignmentWorker):</span>
+<span class="sd">            Underlying worker instance handling alignment monitoring and actions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the RFQPhaseAlignment instance and set default loop state flag.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">argument</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;RFQPhaseAlignment workflow initialized&quot;</span><span class="p">)</span>
     
 <div class="viewcode-block" id="RFQPhaseAlignment.general_settings">
 <a class="viewcode-back" href="../../workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.general_settings">[docs]</a>
     <span class="k">def</span> <span class="nf">general_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">settings</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ingest global project configuration settings.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            settings (dict): Dictionary containing system file paths and resources directory locations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span></div>
 
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executable entry point starting the continuous RFQ phase alignment monitoring loop.</span>
+
+<span class="sd">        Loads configuration settings from ``rfq_phase_alignment_config.json``, instantiates </span>
+<span class="sd">        the underlying :class:`~workers.phase_alignment_worker.PhaseAlignmentWorker`, </span>
+<span class="sd">        and enters a pacing loop calling ``monitor_actions()`` every ~0.99 seconds until stopped.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;RFQPhaseAlignment workflow started&quot;</span><span class="p">)</span>
         <span class="n">config_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;rfq_phase_alignment_config.json&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
@@ -129,6 +175,7 @@
 <div class="viewcode-block" id="RFQPhaseAlignment.stop">
 <a class="viewcode-back" href="../../workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.stop">[docs]</a>
     <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gracefully request the workflow loop to stop.&quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;RFQPhaseAlignment workflow stopped&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">argument</span> <span class="o">=</span> <span class="mi">1</span></div>
 
@@ -136,6 +183,7 @@
 <div class="viewcode-block" id="RFQPhaseAlignment.talk">
 <a class="viewcode-back" href="../../workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.talk">[docs]</a>
     <span class="k">def</span> <span class="nf">talk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print current RFQ Phase Alignment workflow and delegate worker status to stdout.&quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;RFQPhaseAlignment workflow talking&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">******* printing RFQ phase alignment status:&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_alignment_worker</span><span class="o">.</span><span class="n">status</span><span class="p">()</span></div>
@@ -146,6 +194,11 @@
 <div class="viewcode-block" id="create_instance">
 <a class="viewcode-back" href="../../workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.create_instance">[docs]</a>
 <span class="k">def</span> <span class="nf">create_instance</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory function to instantiate and register ``RFQPhaseAlignment``.</span>
+
+<span class="sd">    Creates an instance of :class:`RFQPhaseAlignment` and registers it in </span>
+<span class="sd">    :data:`workflows_interface.registered_workflows` under key ``&quot;rfq_phase_alignment&quot;``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">WFI</span><span class="o">.</span><span class="n">registered_workflows</span><span class="p">[</span><span class="s2">&quot;rfq_phase_alignment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFQPhaseAlignment</span><span class="p">()</span></div>
 
 

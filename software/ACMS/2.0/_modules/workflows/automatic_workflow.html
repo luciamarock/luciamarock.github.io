@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -91,11 +96,29 @@
              
   <h1>Source code for workflows.automatic_workflow</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Automatic Recipe Execution Workflow Module (RMS Auto).</span>
+
+<span class="sd">This module implements the foundational automatic recipe execution workflow (``RMSauto``) </span>
+<span class="sd">for the Recipe Management System (RMS) within the ACMS suite.</span>
+
+<span class="sd">It acts as a top-level orchestrator that:</span>
+<span class="sd">    1. Ingests global project settings and auto-mode mapping payloads.</span>
+<span class="sd">    2. Broadcasts project properties and mapping schedules to all registered smart controller </span>
+<span class="sd">       types and instances via :mod:`controllersInterface`.</span>
+<span class="sd">    3. Spawns and starts underlying controller threads.</span>
+<span class="sd">    4. Executes a continuous polling and monitoring loop (``work()``) to evaluate controller </span>
+<span class="sd">       actions and operational states.</span>
+<span class="sd">    5. Exposes diagnostic health logging and graceful shutdown routines.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`workflows_interface`: Interface repository for workflow registration.</span>
+<span class="sd">    - :mod:`controllersInterface`: Central registry for smart controller types and instances.</span>
+
 <span class="sd">Created on Fri Feb  2 09:10:28 2024</span>
 
 <span class="sd">@author: luciamarock</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">workflows_interface</span> <span class="k">as</span> <span class="nn">WFI</span>
 <span class="kn">import</span> <span class="nn">controllersInterface</span> <span class="k">as</span> <span class="nn">CI</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -105,23 +128,59 @@
 <div class="viewcode-block" id="RMSauto">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto">[docs]</a>
 <span class="k">class</span> <span class="nc">RMSauto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recipe Management System Automatic Execution Workflow Engine.</span>
+
+<span class="sd">    This class encapsulates the continuous execution loop responsible for orchestrating </span>
+<span class="sd">    smart controllers during automatic recipe execution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        argument (int): Execution control flag. A value of ``0`` keeps the execution </span>
+<span class="sd">            loop active, while setting it to non-zero (e.g., ``1`` via :meth:`stop`) </span>
+<span class="sd">            triggers a graceful exit.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        argument (int): Internal loop control state flag.</span>
+<span class="sd">        _auto_mode_mapping_data (dict or list): Configuration data payload mapping device </span>
+<span class="sd">            instances to auto-mode execution schedules.</span>
+<span class="sd">        _settings (dict): Global project configuration parameters and hardware settings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argument</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the RMSauto workflow instance with an initial control state flag.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">argument</span> <span class="o">=</span> <span class="n">argument</span>
     
 <div class="viewcode-block" id="RMSauto.set_auto_mode_mapping_data">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.set_auto_mode_mapping_data">[docs]</a>
     <span class="k">def</span> <span class="nf">set_auto_mode_mapping_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign the auto-mode mapping data configuration.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict or list): Device mapping parameters and state schedules used by smart </span>
+<span class="sd">                controllers during automated recipe phases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auto_mode_mapping_data</span> <span class="o">=</span> <span class="n">data</span> </div>
 
     
 <div class="viewcode-block" id="RMSauto.general_settings">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.general_settings">[docs]</a>
     <span class="k">def</span> <span class="nf">general_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">settings</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ingest global project configuration parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            settings (dict): Project-wide properties, EPICS PV prefixes, and runtime settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span> 
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Automatic Workflow received the general settings&quot;</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callable entry point to initialize controller instances and launch the execution loop.</span>
+
+<span class="sd">        Iterates over all registered controller types and instances in :mod:`controllersInterface`:</span>
+<span class="sd">            1. Propagates project properties to controller types.</span>
+<span class="sd">            2. Assigns auto-mode mappings to specific device instances.</span>
+<span class="sd">            3. Spawns/starts controller threads.</span>
+<span class="sd">            4. Enters the continuous execution loop via :meth:`work`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;called Recipe Manager auto at </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">:</span>
             <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">set_project_properties</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">)</span>
@@ -133,6 +192,11 @@
 <div class="viewcode-block" id="RMSauto.wait_please">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.wait_please">[docs]</a>
     <span class="k">def</span> <span class="nf">wait_please</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide execution pacing between monitoring cycles within the main loop.</span>
+
+<span class="sd">        Blocks thread execution for ~0.99 seconds to prevent CPU starvation during continuous </span>
+<span class="sd">        polling operations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#print(&quot;waiting ...&quot;) #TODO maybe here write PLC PVs for informing about the instances status </span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span></div>
 
@@ -140,6 +204,13 @@
 <div class="viewcode-block" id="RMSauto.work">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.work">[docs]</a>
     <span class="k">def</span> <span class="nf">work</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main continuous execution loop for active workflow monitoring.</span>
+
+<span class="sd">        Loops continuously while :attr:`argument` remains ``0``. On each cycle:</span>
+<span class="sd">            1. Invokes :meth:`wait_please` for loop pacing.</span>
+<span class="sd">            2. Triggers :meth:`monitor_actions` across all registered smart controller instances </span>
+<span class="sd">               to evaluate state transitions and entry/exit criteria.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wait_please</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">:</span>
@@ -150,6 +221,7 @@
 <div class="viewcode-block" id="RMSauto.talk">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.talk">[docs]</a>
     <span class="k">def</span> <span class="nf">talk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print diagnostic state summaries for all registered controller instances to stdout.&quot;&quot;&quot;</span>
         <span class="c1">#print(&quot;Hi I&#39;m {} and the counter is at value = {}&quot;.format(self,self.argument))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">******* printing controllers statuses:&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">CI</span><span class="o">.</span><span class="n">registered_types</span><span class="p">:</span>
@@ -160,6 +232,11 @@
 <div class="viewcode-block" id="RMSauto.stop">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.stop">[docs]</a>
     <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gracefully terminate the workflow execution loop.</span>
+
+<span class="sd">        Sets :attr:`argument` to ``1``, causing the :meth:`work` while-loop to break </span>
+<span class="sd">        on its next iteration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">argument</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stopping gracefully&quot;</span><span class="p">)</span></div>
 </div>
@@ -171,6 +248,11 @@
 <div class="viewcode-block" id="create_instance">
 <a class="viewcode-back" href="../../workflows.automatic_workflow.html#workflows.automatic_workflow.create_instance">[docs]</a>
 <span class="k">def</span> <span class="nf">create_instance</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory function to instantiate and register the ``automatic_workflow`` instance.</span>
+
+<span class="sd">    Creates an instance of :class:`RMSauto` initialized with control flag ``0`` and registers </span>
+<span class="sd">    it under the key ``&quot;automatic_workflow&quot;`` in :data:`workflows_interface.registered_workflows`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">WFI</span><span class="o">.</span><span class="n">registered_workflows</span><span class="p">[</span><span class="s2">&quot;automatic_workflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RMSauto</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
 </pre></div>

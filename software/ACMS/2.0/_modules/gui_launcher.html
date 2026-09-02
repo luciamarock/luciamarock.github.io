@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
 </ul>
@@ -90,7 +95,28 @@
            <div itemprop="articleBody">
              
   <h1>Source code for gui_launcher</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Launcher Entry Point for the Template Editor Sub-Application.</span>
+
+<span class="sd">This module serves as the process entry-point script executed when launching the Template </span>
+<span class="sd">Editor GUI sub-application from :mod:`gui_process_launcher`.</span>
+
+<span class="sd">It is executed as an isolated child process using PySide2 (Qt5 bindings) to present </span>
+<span class="sd">operators with an interactive interface for editing recipe templates. The module handles </span>
+<span class="sd">data payload ingestion through dual modes:</span>
+
+<span class="sd">1. **IPC Stream Mode (Primary):** Intercepts ``--stdin`` arguments to stream JSON PV metadata </span>
+<span class="sd">   directly from the parent process pipe via standard input.</span>
+<span class="sd">2. **Disk Cache Mode (Fallback/Testing):** Reads a local cached JSON file (``PVINFO.json``) </span>
+<span class="sd">   or returns dummy fallback structures for standalone execution and GUI layout debugging.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`utilities.template_editor_gui`: Provides the :class:`JSONFilterApp` main GUI window class.</span>
+<span class="sd">    - :class:`PySide2.QtWidgets.QApplication`: Manages the GUI application control flow and event loop.</span>
+
+<span class="sd">:author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
@@ -115,9 +141,18 @@
 <div class="viewcode-block" id="load_json">
 <a class="viewcode-back" href="../gui_launcher.html#gui_launcher.load_json">[docs]</a>
 <span class="k">def</span> <span class="nf">load_json</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Loads JSON data either directly from the subprocess pipe via stdin</span>
-<span class="sd">    or falls back to the local file cache with latin-1 encoding.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ingest JSON telemetry payload from piped standard input or disk cache.</span>
+
+<span class="sd">    Determines the input source based on command-line arguments:</span>
+
+<span class="sd">    - If ``--stdin`` is present in ``sys.argv``, it reads the serialized JSON string </span>
+<span class="sd">      directly from ``sys.stdin``.</span>
+<span class="sd">    - Otherwise, it falls back to reading the local ``PVINFO.json`` file from disk.</span>
+
+<span class="sd">    :return: The parsed PV metadata payload dictionary containing PV names, fields, </span>
+<span class="sd">        and operational attributes required to initialize the Template Editor widget. </span>
+<span class="sd">        Returns an empty dict ``{}`` or fallback sample dictionary if ingestion fails.</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Scenario A: Intercepting direct process pipeline input stream</span>
     <span class="k">if</span> <span class="s2">&quot;--stdin&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
@@ -150,6 +185,12 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Standalone process entry point for the Template Editor GUI application.</span>
+<span class="sd">    </span>
+<span class="sd">    Loads target payload data, initializes the PySide2 :class:`QApplication` context, </span>
+<span class="sd">    instantiates the :class:`utilities.template_editor_gui.JSONFilterApp` main window, </span>
+<span class="sd">    and executes the Qt event loop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># 1. Harvest target data payload from the active channel</span>
     <span class="n">data_to_load</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">data_to_load</span><span class="p">:</span>  <span class="c1"># Safety check for empty dictionaries or failed parses</span>

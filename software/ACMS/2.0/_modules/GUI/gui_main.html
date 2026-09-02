@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GUI.gui_main &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">GUI.gui_main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for GUI.gui_main</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Main GUI Window for Recipe Management System.</span>
+
+<span class="sd">Handles tab auto-discovery, logging interface, menu bar actions, and clean thread termination.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> 
+    <span class="n">QAction</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QTextEdit</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QHBoxLayout</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">pyqtSignal</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># Logging Handler &amp; Window</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LogSignalEmitter">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.LogSignalEmitter">[docs]</a>
+<span class="k">class</span> <span class="nc">LogSignalEmitter</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="n">log_signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>  <span class="c1"># Emits (message, levelno)</span></div>
+
+
+<div class="viewcode-block" id="QtLogHandler">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.QtLogHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">QtLogHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom logging handler to emit log records as PyQt signals.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span> <span class="o">=</span> <span class="n">LogSignalEmitter</span><span class="p">()</span>
+
+<div class="viewcode-block" id="QtLogHandler.emit">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.QtLogHandler.emit">[docs]</a>
+    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="o">.</span><span class="n">log_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">levelno</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LogWindow">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.LogWindow">[docs]</a>
+<span class="k">class</span> <span class="nc">LogWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filterable Log Viewer Window.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;System Log Viewer&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+        
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Filter Control</span>
+        <span class="n">filter_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">filter_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Min Log Level:&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_combo</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_combo</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;CRITICAL&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_combo</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_combo</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_logs</span><span class="p">)</span>
+        <span class="n">filter_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level_combo</span><span class="p">)</span>
+        <span class="n">filter_layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">()</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">filter_layout</span><span class="p">)</span>
+
+        <span class="c1"># Text Area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_edit</span> <span class="o">=</span> <span class="n">QTextEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_edit</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_edit</span><span class="p">)</span>
+
+        <span class="c1"># Store logs locally to re-filter on the fly</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">emitter</span><span class="o">.</span><span class="n">log_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">append_log</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LogWindow.append_log">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.LogWindow.append_log">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">levelno</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_records</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">message</span><span class="p">,</span> <span class="n">levelno</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">levelno</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_selected_levelno</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_edit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LogWindow.get_selected_levelno">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.LogWindow.get_selected_levelno">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_selected_levelno</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">level_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_combo</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">level_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LogWindow.filter_logs">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.LogWindow.filter_logs">[docs]</a>
+    <span class="k">def</span> <span class="nf">filter_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_edit</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">selected_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_selected_levelno</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">msg</span><span class="p">,</span> <span class="n">levelno</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_records</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">levelno</span> <span class="o">&gt;=</span> <span class="n">selected_level</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">text_edit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># Main Application Window</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<div class="viewcode-block" id="MainWindow">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow">[docs]</a>
+<span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipe_manager</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recipe_manager</span> <span class="o">=</span> <span class="n">recipe_manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Automated Control &amp; Management System&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">900</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+
+        <span class="c1"># Main Tab Widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">)</span>
+
+        <span class="c1"># Setup Logging Integration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">()</span>
+
+        <span class="c1"># Build UI</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_tabs</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MainWindow.setup_logging">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.setup_logging">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attach QtLogHandler to root logger and prepare Log Window.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_handler</span> <span class="o">=</span> <span class="n">QtLogHandler</span><span class="p">()</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_handler</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span> <span class="o">=</span> <span class="n">LogWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_handler</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.setup_menu">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.setup_menu">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct Top Menu Bar.&quot;&quot;&quot;</span>
+        <span class="n">menu_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">()</span>
+
+        <span class="c1"># Help / Info Menu</span>
+        <span class="n">help_menu</span> <span class="o">=</span> <span class="n">menu_bar</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;&amp;Help&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 1. Online Documentation</span>
+        <span class="n">doc_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Online Documentation&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">doc_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_documentation</span><span class="p">)</span>
+        <span class="n">help_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">doc_action</span><span class="p">)</span>
+
+        <span class="c1"># 2. About</span>
+        <span class="n">about_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;About&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">about_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_about</span><span class="p">)</span>
+        <span class="n">help_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">about_action</span><span class="p">)</span>
+
+        <span class="c1"># View Menu</span>
+        <span class="n">view_menu</span> <span class="o">=</span> <span class="n">menu_bar</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s2">&quot;&amp;View&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 3. Log Display Window</span>
+        <span class="n">log_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Log Viewer&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">log_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_log_window</span><span class="p">)</span>
+        <span class="n">view_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">log_action</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.load_tabs">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.load_tabs">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dynamically load python modules present in GUI/tabs directory.&quot;&quot;&quot;</span>
+        <span class="n">tabs_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;tabs&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tabs_dir</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Tabs directory not found: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tabs_dir</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">tabs_dir</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
+                <span class="n">module_name</span> <span class="o">=</span> <span class="n">fname</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+                <span class="n">full_module_path</span> <span class="o">=</span> <span class="s2">&quot;GUI.tabs.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+                
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">full_module_path</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;get_tab&quot;</span><span class="p">):</span>
+                        <span class="c1"># Factory function expected in tab module: get_tab(recipe_manager) -&gt; QWidget, tab_title</span>
+                        <span class="n">widget</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">get_tab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recipe_manager</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loaded tab module: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Module </span><span class="si">{}</span><span class="s2"> missing &#39;get_tab&#39; function&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to load tab module </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span></div>
+
+
+    <span class="c1"># --- Menu Callbacks ---</span>
+<div class="viewcode-block" id="MainWindow.open_documentation">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.open_documentation">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens online documentation URL in default browser.&quot;&quot;&quot;</span>
+        <span class="n">doc_url</span> <span class="o">=</span> <span class="s2">&quot;https://luciamarock.github.io/software/ACMS/2.0/&quot;</span>  <span class="c1"># Update as needed</span>
+        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">doc_url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.show_about">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.show_about">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_about</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Displays About information dialog.&quot;&quot;&quot;</span>
+        <span class="n">QMessageBox</span><span class="o">.</span><span class="n">about</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">&quot;About Automated Control &amp; Management System&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&lt;b&gt;Automated Control &amp; Management System&lt;/b&gt;&lt;br&gt;&quot;</span>
+            <span class="s2">&quot;Operational control interface for Big Science projects.&lt;br&gt;&lt;br&gt;&quot;</span>
+            <span class="s2">&quot;Author: luciamarock&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.show_log_window">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.show_log_window">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_log_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens/raises the standalone log window.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span><span class="o">.</span><span class="n">activateWindow</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.closeEvent">
+<a class="viewcode-back" href="../../GUI.gui_main.html#GUI.gui_main.MainWindow.closeEvent">[docs]</a>
+    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure clean shutdown when the main window is closed by operator.&quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Closing Main Window. Stopping Recipe Manager...&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Close Log Window if open</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Stop background workflow thread</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recipe_manager</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recipe_manager</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

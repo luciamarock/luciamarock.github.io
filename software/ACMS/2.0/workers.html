@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers package &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="workers.factories package" href="workers.factories.html" />
+    <link rel="prev" title="workflows.workers_manager module" href="workflows.workers_manager.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">workers package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workers.factories.html">workers.factories package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html">workers.auto_rearm_manager module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html">workers.phase_alignment_worker module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-workers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">workers package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/workers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="workers-package">
+<h1>workers package<a class="headerlink" href="#workers-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workers.factories.html">workers.factories package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workers.factories.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workers.factories.factory_interface.html">workers.factories.factory_interface module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory"><code class="docutils literal notranslate"><span class="pre">WorkerFactory</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="workers.factories.worker_factory.html">workers.factories.worker_factory module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker"><code class="docutils literal notranslate"><span class="pre">Worker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workers.factories.html#module-workers.factories">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workers.auto_rearm_manager.html">workers.auto_rearm_manager module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._continuous_monitoring"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._continuous_monitoring()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._get_current_system_state"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._get_current_system_state()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._looped_operations"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._looped_operations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._looped_verifications"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._looped_verifications()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._perform_rearming_procedure"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._perform_rearming_procedure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._sleep"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._sleep()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._sync_frequency_mode"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._sync_frequency_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._update_rearm_registry"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._update_rearm_registry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._verify_readback"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager._verify_readback()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.can_auto_rearm"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager.can_auto_rearm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.connect"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.detect_interlocks"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager.detect_interlocks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.execute_rearming_workflow"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager.execute_rearming_workflow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.reset_rearm_registry"><code class="docutils literal notranslate"><span class="pre">AutoRearmManager.reset_rearm_registry()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workers.phase_alignment_worker.html">workers.phase_alignment_worker module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workers.phase_alignment_worker.html#phase-alignment-worker-module">Phase Alignment Worker Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._build_pv_dict"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker._build_pv_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._connect"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker._connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._on_user_control_change"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker._on_user_control_change()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._restore_all_amplifiers"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker._restore_all_amplifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._set_amplifier_state"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker._set_amplifier_state()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker.execute_full_alignment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.isolate_slave_chain"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker.isolate_slave_chain()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.monitor_actions"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker.monitor_actions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.status"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker.status()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-workers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-workers" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="workflows.workers_manager.html" class="btn btn-neutral float-left" title="workflows.workers_manager module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workers.factories.html" class="btn btn-neutral float-right" title="workers.factories package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

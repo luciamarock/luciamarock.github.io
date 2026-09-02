@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -91,36 +96,46 @@
              
   <h1>Source code for utilities.util_functions</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Module Util Functions </span>
-
-<span class="sd">Created on Tue Jan 24 15:48:37 2023 \n</span>
-<span class="sd">This module is expected to contain all the functions that can be shared and used by all the other python modules. It is also the place </span>
-<span class="sd">where important information and software objects are stored in dictionaries. For example the module level settings dictionary contains </span>
-<span class="sd">all the information defined in the settings.ini file plus some other information derived and/or inferred from those ones. \n</span>
-<span class="sd">In the same package there is also the validation sub-package since it is also used and shared by many workflows. </span>
-
-<span class="sd">@author: luciamarock</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utility Functions Module</span>
+<span class="sd">========================</span>
+
+<span class="sd">Provides shared global state containers and helper utilities accessible across all system packages.</span>
+
+<span class="sd">This module acts as the centralized storage for global application settings parsed from </span>
+<span class="sd">configuration files (`settings.ini`), as well as runtime state objects such as </span>
+<span class="sd">:class:`UserIntention` instances that manage asynchronous command states (e.g., ``IDLE``, </span>
+<span class="sd">``PAUSE``, ``ABORT``) for background workflow workers.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span> 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;imported util_functions&quot;</span><span class="p">)</span>
+
+<span class="c1">#: Global settings dictionary containing configuration parameters and workspace directories.</span>
 <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;resources_directory&quot;</span><span class="p">:</span> <span class="s2">&quot;resources&quot;</span><span class="p">,</span>
     <span class="s2">&quot;workspace_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;workspace&quot;</span>
 <span class="p">}</span>
 
+<span class="c1">#: Global registry mapping workflow names to their active :class:`UserIntention` instances.</span>
 <span class="n">user_intentions</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="UserIntention">
 <a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.UserIntention">[docs]</a>
 <span class="k">class</span> <span class="nc">UserIntention</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic container representing user control intentions, commands, and target parameters.</span>
-<span class="sd">    </span>
-<span class="sd">    Allows dynamic metadata attribution and thread-safe updates.</span>
+
+<span class="sd">    Provides state management for interactive operator commands and handles thread locking </span>
+<span class="sd">    during active workflow pause operations.</span>
+
+<span class="sd">    :param name: Unique name identifying the associated workflow or process.</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a UserIntention instance for a given workflow.&quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating User Intention object for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_command</span> <span class="o">=</span> <span class="s2">&quot;IDLE&quot;</span>
@@ -128,12 +143,24 @@
 <div class="viewcode-block" id="UserIntention.setCommand">
 <a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.UserIntention.setCommand">[docs]</a>
     <span class="k">def</span> <span class="nf">setCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the active control command state.</span>
+
+<span class="sd">        :param command: Target command string (e.g., ``&quot;IDLE&quot;``, ``&quot;PAUSE&quot;``, ``&quot;ABORT&quot;``, ``&quot;RUN&quot;``).</span>
+<span class="sd">        :type command: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_command</span> <span class="o">=</span> <span class="n">command</span></div>
 
     
 <div class="viewcode-block" id="UserIntention.checkCommand">
 <a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.UserIntention.checkCommand">[docs]</a>
     <span class="k">def</span> <span class="nf">checkCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check current command status and manage execution flow control.</span>
+
+<span class="sd">        Blocks execution by sleeping when state is set to ``&quot;PAUSE&quot;`` until changed.</span>
+
+<span class="sd">        :return: Returns ``0`` for normal execution or resumed states, and ``1`` if an ``&quot;ABORT&quot;`` command was issued.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_command</span> <span class="o">==</span> <span class="s2">&quot;IDLE&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_command</span> <span class="o">==</span> <span class="s2">&quot;ABORT&quot;</span><span class="p">:</span>
@@ -149,10 +176,63 @@
 <div class="viewcode-block" id="getUserIntention">
 <a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.getUserIntention">[docs]</a>
 <span class="k">def</span> <span class="nf">getUserIntention</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve or instantiate a singleton :class:`UserIntention` instance for a given workflow.</span>
+
+<span class="sd">    :param name: Unique identifier/name of the workflow.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: Active or newly instantiated UserIntention instance.</span>
+<span class="sd">    :rtype: UserIntention</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_intentions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">user_intentions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">UserIntention</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">user_intentions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
+
+<div class="viewcode-block" id="MockRecipeManager">
+<a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.MockRecipeManager">[docs]</a>
+<span class="k">class</span> <span class="nc">MockRecipeManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mock implementation of RMSauto / RecipeManager for workflow testing.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_mode_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talk_called</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_called</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="MockRecipeManager.set_auto_mode_mapping_data">
+<a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.MockRecipeManager.set_auto_mode_mapping_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_auto_mode_mapping_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_mode_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[MockRecipeManager] Received auto mode mapping with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> items.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MockRecipeManager.general_settings">
+<a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.MockRecipeManager.general_settings">[docs]</a>
+    <span class="k">def</span> <span class="nf">general_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[MockRecipeManager] Applied settings (UI mode: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;UI&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executed inside the background daemon Thread.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;[MockRecipeManager] Background thread could start.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MockRecipeManager.talk">
+<a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.MockRecipeManager.talk">[docs]</a>
+    <span class="k">def</span> <span class="nf">talk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talk_called</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;[MockRecipeManager] &#39;talk()&#39; invoked.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MockRecipeManager.stop">
+<a class="viewcode-back" href="../../utilities.util_functions.html#utilities.util_functions.MockRecipeManager.stop">[docs]</a>
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_called</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;[MockRecipeManager] &#39;stop()&#39; invoked.&quot;</span><span class="p">)</span></div>
+</div>
 
 </pre></div>
 

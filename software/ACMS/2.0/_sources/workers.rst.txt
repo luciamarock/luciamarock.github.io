@@ -1,0 +1,28 @@
+workers package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   workers.factories
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   workers.auto_rearm_manager
+   workers.phase_alignment_worker
+
+Module contents
+---------------
+
+.. automodule:: workers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

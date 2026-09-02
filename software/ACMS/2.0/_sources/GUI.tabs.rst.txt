@@ -1,0 +1,20 @@
+GUI.tabs package
+================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GUI.tabs.main_control_tab
+   GUI.tabs.placeholder_tab
+
+Module contents
+---------------
+
+.. automodule:: GUI.tabs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

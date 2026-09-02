@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -90,30 +95,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for utilities.tool_internals</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Tool Internals Module</span>
+<span class="sd">=====================</span>
 
-<span class="sd">This module provides core functionality for managing tool settings and logging configuration.</span>
-<span class="sd">It implements a singleton pattern for settings management to ensure consistent configuration</span>
-<span class="sd">across the entire application.</span>
+<span class="sd">Provides core utility functions, XML/CSV parsing routines, EPICS database parsers, </span>
+<span class="sd">and custom logging handlers.</span>
 
-<span class="sd">Classes:</span>
-<span class="sd">    Settings: Manages tool configuration and logging setup</span>
-<span class="sd">        - Stores configuration parameters</span>
-<span class="sd">        - Provides logging configuration and handler setup</span>
-<span class="sd">        - Implements singleton pattern via get_settings()</span>
-
-<span class="sd">Functions:</span>
-<span class="sd">    get_settings(parameters=None): Returns singleton Settings instance</span>
-<span class="sd">        - Creates new Settings instance if none exists</span>
-<span class="sd">        - Returns existing instance if already initialized</span>
-
-<span class="sd">The module handles:</span>
-<span class="sd">1. Centralized settings management through singleton pattern</span>
-<span class="sd">2. Logging configuration including file and stream handlers</span>
-<span class="sd">3. Dynamic logger creation with configurable log levels</span>
-<span class="sd">4. Consistent logging format across the application</span>
-
+<span class="sd">This module contains the :class:`EPICSLogHandler` for streaming application logs</span>
+<span class="sd">directly to EPICS Process Variables (PVs) for SCADA integration, alongside helper</span>
+<span class="sd">functions for XML element transformations, CSV parsing, and cavity stabilization math.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">csv</span>
@@ -126,7 +118,18 @@
 <div class="viewcode-block" id="EPICSLogHandler">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler">[docs]</a>
 <span class="k">class</span> <span class="nc">EPICSLogHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom logging handler that broadcasts log messages to EPICS Process Variables.</span>
+
+<span class="sd">    Buffers recent log entries using fixed-length deques and publishes timestamps,</span>
+<span class="sd">    log levels, and message chunks to defined EPICS record names via Channel Access.</span>
+
+<span class="sd">    :param maxlen: Maximum number of recent log records to retain in ring buffers, defaults to 25.</span>
+<span class="sd">    :type maxlen: int, optional</span>
+<span class="sd">    :param max_str_len: Maximum length per string chunk for EPICS waveform/string compatibility, defaults to 39.</span>
+<span class="sd">    :type max_str_len: int, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">max_str_len</span><span class="o">=</span><span class="mi">39</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize EPICS log PV targets and internal ring buffers.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pv_timestamps</span> <span class="o">=</span> <span class="s2">&quot;ACT:LOG:TIMESTAMPS&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pv_levels</span> <span class="o">=</span> <span class="s2">&quot;ACT:LOG:LEVELS&quot;</span>
@@ -143,6 +146,11 @@
 <div class="viewcode-block" id="EPICSLogHandler.emit">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler.emit">[docs]</a>
     <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process a log record, chunk strings into ASCII, and publish to EPICS PVs.</span>
+
+<span class="sd">        :param record: Log record emitted by the Python logging framework.</span>
+<span class="sd">        :type record: logging.LogRecord</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">times</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">asctime</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">levels</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -175,20 +183,23 @@
 <div class="viewcode-block" id="get_epics_log_handler">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.get_epics_log_handler">[docs]</a>
 <span class="k">def</span> <span class="nf">get_epics_log_handler</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve the singleton EPICS log handler instance.</span>
+
+<span class="sd">    :return: Formatted singleton instance of EPICSLogHandler.</span>
+<span class="sd">    :rtype: EPICSLogHandler</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">epics_handler</span></div>
 
 
 <div class="viewcode-block" id="element_to_dict">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.element_to_dict">[docs]</a>
 <span class="k">def</span> <span class="nf">element_to_dict</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Transforms an Element object into a dictionary.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform an XML Element object into a dictionary of child tag-text pairs.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        element (ET.Element): The Element object to transform.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: A dictionary representing the Element&#39;s children.</span>
+<span class="sd">    :param element: XML Element instance to transform.</span>
+<span class="sd">    :type element: xml.etree.ElementTree.Element</span>
+<span class="sd">    :return: Dictionary mapping child tag names to their inner text contents.</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
@@ -199,14 +210,12 @@
 <div class="viewcode-block" id="element_to_list">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.element_to_list">[docs]</a>
 <span class="k">def</span> <span class="nf">element_to_list</span><span class="p">(</span><span class="n">list_element</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Transforms an observable_pvs Element object into a list of PV names.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform an XML parent Element into a list of child text values (e.g., PV lists).</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        observable_pvs_element (ET.Element): The observable_pvs Element object.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        list: A list of PV names.</span>
+<span class="sd">    :param list_element: XML Element containing list items as children.</span>
+<span class="sd">    :type list_element: xml.etree.ElementTree.Element</span>
+<span class="sd">    :return: List of text strings extracted from child elements.</span>
+<span class="sd">    :rtype: list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">pv_element</span> <span class="ow">in</span> <span class="n">list_element</span><span class="p">:</span>
@@ -217,14 +226,12 @@
 <div class="viewcode-block" id="parse_csv">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.parse_csv">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parses a CSV file with the given structure.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a CSV file into a list of row dictionaries.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        file_path (str): The path to the CSV file.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        list: A list of dictionaries, where each dictionary represents a row.</span>
+<span class="sd">    :param file_path: Path to the target CSV file.</span>
+<span class="sd">    :type file_path: str</span>
+<span class="sd">    :return: List of dictionaries representing CSV rows keyed by column header.</span>
+<span class="sd">    :rtype: list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">try</span><span class="p">:</span>
@@ -242,15 +249,12 @@
 <div class="viewcode-block" id="element_with_attributes_to_dict">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.element_with_attributes_to_dict">[docs]</a>
 <span class="k">def</span> <span class="nf">element_with_attributes_to_dict</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Transforms an Element object (and its children) into a dictionary,</span>
-<span class="sd">    including attributes.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform an XML Element and its children into a dictionary including element attributes.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        element (ET.Element): The Element object to transform.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: A dictionary representing the Element&#39;s data and attributes.</span>
+<span class="sd">    :param element: XML Element instance to parse.</span>
+<span class="sd">    :type element: xml.etree.ElementTree.Element</span>
+<span class="sd">    :return: Dictionary mapping element text values to their attribute dictionaries.</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
@@ -265,7 +269,15 @@
 <div class="viewcode-block" id="parse_epics_db">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.parse_epics_db">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_epics_db</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses EPICS .db content into a dictionary.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an EPICS database (``.db``) text file into a structured dictionary.</span>
+
+<span class="sd">    Extracts record types, record names, and nested field assignments using regular expressions.</span>
+
+<span class="sd">    :param file_path: Path to the EPICS ``.db`` file.</span>
+<span class="sd">    :type file_path: str</span>
+<span class="sd">    :return: Dictionary containing parsed records with keys as record names, or None if file not found.</span>
+<span class="sd">    :rtype: dict or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">records</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">record_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;record\(([^,]+), &quot;([^&quot;]+)&quot;\) {\s*(.*?)\s*}&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
     <span class="n">field_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;field\(([^,]+), &quot;([^&quot;]+)&quot;\)&#39;</span><span class="p">)</span>
@@ -293,15 +305,14 @@
 <div class="viewcode-block" id="parse_epics_xml_by_tag">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.parse_epics_xml_by_tag">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_epics_xml_by_tag</span><span class="p">(</span><span class="n">epics_pv_root</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parses an EPICS XML file and returns a dictionary where each key is the tag name (e.g., rearm_workflow_status),</span>
-<span class="sd">    and the value is a dict with &#39;pv_name&#39; (from the &#39;name&#39; attribute) and &#39;description&#39; (from the element text).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an EPICS configuration XML tree by tag name.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        file_path (str): Path to the XML file.</span>
+<span class="sd">    Extracts PV names from element attributes and descriptions from element inner text.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: {tag: {&#39;pv_name&#39;: ..., &#39;description&#39;: ...}, ...}</span>
+<span class="sd">    :param epics_pv_root: Root XML Element containing PV definitions.</span>
+<span class="sd">    :type epics_pv_root: xml.etree.ElementTree.Element</span>
+<span class="sd">    :return: Dictionary structured as ``{tag: {&#39;pv_name&#39;: ..., &#39;description&#39;: ...}}``.</span>
+<span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">epics_pv_root</span><span class="p">:</span>
@@ -315,8 +326,16 @@
 <div class="viewcode-block" id="calculate_min_stable_time">
 <a class="viewcode-back" href="../../utilities.tool_internals.html#utilities.tool_internals.calculate_min_stable_time">[docs]</a>
 <span class="k">def</span> <span class="nf">calculate_min_stable_time</span><span class="p">(</span><span class="n">delta_v</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">,</span> <span class="n">cavity_phase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the minimum stable time based on the ramp rate and cavity phase.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate minimum required stabilization time based on voltage step, ramp rate, and cavity phase angle.</span>
+
+<span class="sd">    :param delta_v: Voltage step magnitude.</span>
+<span class="sd">    :type delta_v: float</span>
+<span class="sd">    :param ramp_rate: Configured rate of voltage ramping.</span>
+<span class="sd">    :type ramp_rate: float</span>
+<span class="sd">    :param cavity_phase: Current cavity phase angle in degrees.</span>
+<span class="sd">    :type cavity_phase: float</span>
+<span class="sd">    :return: Minimum stabilization duration in seconds.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">phi_radians</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">cavity_phase</span><span class="p">)</span>
     <span class="n">sin_phi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_radians</span><span class="p">)</span>

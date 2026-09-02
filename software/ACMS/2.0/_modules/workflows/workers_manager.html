@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -90,7 +95,31 @@
            <div itemprop="articleBody">
              
   <h1>Source code for workflows.workers_manager</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">threading</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Auto-Conditioning Worker Manager Workflow Module.</span>
+
+<span class="sd">This module implements the ``WorkerManager`` workflow (registered as </span>
+<span class="sd">``&quot;AutoConditioningWorkflow&quot;`` in :mod:`workflows_interface`), which manages </span>
+<span class="sd">the lifecycle, EPICS PV integration, HMI communications, and execution threads </span>
+<span class="sd">for automated conditioning workers.</span>
+
+<span class="sd">Key Responsibilities:</span>
+<span class="sd">    1. Worker Parsing &amp; Factory Instantiation: Parses XML configuration files from </span>
+<span class="sd">       the resource directory via :class:`workers.factories.factory_interface.WorkerFactory`.</span>
+<span class="sd">    2. EPICS Connection &amp; State Monitoring: Binds EPICS PV control interfaces to individual </span>
+<span class="sd">       worker instances, handling enable/abort/reset/stop actions dynamically via callbacks.</span>
+<span class="sd">    3. Multithreaded Execution: Spawns dedicated daemon threads for parallel worker execution.</span>
+<span class="sd">    4. HMI Integration: Controls macro propagation and exports worker availability and status </span>
+<span class="sd">       waveforms to EPICS for user display.</span>
+<span class="sd">    5. Configuration Persistency: Synchronizes workspace state on connection setup.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`workflows_interface`: Central registration interface for system workflows.</span>
+<span class="sd">    - :mod:`utilities.util_functions`: System-wide settings and utility functions.</span>
+<span class="sd">    - :mod:`workers.factories.factory_interface`: Factory interface creating worker instances from XML.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">epics</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -103,8 +132,27 @@
 <div class="viewcode-block" id="WorkerManager">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager">[docs]</a>
 <span class="k">class</span> <span class="nc">WorkerManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Orchestrator for Auto-Conditioning worker threads and EPICS control interfaces.</span>
+
+<span class="sd">    This workflow manages worker lifecycle events (start, stop, abort, reset), handles </span>
+<span class="sd">    EPICS PV callbacks, and communicates status updates to HMI displays.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        workers (dict[str, object]): Map of active worker instances keyed by worker name.</span>
+<span class="sd">        epics_interfaces (dict[str, str]): Map linking EPICS interface PV names to worker names.</span>
+<span class="sd">        managerPVs (dict[str, epics.PV]): Map of connected EPICS PV instances managing worker state.</span>
+<span class="sd">        _jobs (dict[str, str]): Queue for pending HMI macro updates or state jobs.</span>
+<span class="sd">        _settings (dict): Project settings retrieved from :mod:`utilities.util_functions`.</span>
+<span class="sd">        _factoryInterface (FI.WorkerFactory): Worker factory instance for XML parsing.</span>
+<span class="sd">        _workers_dir (str): Absolute file system path to the XML workers configuration folder.</span>
+<span class="sd">        ACT_presence (epics.PV): PV signaling the active presence of the Auto Conditioning Tool.</span>
+<span class="sd">        hmi_macro (epics.PV): PV broadcasting selected macro parameters to HMI.</span>
+<span class="sd">        table_index (epics.PV): PV monitoring table index selections from HMI.</span>
+<span class="sd">        workers_list_pv (epics.PV): EPICS Waveform PV broadcasting active worker names and states.</span>
+<span class="sd">        running (bool): Main loop execution state flag.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the WorkerManager.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the WorkerManager instance, configuration paths, and factory interfaces.&quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;WorkerManager initialized&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Dictionary of active workers {worker_name: worker_instance}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epics_interfaces</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># Dictionary of PV interfaces for the workers {PV_name: worker_name}</span>
@@ -117,6 +165,14 @@
 <div class="viewcode-block" id="WorkerManager._parse_xml_workers">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager._parse_xml_workers">[docs]</a>
     <span class="k">def</span> <span class="nf">_parse_xml_workers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse worker XML definitions from the resources directory and setup core EPICS PVs.</span>
+
+<span class="sd">        Scans ``self._workers_dir`` for `.xml` files and invokes the factory to instantiate </span>
+<span class="sd">        workers, EPICS interfaces, and macros. Initializes system presence and HMI selection PVs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: ``True`` if an error occurred or no XML files were found; ``False`` on success.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Retrieving Workers from Default </span><span class="se">\&quot;</span><span class="s2">resources</span><span class="se">\&quot;</span><span class="s2"> directory&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workers_dir</span><span class="p">):</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workers directory &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_workers_dir</span><span class="si">}</span><span class="s2">&#39; does not exist. It must contain the workers configuration files&quot;</span><span class="p">)</span>
@@ -149,6 +205,14 @@
 <div class="viewcode-block" id="WorkerManager._update_macro">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager._update_macro">[docs]</a>
     <span class="k">def</span> <span class="nf">_update_macro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;EPICS callback triggered when the HMI table selection index changes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pvname (str, optional): Name of the EPICS PV.</span>
+<span class="sd">            value (int or float, optional): New index value selected in the HMI table.</span>
+<span class="sd">            char_value (str, optional): String representation of the value.</span>
+<span class="sd">            **kw: Additional keyword arguments from PyEpics callback engine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">items_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macros</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
             <span class="n">item</span> <span class="o">=</span> <span class="n">items_list</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
@@ -159,6 +223,7 @@
 
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main execution loop processing queued manager jobs (e.g., HMI macro updates).&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">True</span> 
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">:</span>
@@ -171,6 +236,17 @@
 <div class="viewcode-block" id="WorkerManager.connect">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.connect">[docs]</a>
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect the manager and instantiated workers to the EPICS layer and synchronize workspace state.</span>
+
+<span class="sd">        Performs:</span>
+<span class="sd">            1. XML configuration parsing (:meth:`_parse_xml_workers`).</span>
+<span class="sd">            2. EPICS PV interface creation and callback setup for individual worker state management.</span>
+<span class="sd">            3. Worker EPICS connectivity verification.</span>
+<span class="sd">            4. Workspace initial state synchronization (load/compare/save).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: ``True`` if all EPICS connections and worker synchronizations succeeded; ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_xml_workers</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="n">error</span>
@@ -200,6 +276,18 @@
 <div class="viewcode-block" id="WorkerManager._enable_callback">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager._enable_callback">[docs]</a>
     <span class="k">def</span> <span class="nf">_enable_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;EPICS callback handling state transition requests for specific workers.</span>
+
+<span class="sd">        Evaluates incoming control PV values against worker execution states (``running``, </span>
+<span class="sd">        ``completed``, ``error``, ``not running``, ``aborted``) to trigger ``abort()``, </span>
+<span class="sd">        ``stop()``, ``reset()``, or :meth:`start_worker`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pvname (str, optional): Triggering EPICS PV name.</span>
+<span class="sd">            value (int, optional): Control command value (``0`` to stop/abort/reset, ``1`` to start).</span>
+<span class="sd">            char_value (str, optional): String representation of the PV value.</span>
+<span class="sd">            **kw: Additional callback keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># here stop specific worker (worker_id = worker_name)</span>
         <span class="n">worker_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">epics_interfaces</span><span class="p">[</span><span class="n">pvname</span><span class="p">]]</span>
         <span class="n">itsStatus</span> <span class="o">=</span> <span class="n">worker_instance</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
@@ -220,12 +308,18 @@
 <div class="viewcode-block" id="WorkerManager.general_settings">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.general_settings">[docs]</a>
     <span class="k">def</span> <span class="nf">general_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">settings</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Acknowledge ingestion of system settings (pre-initialized during construction).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            settings (dict): General project configuration settings dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Workers Manager already had the general settings&quot;</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="WorkerManager.talk">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.talk">[docs]</a>
     <span class="k">def</span> <span class="nf">talk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print current status diagnostic summaries for all managed workers.&quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">******* current workers status:&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">worker_name</span><span class="p">,</span> <span class="n">worker_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span><span class="n">worker_name</span><span class="p">,</span> <span class="n">worker_instance</span><span class="p">)</span></div>
@@ -234,6 +328,7 @@
 <div class="viewcode-block" id="WorkerManager.stop">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.stop">[docs]</a>
     <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop the main manager loop and notify external system of ACT tool shutdown.&quot;&quot;&quot;</span>
         <span class="c1">#TODO save state (4 persistency) and stop workers </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ACT_presence</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -243,7 +338,11 @@
 <div class="viewcode-block" id="WorkerManager.start_worker">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.start_worker">[docs]</a>
     <span class="k">def</span> <span class="nf">start_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Starts a new worker thread if it&#39;s not already running.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a target worker in a separate background daemon thread.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            worker (object): Worker instance possessing a ``start()`` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">worker_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">worker_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
@@ -251,7 +350,11 @@
 <div class="viewcode-block" id="WorkerManager.stop_worker">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.stop_worker">[docs]</a>
     <span class="k">def</span> <span class="nf">stop_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_id</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops a running worker and removes it from the manager.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop an active worker instance and unregister it from the manager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            worker_id (str): Key identifying the target worker in :attr:`workers`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">worker_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Worker </span><span class="si">{</span><span class="n">worker_id</span><span class="si">}</span><span class="s2"> is not running.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
@@ -265,6 +368,12 @@
 <div class="viewcode-block" id="WorkerManager.update_status">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.update_status">[docs]</a>
     <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_name</span><span class="p">,</span> <span class="n">worker_instance</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query and display current execution status for a given worker.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            worker_name (str): Identifier of the worker.</span>
+<span class="sd">            worker_instance (object): Target worker instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#TODO continue this</span>
         <span class="n">status</span> <span class="o">=</span> <span class="n">worker_instance</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;status of </span><span class="si">{</span><span class="n">worker_name</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
@@ -273,7 +382,7 @@
 <div class="viewcode-block" id="WorkerManager.update_active_workers">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.update_active_workers">[docs]</a>
     <span class="k">def</span> <span class="nf">update_active_workers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates EPICS waveform with the list of active workers and their status.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format active worker step execution progress and update EPICS waveform PV.&quot;&quot;&quot;</span>
         <span class="n">status_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wid</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">w</span><span class="o">.</span><span class="n">current_step</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">w</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> | Last Action: </span><span class="si">{</span><span class="n">w</span><span class="o">.</span><span class="n">last_action</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">for</span> <span class="n">wid</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -293,7 +402,7 @@
 <div class="viewcode-block" id="WorkerManager.stop_all_workers">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.WorkerManager.stop_all_workers">[docs]</a>
     <span class="k">def</span> <span class="nf">stop_all_workers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops all active workers.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate across all registered workers and initiate shutdown.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">worker_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stop_worker</span><span class="p">(</span><span class="n">worker_id</span><span class="p">)</span></div>
 </div>
@@ -302,6 +411,11 @@
 <div class="viewcode-block" id="create_instance">
 <a class="viewcode-back" href="../../workflows.workers_manager.html#workflows.workers_manager.create_instance">[docs]</a>
 <span class="k">def</span> <span class="nf">create_instance</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory function to instantiate and register the ``AutoConditioningWorkflow``.</span>
+
+<span class="sd">    Instantiates :class:`WorkerManager` and registers it in </span>
+<span class="sd">    :data:`workflows_interface.registered_workflows` under the key ``&quot;AutoConditioningWorkflow&quot;``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">WFI</span><span class="o">.</span><span class="n">registered_workflows</span><span class="p">[</span><span class="s2">&quot;AutoConditioningWorkflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">WorkerManager</span><span class="p">()</span></div>
 
 </pre></div>

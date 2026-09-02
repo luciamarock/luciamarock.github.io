@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -92,6 +97,21 @@
   <h1>Source code for utilities.bob_parser</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Phoebus Display (.bob) XML Parser for EPICS PV Discovery.</span>
+
+<span class="sd">This utility module provides XML parsing capabilities for Phoebus Display Builder (``.bob``) </span>
+<span class="sd">HMI screen files used in CS-Studio.</span>
+
+<span class="sd">It enables the ACMS Template Editor to automatically discover all Process Variables (PVs) </span>
+<span class="sd">embedded within screen widgets (such as Text Updates, Action Buttons, and Gauges). </span>
+<span class="sd">The extracted PV list is deduplicated, filtered to remove unexpanded Phoebus macros, </span>
+<span class="sd">and sorted before being passed to :mod:`editor_interface` for live Channel Access profiling.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`xml.etree.ElementTree`: Standard library XML parsing engine.</span>
+
+<span class="sd">@author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -102,8 +122,23 @@
 <div class="viewcode-block" id="extract_pvs_from_bob">
 <a class="viewcode-back" href="../../utilities.bob_parser.html#utilities.bob_parser.extract_pvs_from_bob">[docs]</a>
 <span class="k">def</span> <span class="nf">extract_pvs_from_bob</span><span class="p">(</span><span class="n">bob_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parses a Phoebus .bob file and extracts all configured PV names.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a CS-Studio Phoebus ``.bob`` display file and extract all configured PV names.</span>
+
+<span class="sd">    Recursively scans the XML tree structure for ``&lt;pv_name&gt;`` tags, strips whitespace, </span>
+<span class="sd">    filters out unexpanded local macros (e.g., ``$(PV_NAME)``), deduplicates identical </span>
+<span class="sd">    widget channels, and returns a sorted list of concrete PV names.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bob_file_path (str or Path): File path to the target Phoebus ``.bob`` XML screen file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of str: A sorted list of unique, valid EPICS Process Variable names extracted </span>
+<span class="sd">        from the file. Returns an empty list ``[]`` if XML parsing fails or if the file </span>
+<span class="sd">        cannot be found.</span>
+
+<span class="sd">    Error Handling:</span>
+<span class="sd">        Catches :class:`xml.etree.ElementTree.ParseError` and :class:`FileNotFoundError`, </span>
+<span class="sd">        logging an error message and returning an empty list to prevent application crashes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pv_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c1"># Using a set automatically handles duplicate widgets using the same PV</span>
     

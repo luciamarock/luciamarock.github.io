@@ -1,0 +1,8 @@
+workers.factories.factory\_interface module
+===========================================
+
+.. automodule:: workers.factories.factory_interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

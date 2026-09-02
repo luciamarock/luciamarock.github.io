@@ -1,0 +1,8 @@
+workers.auto\_rearm\_manager module
+===================================
+
+.. automodule:: workers.auto_rearm_manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

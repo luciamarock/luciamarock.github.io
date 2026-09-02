@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GUI.gui_main module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="workflows package" href="workflows.html" />
+    <link rel="prev" title="GUI.tabs.placeholder_tab module" href="GUI.tabs.placeholder_tab.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="GUI.html">GUI package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="GUI.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="GUI.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">GUI.gui_main module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#GUI.gui_main.LogSignalEmitter"><code class="docutils literal notranslate"><span class="pre">LogSignalEmitter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#GUI.gui_main.LogWindow"><code class="docutils literal notranslate"><span class="pre">LogWindow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#GUI.gui_main.MainWindow"><code class="docutils literal notranslate"><span class="pre">MainWindow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#GUI.gui_main.QtLogHandler"><code class="docutils literal notranslate"><span class="pre">QtLogHandler</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="GUI.html#module-GUI">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="GUI.html">GUI package</a></li>
+      <li class="breadcrumb-item active">GUI.gui_main module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/GUI.gui_main.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-GUI.gui_main">
+<span id="gui-gui-main-module"></span><h1>GUI.gui_main module<a class="headerlink" href="#module-GUI.gui_main" title="Link to this heading"></a></h1>
+<p>Main GUI Window for Recipe Management System.</p>
+<p>Handles tab auto-discovery, logging interface, menu bar actions, and clean thread termination.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="GUI.gui_main.LogSignalEmitter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GUI.gui_main.</span></span><span class="sig-name descname"><span class="pre">LogSignalEmitter</span></span><a class="reference internal" href="_modules/GUI/gui_main.html#LogSignalEmitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.LogSignalEmitter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GUI.gui_main.LogSignalEmitter.log_signal">
+<span class="sig-name descname"><span class="pre">log_signal</span></span><a class="headerlink" href="#GUI.gui_main.LogSignalEmitter.log_signal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GUI.gui_main.LogWindow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GUI.gui_main.</span></span><span class="sig-name descname"><span class="pre">LogWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#LogWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.LogWindow" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>Filterable Log Viewer Window.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.LogWindow.append_log">
+<span class="sig-name descname"><span class="pre">append_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levelno</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#LogWindow.append_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.LogWindow.append_log" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.LogWindow.filter_logs">
+<span class="sig-name descname"><span class="pre">filter_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#LogWindow.filter_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.LogWindow.filter_logs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.LogWindow.get_selected_levelno">
+<span class="sig-name descname"><span class="pre">get_selected_levelno</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#LogWindow.get_selected_levelno"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.LogWindow.get_selected_levelno" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GUI.gui_main.</span></span><span class="sig-name descname"><span class="pre">MainWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipe_manager</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QMainWindow</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.closeEvent">
+<span class="sig-name descname"><span class="pre">closeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.closeEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.closeEvent" title="Link to this definition"></a></dt>
+<dd><p>Ensure clean shutdown when the main window is closed by operator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.load_tabs">
+<span class="sig-name descname"><span class="pre">load_tabs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.load_tabs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.load_tabs" title="Link to this definition"></a></dt>
+<dd><p>Dynamically load python modules present in GUI/tabs directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.open_documentation">
+<span class="sig-name descname"><span class="pre">open_documentation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.open_documentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.open_documentation" title="Link to this definition"></a></dt>
+<dd><p>Opens online documentation URL in default browser.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.setup_logging">
+<span class="sig-name descname"><span class="pre">setup_logging</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.setup_logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.setup_logging" title="Link to this definition"></a></dt>
+<dd><p>Attach QtLogHandler to root logger and prepare Log Window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.setup_menu">
+<span class="sig-name descname"><span class="pre">setup_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.setup_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.setup_menu" title="Link to this definition"></a></dt>
+<dd><p>Construct Top Menu Bar.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.show_about">
+<span class="sig-name descname"><span class="pre">show_about</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.show_about"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.show_about" title="Link to this definition"></a></dt>
+<dd><p>Displays About information dialog.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.MainWindow.show_log_window">
+<span class="sig-name descname"><span class="pre">show_log_window</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#MainWindow.show_log_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.MainWindow.show_log_window" title="Link to this definition"></a></dt>
+<dd><p>Opens/raises the standalone log window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GUI.gui_main.QtLogHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GUI.gui_main.</span></span><span class="sig-name descname"><span class="pre">QtLogHandler</span></span><a class="reference internal" href="_modules/GUI/gui_main.html#QtLogHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.QtLogHandler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></p>
+<p>Custom logging handler to emit log records as PyQt signals.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GUI.gui_main.QtLogHandler.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/GUI/gui_main.html#QtLogHandler.emit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GUI.gui_main.QtLogHandler.emit" title="Link to this definition"></a></dt>
+<dd><p>Do whatever it takes to actually log the specified logging record.</p>
+<p>This version is intended to be implemented by subclasses and so
+raises a NotImplementedError.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GUI.tabs.placeholder_tab.html" class="btn btn-neutral float-left" title="GUI.tabs.placeholder_tab module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workflows.html" class="btn btn-neutral float-right" title="workflows package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

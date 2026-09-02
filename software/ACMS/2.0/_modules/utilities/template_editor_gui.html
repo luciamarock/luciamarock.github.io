@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -90,7 +95,29 @@
            <div itemprop="articleBody">
              
   <h1>Source code for utilities.template_editor_gui</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Cascading JSON Filter and Export GUI for Template Authoring.</span>
+
+<span class="sd">This module provides the core graphical interface component for the ACMS Template Editor </span>
+<span class="sd">sub-application. </span>
+
+<span class="sd">It defines the :class:`JSONFilterApp` window class, which processes incoming EPICS PV telemetry </span>
+<span class="sd">payloads (structured as colon-delimited key names, e.g., ``&quot;SUBSYSTEM:DEVICE:PARAMETER:FIELD&quot;``) </span>
+<span class="sd">and presents a cascading set of dynamic dropdown filters (``QComboBox`` widgets). </span>
+
+<span class="sd">Operators use this interface to:</span>
+<span class="sd">    1. Navigate hierarchical PV namespaces by filtering chunk by chunk.</span>
+<span class="sd">    2. Inspect live telemetry values and metadata field definitions.</span>
+<span class="sd">    3. Select specific PV entries and append them to an export manifest list.</span>
+<span class="sd">    4. Save the finalized selection list to disk as a JSON recipe template file.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`PySide2.QtWidgets`: PySide2 (Qt5) layout and widget primitives.</span>
+<span class="sd">    - :mod:`PySide2.QtCore`: Qt alignment and dimensional constraints.</span>
+
+<span class="sd">@author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c1"># Changed from PySide6 to PySide2</span>
@@ -104,7 +131,28 @@
 <div class="viewcode-block" id="JSONFilterApp">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp">[docs]</a>
 <span class="k">class</span> <span class="nc">JSONFilterApp</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main window class for cascading PV namespace filtering and recipe template export.</span>
+
+<span class="sd">    This class parses colon-delimited dictionary keys from the provided JSON payload, </span>
+<span class="sd">    dynamically calculates maximum hierarchy depth, builds matching cascading comboboxes, </span>
+<span class="sd">    and handles list additions and file export operations.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        json_data (dict): Dictionary mapping colon-delimited PV names or configuration paths </span>
+<span class="sd">            to their scanned field dictionaries or scalar values.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        data (dict): Ingested PV telemetry payload dictionary.</span>
+<span class="sd">        max_depth (int): Maximum depth (number of colon-separated chunks) found across all dictionary keys.</span>
+<span class="sd">        comboboxes (list of QComboBox): List of dynamic dropdown filter widgets, one per hierarchy depth level.</span>
+<span class="sd">        selected_items (dict): Key-value map of PV items staged by the operator for file export.</span>
+<span class="sd">        list_widget (QListWidget): Qt widget displaying staged items ready for export.</span>
+<span class="sd">        add_button (QPushButton): Button enabling addition of currently staged PV path to export list.</span>
+<span class="sd">        remove_button (QPushButton): Button allowing removal of selected staged items.</span>
+<span class="sd">        export_button (QPushButton): Button triggering file save dialog for JSON template generation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the main application window, compute key depth, and construct the UI layout.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">JSONFilterApp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1"># Explicit super call for PySide2 compatibility</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;PySide2 Cascading JSON Filter &amp; Export&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">850</span><span class="p">,</span> <span class="mi">650</span><span class="p">))</span> 
@@ -121,6 +169,11 @@
 <div class="viewcode-block" id="JSONFilterApp._get_max_depth">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._get_max_depth">[docs]</a>
     <span class="k">def</span> <span class="nf">_get_max_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the maximum depth of colon-separated tokens across all payload keys.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The highest count of colon-delimited chunks found in any key (e.g., 4 for ``&quot;A:B:C:D&quot;``).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">max_d</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">max_d</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_d</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)))</span>
@@ -130,6 +183,7 @@
 <div class="viewcode-block" id="JSONFilterApp._setup_ui">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._setup_ui">[docs]</a>
     <span class="k">def</span> <span class="nf">_setup_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct and assemble all Qt UI widgets, layouts, signals, and control slots.&quot;&quot;&quot;</span>
         <span class="n">central_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">central_widget</span><span class="p">)</span>
         <span class="n">main_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">central_widget</span><span class="p">)</span>
@@ -198,6 +252,7 @@
 <div class="viewcode-block" id="JSONFilterApp._initialize_first_filter">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._initialize_first_filter">[docs]</a>
     <span class="k">def</span> <span class="nf">_initialize_first_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate the primary (Chunk 1) dropdown filter with top-level namespace tokens.&quot;&quot;&quot;</span>
         <span class="n">first_chunks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">first_chunks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
@@ -211,6 +266,11 @@
 <div class="viewcode-block" id="JSONFilterApp._update_filters">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._update_filters">[docs]</a>
     <span class="k">def</span> <span class="nf">_update_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_combo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update downstream dropdown options dynamically when an upstream filter selection changes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            current_combo (QComboBox): The combobox widget instance that emitted the selection change event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">current_index</span> <span class="o">=</span> <span class="n">current_combo</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
         <span class="n">current_path</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">current_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -248,6 +308,11 @@
 <div class="viewcode-block" id="JSONFilterApp._update_result_label">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._update_result_label">[docs]</a>
     <span class="k">def</span> <span class="nf">_update_result_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_key_prefix</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the result feedback label and toggle the &#39;Add to List&#39; button state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            full_key_prefix (str): The current constructed colon-delimited path prefix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">full_key_prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">full_key_prefix</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Full Key: **</span><span class="si">{</span><span class="n">full_key_prefix</span><span class="si">}</span><span class="s2">**</span><span class="se">\n</span><span class="s2">Value: **</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">**&quot;</span><span class="p">)</span>
@@ -260,6 +325,7 @@
 <div class="viewcode-block" id="JSONFilterApp._add_to_list">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._add_to_list">[docs]</a>
     <span class="k">def</span> <span class="nf">_add_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stage the currently selected PV key and its metadata value into the export list widget.&quot;&quot;&quot;</span>
         <span class="n">current_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">cb</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="k">for</span> <span class="n">cb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboboxes</span> <span class="k">if</span> <span class="n">cb</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;— Select —&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]]</span>
         <span class="n">full_key</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_path</span><span class="p">)</span>
 
@@ -276,6 +342,7 @@
 <div class="viewcode-block" id="JSONFilterApp._remove_from_list">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._remove_from_list">[docs]</a>
     <span class="k">def</span> <span class="nf">_remove_from_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove highlighted items from both the GUI list widget and internal staging map.&quot;&quot;&quot;</span>
         <span class="n">items_to_remove</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">items_to_remove</span><span class="p">:</span>
             <span class="k">return</span>
@@ -290,6 +357,7 @@
 <div class="viewcode-block" id="JSONFilterApp._export_to_file">
 <a class="viewcode-back" href="../../utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._export_to_file">[docs]</a>
     <span class="k">def</span> <span class="nf">_export_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open a file save dialog and write all staged PV items to a JSON template file.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_items</span><span class="p">:</span>
             <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Export Failed&quot;</span><span class="p">,</span> <span class="s2">&quot;The selected list is empty.&quot;</span><span class="p">)</span>
             <span class="k">return</span>

@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers.phase_alignment_worker &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">workers.phase_alignment_worker</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for workers.phase_alignment_worker</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Phase Alignment Worker Module</span>
+<span class="sd">=============================</span>
+
+<span class="sd">Provides the :class:`PhaseAlignmentWorker` execution engine to perform real-time</span>
+<span class="sd">multi-chain RF phase alignment for RFQ cavities. </span>
+
+<span class="sd">The worker orchestrates EPICS Channel Access PV connections, chain hardware isolation,</span>
+<span class="sd">oscilloscope sampling via :mod:`utilities.scopelib`, Levenberg-Marquardt field fitting</span>
+<span class="sd">via :mod:`utilities.rfq_calib_utils`, and automated safety validation checks.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">utilities.rfq_calib_utils</span> <span class="k">as</span> <span class="nn">RFQCU</span>
+<span class="kn">import</span> <span class="nn">utilities.scopelib</span> <span class="k">as</span> <span class="nn">scopelib</span>
+<span class="kn">import</span> <span class="nn">utilities.util_functions</span> <span class="k">as</span> <span class="nn">UF</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">epics</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">logging</span> 
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PhaseAlignmentWorker">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker">[docs]</a>
+<span class="k">class</span> <span class="nc">PhaseAlignmentWorker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Orchestrates multi-chain RF phase alignment, hardware isolation, and safety checks.</span>
+
+<span class="sd">    Communicates with EPICS Process Variables (PVs) to manage master and slave amplifier</span>
+<span class="sd">    states, monitor runtime user commands (RUN, PAUSE, ABORT), and perform least-squares</span>
+<span class="sd">    optimization of cavity phase setpoints.</span>
+
+<span class="sd">    :param data: Configuration dictionary containing hardware topologies, worker parameters,</span>
+<span class="sd">                 EPICS PV configurations, and safety threshold limits.</span>
+<span class="sd">    :type data: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the PhaseAlignmentWorker with topology data and establish PV connections.&quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;PhaseAlignmentWorker initialized&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mode is </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;open&quot;</span><span class="p">:</span>
+            <span class="n">pv_suffix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;open_mode_suffix&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pv_suffix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;closed_mode_suffix&quot;</span><span class="p">]</span>
+        <span class="n">chain_prefix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;chain_prefix&quot;</span><span class="p">]</span>
+        <span class="n">cavity_prefix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;cavity_prefix&quot;</span><span class="p">]</span>
+        <span class="n">amplifier_prefix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_prefix&quot;</span><span class="p">]</span>
+        <span class="n">amplifier_suffix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_suffix&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_pv_dict</span><span class="p">(</span><span class="n">pv_suffix</span><span class="p">,</span> <span class="n">chain_prefix</span><span class="p">,</span> <span class="n">cavity_prefix</span><span class="p">,</span> <span class="n">amplifier_prefix</span><span class="p">,</span> <span class="n">amplifier_suffix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_control_pv</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+        <span class="n">connection_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;PhaseAlignmentWorker entirely connected&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">getUserIntention</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;workflow_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="PhaseAlignmentWorker.monitor_actions">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.monitor_actions">[docs]</a>
+    <span class="k">def</span> <span class="nf">monitor_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Monitor state transitions and dispatch asynchronous execution threads.</span>
+
+<span class="sd">        Evaluates current worker status against operator control commands (RUN, PAUSE, ABORT)</span>
+<span class="sd">        received from EPICS or user intentions. Launches :meth:`execute_full_alignment` in a</span>
+<span class="sd">        daemon thread when moving to the ``running`` state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;initialized&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;RUN&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;running&quot;</span>
+            <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_full_alignment</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PAUSE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;paused&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span><span class="o">.</span><span class="n">setCommand</span><span class="p">(</span><span class="s2">&quot;PAUSE&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;paused&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;RUN&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;running&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span><span class="o">.</span><span class="n">setCommand</span><span class="p">(</span><span class="s2">&quot;IDLE&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PAUSE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;initialized&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span><span class="o">.</span><span class="n">setCommand</span><span class="p">(</span><span class="s2">&quot;IDLE&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;completed&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PAUSE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;initialized&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ABORT&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;User sent an Abort signal&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span><span class="o">.</span><span class="n">setCommand</span><span class="p">(</span><span class="s2">&quot;ABORT&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhaseAlignmentWorker._on_user_control_change">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._on_user_control_change">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_user_control_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Asynchronous EPICS Channel Access callback triggered on PV value update.</span>
+
+<span class="sd">        Maps raw integer PV values to human-readable control commands:</span>
+<span class="sd">            * ``1`` -&gt; ``RUN``</span>
+<span class="sd">            * ``0`` -&gt; ``PAUSE``</span>
+<span class="sd">            * ``2`` -&gt; ``ABORT``</span>
+
+<span class="sd">        :param pvname: Name of the updated EPICS Process Variable, defaults to None.</span>
+<span class="sd">        :type pvname: str, optional</span>
+<span class="sd">        :param value: Updated value received from Channel Access, defaults to None.</span>
+<span class="sd">        :type value: int or float, optional</span>
+<span class="sd">        :param kwargs: Additional keyword arguments passed by ``epics.PV`` callbacks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;unknown&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;initialized&quot;</span>
+            <span class="k">return</span>
+
+        <span class="n">val_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">cmd_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;RUN&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;PAUSE&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;ABORT&quot;</span><span class="p">}</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">cmd_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val_int</span><span class="p">,</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;raw_val&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_int</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PV &#39;</span><span class="si">{</span><span class="n">pvname</span><span class="si">}</span><span class="s2">&#39; changed to </span><span class="si">{</span><span class="n">val_int</span><span class="si">}</span><span class="s2"> -&gt; Command: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhaseAlignmentWorker.status">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.status">[docs]</a>
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Log and display the current worker state dictionary.&quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhaseAlignmentWorker._connect">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Establish EPICS Channel Access PV instances and assign update callbacks.</span>
+
+<span class="sd">        Connects user control PVs, master chain amplifier/target PVs, and all slave chain PVs.</span>
+
+<span class="sd">        :return: True if any PV connection timed out or failed; False if all connected.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#Connect user control PV</span>
+        <span class="n">user_control_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user_control&quot;</span><span class="p">][</span><span class="s2">&quot;pv_name&quot;</span><span class="p">]</span>
+        <span class="n">user_control_pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">user_control_pv_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user_control_pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_control_pv</span> <span class="o">=</span> <span class="n">user_control_pv_instance</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_user_control_pv</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_user_control_change</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t connect to </span><span class="si">{</span><span class="n">user_control_pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">#Connect Master</span>
+        <span class="n">amplifier_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">amplifier_pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">amplifier_pv_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">amplifier_pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">][</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">amplifier_pv_instance</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t connect </span><span class="si">{</span><span class="n">amplifier_pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">target_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;target_pv&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">target_pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">target_pv_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">target_pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;target_pv&quot;</span><span class="p">][</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_pv_instance</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t connect to </span><span class="si">{</span><span class="n">target_pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">#Connect sleeve</span>
+        <span class="k">for</span> <span class="n">amp_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pvs&quot;</span><span class="p">]:</span>
+            <span class="n">pv_name</span> <span class="o">=</span> <span class="n">amp_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">amp_dict</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_instance</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t connect to Slave Amplifier PV: </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">target_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;target_pvs&quot;</span><span class="p">]:</span>
+            <span class="n">pv_name</span> <span class="o">=</span> <span class="n">target_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">target_dict</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_instance</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t connect to Slave Target PV: </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">connection_error</span></div>
+
+
+<div class="viewcode-block" id="PhaseAlignmentWorker._build_pv_dict">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._build_pv_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">_build_pv_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pv_suffix</span><span class="p">,</span> <span class="n">chain_prefix</span><span class="p">,</span> <span class="n">cavity_prefix</span><span class="p">,</span> <span class="n">amplifier_prefix</span><span class="p">,</span> <span class="n">amplifier_suffix</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct EPICS PV name mapping structure based on hardware topology settings.</span>
+
+<span class="sd">        :param pv_suffix: PV suffix corresponding to open or closed loop operation.</span>
+<span class="sd">        :type pv_suffix: str</span>
+<span class="sd">        :param chain_prefix: Prefix string identifying the RF chain address.</span>
+<span class="sd">        :type chain_prefix: str</span>
+<span class="sd">        :param cavity_prefix: Prefix string identifying cavity addresses.</span>
+<span class="sd">        :type cavity_prefix: str</span>
+<span class="sd">        :param amplifier_prefix: Prefix string for amplifier control PVs.</span>
+<span class="sd">        :type amplifier_prefix: str</span>
+<span class="sd">        :param amplifier_suffix: Suffix string for amplifier control PVs.</span>
+<span class="sd">        :type amplifier_suffix: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">master_chain_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;hardware_topology&quot;</span><span class="p">][</span><span class="s2">&quot;master_chain&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">amplifier_pv_name</span> <span class="o">=</span> <span class="n">amplifier_prefix</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">master_chain_data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="n">amplifier_suffix</span>
+        <span class="n">pv_target_name</span> <span class="o">=</span> <span class="n">chain_prefix</span> <span class="o">+</span> <span class="n">master_chain_data</span><span class="p">[</span><span class="s2">&quot;chain_addr&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cavity_prefix</span> <span class="o">+</span> <span class="n">master_chain_data</span><span class="p">[</span><span class="s2">&quot;chain_addr&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pv_suffix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">amplifier_pv_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">][</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;target_pv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;target_pv&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_target_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;target_pv&quot;</span><span class="p">][</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># sleeve chains</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pvs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;target_pvs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">slave_chains_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;hardware_topology&quot;</span><span class="p">][</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">slave_dict</span> <span class="ow">in</span> <span class="n">slave_chains_data</span><span class="p">:</span>
+            <span class="n">amplifier_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">target_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">amplifier_pv_name</span> <span class="o">=</span> <span class="n">amplifier_prefix</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">slave_dict</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="n">amplifier_suffix</span>
+            <span class="n">pv_target_name</span> <span class="o">=</span> <span class="n">chain_prefix</span> <span class="o">+</span> <span class="n">slave_dict</span><span class="p">[</span><span class="s2">&quot;chain_addr&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cavity_prefix</span> <span class="o">+</span> <span class="n">slave_dict</span><span class="p">[</span><span class="s2">&quot;chain_addr&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pv_suffix</span>
+            <span class="n">amplifier_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">amplifier_pv_name</span>
+            <span class="n">amplifier_dict</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">target_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_target_name</span>
+            <span class="n">target_dict</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pvs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">amplifier_dict</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;target_pvs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhaseAlignmentWorker._set_amplifier_state">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._set_amplifier_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">_set_amplifier_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amp_pv_dict</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggle an amplifier state using its connected ``epics.PV`` instance.</span>
+
+<span class="sd">        :param amp_pv_dict: Dictionary holding the amplifier PV name and PV object instance.</span>
+<span class="sd">        :type amp_pv_dict: dict</span>
+<span class="sd">        :param enable: True to enable (set to 1), False to disable (set to 0), defaults to True.</span>
+<span class="sd">        :type enable: bool, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pv_name</span> <span class="o">=</span> <span class="n">amp_pv_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">pv_inst</span> <span class="o">=</span> <span class="n">amp_pv_dict</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">enable</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;setting </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">pv_inst</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhaseAlignmentWorker.isolate_slave_chain">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.isolate_slave_chain">[docs]</a>
+    <span class="k">def</span> <span class="nf">isolate_slave_chain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_slave_idx</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Isolate RF fields for a specific slave chain.</span>
+
+<span class="sd">        Enforces Master AMP1 = ON and Target Slave AMP = ON, while turning off all</span>
+<span class="sd">        other slave amplifiers. Pauses for 5 seconds post-switching to allow fields to settle.</span>
+
+<span class="sd">        :param target_slave_idx: Index of the slave chain to isolate and keep active.</span>
+<span class="sd">        :type target_slave_idx: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Isolating system state for Slave Chain (AMP</span><span class="si">{</span><span class="n">target_slave_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 1. Master AMP1 must remain ON</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_amplifier_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">],</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># 2. Toggle slave amplifiers</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">slave_amp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pvs&quot;</span><span class="p">]):</span>
+            <span class="n">should_enable</span> <span class="o">=</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="n">target_slave_idx</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_amplifier_state</span><span class="p">(</span><span class="n">slave_amp</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="n">should_enable</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Chain isolation complete. Settling RF fields for 5 seconds...&quot;</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="PhaseAlignmentWorker._restore_all_amplifiers">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._restore_all_amplifiers">[docs]</a>
+    <span class="k">def</span> <span class="nf">_restore_all_amplifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Re-enable all master and slave amplifier chains.</span>
+
+<span class="sd">        Called upon sequence completion or procedure abort to restore full operating state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Restoring all amplifier chains to ON state...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_amplifier_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;master_chain&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pv&quot;</span><span class="p">],</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">amp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;amplifier_pvs&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_amplifier_state</span><span class="p">(</span><span class="n">amp</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="PhaseAlignmentWorker.execute_full_alignment">
+<a class="viewcode-back" href="../../workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment">[docs]</a>
+    <span class="k">def</span> <span class="nf">execute_full_alignment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>           
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute complete multi-chain RF phase alignment scan sequence.</span>
+
+<span class="sd">        Iterates over all configured slave chains, isolates each target chain, acquires</span>
+<span class="sd">        phase scan voltage samples using the oscilloscope interface, and performs</span>
+<span class="sd">        Levenberg-Marquardt least-squares curve fitting.</span>
+
+<span class="sd">        Evaluates safety constraints prior to setting new phase angles:</span>
+<span class="sd">            * **Forward Wave Unbalance Limit:** Must not exceed ``max_allowed_unbalance_percent``.</span>
+<span class="sd">            * **Minimum Cavity Voltage:** Peak voltage must equal or exceed ``min_expected_cavity_voltage``.</span>
+
+<span class="sd">        If an error or safety violation occurs, the current slave chain is restored to its</span>
+<span class="sd">        original initial phase setpoint and all amplifiers are re-enabled.</span>
+
+<span class="sd">        :raises ValueError: If forward wave unbalance exceeds safety limit or cavity peak voltage drops below minimum.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Executing full alignment&quot;</span><span class="p">)</span>
+        <span class="n">n_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;n_point&quot;</span><span class="p">]</span>
+        <span class="n">max_unbalance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;safety_limits&quot;</span><span class="p">][</span><span class="s2">&quot;max_allowed_unbalance_percent&quot;</span><span class="p">]</span>
+        <span class="n">min_voltage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;safety_limits&quot;</span><span class="p">][</span><span class="s2">&quot;min_expected_cavity_voltage&quot;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">scope_ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;worker_parameters&quot;</span><span class="p">][</span><span class="s2">&quot;scope_ip&quot;</span><span class="p">]</span>
+            <span class="n">scope</span> <span class="o">=</span> <span class="n">scopelib</span><span class="o">.</span><span class="n">CreateScope</span><span class="p">(</span><span class="n">scope_ip</span><span class="p">)</span>
+            <span class="n">RFQCU</span><span class="o">.</span><span class="n">prepareScopeChannel</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">scope_err</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to initialize oscilloscope at </span><span class="si">{</span><span class="n">scope_ip</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">scope_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+            <span class="k">return</span>
+        <span class="n">slave_targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epics_data</span><span class="p">[</span><span class="s2">&quot;slave_chains&quot;</span><span class="p">][</span><span class="s2">&quot;target_pvs&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">slave_target</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">slave_targets</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Phase Alignment Procedure is in ERROR state, terminating now&quot;</span><span class="p">)</span>
+                <span class="k">return</span> 
+            <span class="n">checkVal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span><span class="o">.</span><span class="n">checkCommand</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">checkVal</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">slave_id</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;active_slave_index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slave_id</span>
+            <span class="n">target_pv_inst</span> <span class="o">=</span> <span class="n">slave_target</span><span class="p">[</span><span class="s2">&quot;instance&quot;</span><span class="p">]</span>
+            <span class="n">pv_name</span> <span class="o">=</span> <span class="n">slave_target</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Beginning Alignment Sequence for Slave Chain </span><span class="si">{</span><span class="n">slave_id</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isolate_slave_chain</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">original_phase_deg</span> <span class="o">=</span> <span class="n">target_pv_inst</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored initial fallback phase for Slave </span><span class="si">{</span><span class="n">slave_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">original_phase_deg</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">scan_points</span> <span class="o">=</span> <span class="n">RFQCU</span><span class="o">.</span><span class="n">doScan</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">target_pv_inst</span><span class="p">,</span> <span class="n">scope</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_intentions</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="n">angles_rad</span> <span class="o">=</span> <span class="n">scan_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">voltages</span> <span class="o">=</span> <span class="n">scan_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Levenberg-Marquardt Least-Squares Optimization&quot;</span><span class="p">)</span>
+                <span class="n">gpar</span> <span class="o">=</span> <span class="n">RFQCU</span><span class="o">.</span><span class="n">firstGuess</span><span class="p">(</span><span class="n">angles_rad</span><span class="p">,</span> <span class="n">voltages</span><span class="p">)</span>
+                <span class="n">fpar</span> <span class="o">=</span> <span class="n">RFQCU</span><span class="o">.</span><span class="n">doFit</span><span class="p">(</span><span class="n">gpar</span><span class="p">,</span> <span class="n">angles_rad</span><span class="p">,</span> <span class="n">voltages</span><span class="p">)</span>
+                <span class="n">fpar</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">%=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Telemetry figures of merit&quot;</span><span class="p">)</span>
+                <span class="n">forward_unbalance</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">fpar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">fpar</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">fpar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">fpar</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">*</span> <span class="mf">100.0</span>
+                <span class="n">opt_phase_deg</span> <span class="o">=</span> <span class="n">fpar</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+                <span class="n">peak_voltage</span> <span class="o">=</span> <span class="n">RFQCU</span><span class="o">.</span><span class="n">F</span><span class="p">(</span><span class="n">fpar</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">*</span><span class="n">fpar</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Safety Validation Checks&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">forward_unbalance</span> <span class="o">&gt;</span> <span class="n">max_unbalance</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">scope</span><span class="o">.</span><span class="n">mock</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forward wave unbalance too high: </span><span class="si">{</span><span class="n">forward_unbalance</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% (Limit: </span><span class="si">{</span><span class="n">max_unbalance</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forward wave unbalance too high: </span><span class="si">{</span><span class="n">forward_unbalance</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% (Limit: </span><span class="si">{</span><span class="n">max_unbalance</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">peak_voltage</span> <span class="o">&lt;</span> <span class="n">min_voltage</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">scope</span><span class="o">.</span><span class="n">mock</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cavity field too weak: </span><span class="si">{</span><span class="n">peak_voltage</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2"> V (Limit: </span><span class="si">{</span><span class="n">min_voltage</span><span class="si">}</span><span class="s2"> V)&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cavity field too weak: </span><span class="si">{</span><span class="n">peak_voltage</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2"> V (Limit: </span><span class="si">{</span><span class="n">min_voltage</span><span class="si">}</span><span class="s2"> V)&quot;</span><span class="p">)</span>
+                <span class="c1"># Lock optimized setpoint</span>
+                <span class="n">RFQCU</span><span class="o">.</span><span class="n">setPhase</span><span class="p">(</span><span class="n">fpar</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">target_pv_inst</span><span class="p">,</span> <span class="n">pv_name</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lock applied for Slave </span><span class="si">{</span><span class="n">slave_id</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">opt_phase_deg</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">run_error</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error during alignment on Slave </span><span class="si">{</span><span class="n">slave_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">run_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">target_pv_inst</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">original_phase_deg</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+                <span class="k">break</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_restore_all_amplifiers</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Phase Alignment Procedure Completed&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_state</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

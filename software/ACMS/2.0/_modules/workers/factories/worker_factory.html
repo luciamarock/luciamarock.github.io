@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers.factories.worker_factory &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">workers.factories.worker_factory</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for workers.factories.worker_factory</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">utilities.tool_internals</span> <span class="k">as</span> <span class="nn">UF</span>
+<span class="kn">import</span> <span class="nn">utilities.util_functions</span> <span class="k">as</span> <span class="nn">tool_settings</span>
+<span class="kn">import</span> <span class="nn">epics</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">workers.auto_rearm_manager</span> <span class="k">as</span> <span class="nn">ARM</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Worker">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker">[docs]</a>
+<span class="k">class</span> <span class="nc">Worker</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters_dict</span><span class="p">,</span> <span class="n">observable_variables</span><span class="p">,</span> <span class="n">all_interlocks</span><span class="p">,</span> <span class="n">workflow_pvs</span><span class="p">,</span> <span class="n">operation_variables</span><span class="p">,</span>  
+    <span class="n">instance_name</span><span class="p">,</span> <span class="n">auto_rearm_data</span><span class="p">,</span> <span class="n">sequence_all</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Worker instance representing the Generic Workflow.</span>
+<span class="sd">        </span>
+<span class="sd">        :param parameters_dict: conditioning_parameters node of the xml file (converted in dictionary)</span>
+<span class="sd">        :param observable_variables: observable_pvs node of the xml file (converted in list of PV names)</span>
+<span class="sd">        :param rearmable_interlocks: rearmable_interlocks node of the xml file (converted in list of PV names)</span>
+<span class="sd">        :param operation_variables: epics node of the xml file (converted in dictionary of format alias_name:PVname)</span>
+<span class="sd">        :param sequence_data: ordered list of steps where each element is a dictionary (column_name:value) </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">tool_settings</span><span class="o">.</span><span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">instance_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence_name</span> <span class="o">=</span> <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_data&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters_dict</span> <span class="c1">#TODO contains auto_rearm PV (and validate xml tags)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">operation_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observables</span> <span class="o">=</span> <span class="n">observable_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interlocks</span> <span class="o">=</span> <span class="n">all_interlocks</span> <span class="c1">#TODO validate xml attributes format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RF_system_starting</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span> <span class="o">=</span> <span class="n">workflow_pvs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># a place where to store this worker PV instances {&quot;typology&quot;:{PV_name: PV_instance}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># {PV_name : value}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initConditionsChanged</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;not running&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Will be initialized after connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span> <span class="o">=</span> <span class="n">auto_rearm_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;free&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;free&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_steps_update_dict</span><span class="p">(</span><span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;HMI_count_dict&quot;</span><span class="p">])</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Worker._generate_steps_update_dict">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._generate_steps_update_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">_generate_steps_update_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">HMI_count_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">HMI_count_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span><span class="p">[</span><span class="s2">&quot;total_steps_pv_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">HMI_count_dict</span><span class="p">[</span><span class="s2">&quot;total_steps_pv_name&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span><span class="p">[</span><span class="s2">&quot;total_steps_pv_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span><span class="p">[</span><span class="s2">&quot;current_step_pv_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">HMI_count_dict</span><span class="p">[</span><span class="s2">&quot;current_step_pv_name&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span><span class="p">[</span><span class="s2">&quot;current_step_pv_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">return</span></div>
+
+            
+<div class="viewcode-block" id="Worker._update_steps_count">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._update_steps_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">_update_steps_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_steps</span><span class="p">,</span> <span class="n">current_step</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span><span class="p">[</span><span class="s2">&quot;total_steps_pv_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">total_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_steps_update_dict</span><span class="p">[</span><span class="s2">&quot;current_step_pv_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">current_step</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Worker._update_sequence_list">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._update_sequence_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">_update_sequence_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sequences_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;sequences&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+        <span class="n">sequence_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">sequences_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">)]</span>
+        <span class="n">combo_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sequence_files</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_combo_pv</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">combo_list</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Worker._selected_sequence_callback">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._selected_sequence_callback">[docs]</a>
+    <span class="k">def</span> <span class="nf">_selected_sequence_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">char_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">RF_system_starting</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_load_pv</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RF_system_starting</span> <span class="o">=</span> <span class="kc">False</span> 
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence_name</span><span class="p">:</span>
+            <span class="n">sequences_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;sequences&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+            <span class="n">sequence_file</span> <span class="o">=</span> <span class="n">sequences_dir</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">parse_csv</span><span class="p">(</span><span class="n">sequence_file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence_name</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: requested sequence change to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.csv, resetting now&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="Worker.connect">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">False</span> 
+        <span class="c1">#connecting to the observables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;observables&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observables</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;observables&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;observables&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span> 
+                <span class="k">break</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;observables&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="c1">#connecting to operation variables</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> fully connected to its observable&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">variable</span>  <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c1">#TODO make sure to validate the keys</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                    <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span> 
+                    <span class="k">break</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="c1">#connecting to workflow PVs </span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> fully connected to its operation PVs&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">variable</span>  <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> <span class="c1">#TODO make sure to validate the keys</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                    <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span> 
+                    <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="c1">#connecting to auto-rearm PV </span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> fully connected to its workflow PVs&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;rearming&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">auto_rearm_PV_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;manual_restart&quot;</span><span class="p">]</span> <span class="c1">#TODO ensure the exitence of this during validation (use mapping)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;rearming&quot;</span><span class="p">][</span><span class="n">auto_rearm_PV_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">auto_rearm_PV_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;rearming&quot;</span><span class="p">][</span><span class="n">auto_rearm_PV_name</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="n">auto_rearm_PV_name</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">[</span><span class="n">auto_rearm_PV_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;rearming&quot;</span><span class="p">][</span><span class="n">auto_rearm_PV_name</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">ramp_speed_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span>
+            <span class="n">ramp_speed_pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">ramp_speed_pv_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ramp_speed_pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="n">ramp_speed_pv_name</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ramp_speed_pv_instance</span>
+            <span class="n">cavity_phase_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_phase&quot;</span><span class="p">]</span>
+            <span class="n">cavity_phase_pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">cavity_phase_pv_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cavity_phase_pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="n">cavity_phase_pv_name</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cavity_phase_pv_instance</span>
+        <span class="c1">#connecting the interlocks </span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> connected to its auto-rearm PV, connecting the Interlocks&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">variables_dict</span>  <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interlocks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">variables_dict</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to Interlock </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                    <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> fully connected to its interlocks, connecting HMI PVs&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_combo_pv</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_combo_pv</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s1">&#39;sequence_combo&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                    <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_load_pv</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_load_pv</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_sequence_load_pv</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_selected_sequence_callback</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed to connect to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_HMI_pv_names</span><span class="p">[</span><span class="s1">&#39;sequence_load&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, stopping now&quot;</span><span class="p">)</span>
+                    <span class="n">connection_error</span> <span class="o">=</span> <span class="kc">True</span>        
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_update_sequence_list</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_error</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> fully connected to the EPICS layer&quot;</span><span class="p">)</span>
+            <span class="c1"># Initialize the auto-rearm manager</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span> <span class="o">=</span> <span class="n">ARM</span><span class="o">.</span><span class="n">AutoRearmManager</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span><span class="p">,</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">interlocks</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connecting its auto-rearm Manager ... &quot;</span><span class="p">)</span>
+            <span class="n">connection_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">connection_error</span></div>
+
+
+<div class="viewcode-block" id="Worker.load_compare_save">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.load_compare_save">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_compare_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">workspace_directory</span><span class="p">):</span>
+        <span class="n">workers_startup_state_path</span> <span class="o">=</span> <span class="n">workspace_directory</span> <span class="o">+</span> <span class="s2">&quot;workers_startup_state&quot;</span>
+        <span class="n">workers_startup_state_file</span> <span class="o">=</span> <span class="n">workspace_directory</span> <span class="o">+</span> <span class="s2">&quot;workers_startup_state&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">workers_startup_state_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">workers_startup_state_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">workers_startup_state_file</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">workers_startup_state_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">workers_startup_state_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">temp_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialState</span> <span class="o">==</span> <span class="n">temp_dict</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_initConditionsChanged</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unchanged initial conditions for worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">workers_startup_state_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initialState</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;initial conditions for worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> are changed, updating the .json file&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+    
+<div class="viewcode-block" id="Worker.start">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.start">[docs]</a>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span><span class="o">.</span><span class="n">reset_rearm_registry</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">return</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Mocking Workflow &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is staring its workflow&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;running&quot;</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span> <span class="ow">and</span> <span class="n">counter</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">counter</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;worker finished its workflow&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Worker.stop">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.stop">[docs]</a>
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;not running&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> stopped.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Worker.abort">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.abort">[docs]</a>
+    <span class="k">def</span> <span class="nf">abort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Abort the worker process. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;aborted&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Worker aborted.&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Worker.abort_due_to_error">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.abort_due_to_error">[docs]</a>
+    <span class="k">def</span> <span class="nf">abort_due_to_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Worker aborted due to error.&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Worker.reset">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.reset">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;not running&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;resetting </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;previous_derivative&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;min_rel_index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+    
+<div class="viewcode-block" id="Worker.get_status">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.get_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span></div>
+
+    
+<div class="viewcode-block" id="Worker.run">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> started the execution of sequence </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">number_of_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;running&quot;</span>
+        <span class="n">pending_warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pending_errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pending_interlocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">init_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_system_state</span><span class="p">()</span>
+        <span class="c1"># removing this condition because it&#39;s checked inside the auto_rearm_manager:</span>
+        <span class="c1">#  and self.auto_rearm_manager.get_rearm_counter() - 1 &lt; int(self.parameters[&quot;retry_attempts&quot;]) </span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">&lt;</span> <span class="n">number_of_steps</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_steps_count</span><span class="p">(</span><span class="n">number_of_steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">)</span>
+            <span class="n">loop_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">loop_start_time</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;stability_check_interval&quot;</span><span class="p">]):</span>
+                <span class="c1">#call all the checks </span>
+                <span class="n">report_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_observables</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">report_dict</span><span class="p">:</span>
+                    <span class="n">error_list</span> <span class="o">=</span> <span class="n">report_dict</span><span class="p">[</span><span class="s2">&quot;errors&quot;</span><span class="p">]</span>
+                    <span class="n">warning_list</span> <span class="o">=</span> <span class="n">report_dict</span><span class="p">[</span><span class="s2">&quot;warnings&quot;</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">pv_name</span> <span class="ow">in</span> <span class="n">error_list</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">pv_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pending_errors</span><span class="p">:</span>
+                            <span class="n">pending_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">pv_name</span> <span class="ow">in</span> <span class="n">warning_list</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">pv_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pending_warnings</span><span class="p">:</span>
+                            <span class="n">pending_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pending_warnings</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">pending_errors</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">list_of_interlocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span><span class="o">.</span><span class="n">detect_interlocks</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">list_of_interlocks</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">pv_name</span> <span class="ow">in</span> <span class="n">list_of_interlocks</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">pv_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pending_interlocks</span><span class="p">:</span>
+                            <span class="n">pending_interlocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pending_interlocks</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;retry_delay&quot;</span><span class="p">]))</span> <span class="c1">#TODO verifications: retry_delay must be a fraction of stability_check_interval</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pending_errors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">pv_name</span> <span class="ow">in</span> <span class="n">pending_errors</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has detected error in observable </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">current_configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_system_state</span><span class="p">()</span>
+                <span class="c1">#if current_configuration == init_conf: #TODO remove these two variables </span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;encountered error at the lowest step, aborting.&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">abort_due_to_error</span><span class="p">()</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;free&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;busy&quot;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;previous_derivative&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;min_rel_index&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">rollback_step_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rollback_step</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">rollback_step_result</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> rollback step successfully applyied, updating step&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>  
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;busy&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;free&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pending_warnings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">pv_name</span> <span class="ow">in</span> <span class="n">pending_warnings</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has detected warning in observable </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;free&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">case_warning</span><span class="p">()</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;busy&quot;</span><span class="p">:</span>
+                    <span class="n">previous_ramp_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;ramp_speed&quot;</span><span class="p">]</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is setting ramp_speed to previous value </span><span class="si">{</span><span class="n">previous_ramp_speed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">previous_ramp_speed</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;free&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pending_interlocks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">interlock_pv</span> <span class="ow">in</span> <span class="n">pending_interlocks</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: detected interlock </span><span class="si">{</span><span class="n">interlock_pv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">rearming_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_manager</span><span class="o">.</span><span class="n">execute_rearming_workflow</span><span class="p">(</span><span class="n">interlock_pv</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">rearming_result</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Failed to rearm interlock </span><span class="si">{</span><span class="n">interlock_pv</span><span class="si">}</span><span class="s2">. Aborting now ...&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">abort_due_to_error</span><span class="p">()</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;free&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;busy&quot;</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;previous_derivative&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;min_rel_index&quot;</span><span class="p">]</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;busy&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;free&quot;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_step</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">==</span> <span class="s2">&quot;running&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> finished its workflow&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Worker.case_warning">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.case_warning">[docs]</a>
+    <span class="k">def</span> <span class="nf">case_warning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Handle a warning state. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;busy&quot;</span>
+        <span class="n">voltage_readback_pv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_get&quot;</span><span class="p">]]</span>
+        <span class="n">voltage_setpoint_pv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span>
+        <span class="n">current_ramp_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warning_dict</span><span class="p">[</span><span class="s2">&quot;ramp_speed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_ramp_speed</span>
+        <span class="n">new_ramp_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;user_defined_ramp_speed&quot;</span><span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is setting ramp_speed to UserDefined&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">new_ramp_speed</span><span class="p">)</span>
+        <span class="n">voltage_setpoint_pv_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]</span>
+        <span class="n">current_voltage</span> <span class="o">=</span> <span class="n">voltage_readback_pv</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">new_setpoint</span> <span class="o">=</span> <span class="n">current_voltage</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;Vwarning_multiplier&quot;</span><span class="p">])</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;worker </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is setting </span><span class="si">{</span><span class="n">new_setpoint</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">voltage_setpoint_pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">voltage_setpoint_pv</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">new_setpoint</span><span class="p">)</span> <span class="c1"># wait=True ?</span>
+        <span class="n">default_min_stable_time</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">calculate_min_stable_time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_stable_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_min_stable_time</span></div>
+
+
+<div class="viewcode-block" id="Worker.get_current_system_state">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.get_current_system_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_current_system_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Retrieve current system state as a dictionary. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;readback_tolerance&quot;</span><span class="p">])))</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">operation_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">operation_dict</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+            <span class="n">pv_value</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">)</span>
+            <span class="n">state_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_value</span>
+        <span class="k">return</span> <span class="n">state_dict</span></div>
+
+
+<div class="viewcode-block" id="Worker.check_observables">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.check_observables">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_observables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Check if any observable PVs are in an error or warning state. &quot;&quot;&quot;</span>
+        <span class="c1"># EPICS severity codes: 0=NO_ALARM, 1=MINOR, 2=MAJOR, 3=INVALID</span>
+        <span class="c1">#instance.get() gets the value, instance.severity gets the severity</span>
+        <span class="n">observables_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;observables&quot;</span><span class="p">]</span>
+        <span class="n">list_of_warning</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">list_of_errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">observables_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">severity</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">list_of_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">float</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">severity</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">list_of_warning</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_of_warning</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_of_errors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">return_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">return_dict</span><span class="p">[</span><span class="s2">&quot;warnings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">list_of_warning</span>
+            <span class="n">return_dict</span><span class="p">[</span><span class="s2">&quot;errors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">list_of_errors</span>
+            <span class="k">return</span> <span class="n">return_dict</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Worker.rollback_step">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.rollback_step">[docs]</a>
+    <span class="k">def</span> <span class="nf">rollback_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Rollback to the previous step in case of an error. &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span> 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Rolling back to step </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_step</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Cannot roll back further. Aborting.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abort_due_to_error</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span> </div>
+
+    
+<div class="viewcode-block" id="Worker._track_derivatives">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._track_derivatives">[docs]</a>
+    <span class="k">def</span> <span class="nf">_track_derivatives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_sequence_step</span><span class="p">,</span> <span class="n">current_worker_state</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;previous_derivative&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;previous_derivative&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;min_rel_index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">current_derivative</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">current_sequence_step</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="n">current_worker_state</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">current_derivative</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;previous_derivative&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;min_rel_index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_dict</span><span class="p">[</span><span class="s2">&quot;previous_derivative&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_derivative</span></div>
+
+
+<div class="viewcode-block" id="Worker.apply_step">
+<a class="viewcode-back" href="../../../workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.apply_step">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Apply the configuration settings for the current step. &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: applying step </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="si">}</span><span class="s2"> of the sequence </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">operation_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workerPVs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span>
+        <span class="n">set_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">get_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">]</span> <span class="c1">#TODO validate keys </span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_system_state</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_track_derivatives</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span><span class="n">current_state</span><span class="p">)</span>
+        <span class="n">max_delta</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;set&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">set_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tasks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">get_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;set&quot;</span><span class="p">,</span><span class="s2">&quot;get&quot;</span><span class="p">)</span>
+                <span class="n">current_delta</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_state</span><span class="p">[</span><span class="n">get_key</span><span class="p">]</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">tasks</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">current_delta</span> <span class="o">&gt;</span> <span class="n">max_delta</span><span class="p">:</span>
+                    <span class="n">max_delta</span> <span class="o">=</span> <span class="n">current_delta</span>
+                <span class="n">get_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="n">get_key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tasks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="c1">#apply set_dict </span>
+        <span class="k">for</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">set_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">operation_dict</span><span class="p">[</span><span class="n">pv_name</span><span class="p">]</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">status</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Failed to set </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="c1">#TODO verify readbacks from an additional method (check auto_rearm_manager), also continuously check observables</span>
+        <span class="n">readback_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">readback_completed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">ramp_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">cavity_phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_phase&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">new_min_stable_time</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">calculate_min_stable_time</span><span class="p">(</span><span class="n">max_delta</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">,</span> <span class="n">cavity_phase</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_stable_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_min_stable_time</span>
+        <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">readback_start_time</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_stable_time&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">readback_completed</span><span class="p">:</span>
+            <span class="n">readback_completed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">get_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">operation_dict</span><span class="p">[</span><span class="n">pv_name</span><span class="p">]</span>
+                <span class="n">readback_value</span> <span class="o">=</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">round</span><span class="p">(</span><span class="n">readback_value</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">):</span>
+                    <span class="n">readback_completed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="c1">#TODO hardcoded 100 ms (check xml)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">readback_start_time</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">readback_completed</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Could not verify readback after </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">}</span><span class="s2">. Trying again ...&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Readback Values verified after </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">][</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span>
+        <span class="n">method_name</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">method</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: Step </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="si">}</span><span class="s2"> applied successfully.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

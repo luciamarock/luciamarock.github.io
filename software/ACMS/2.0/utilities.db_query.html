@@ -56,9 +56,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -112,14 +117,58 @@
              
   <section id="module-utilities.db_query">
 <span id="utilities-db-query-module"></span><h1>utilities.db_query module<a class="headerlink" href="#module-utilities.db_query" title="Link to this heading"></a></h1>
+<p>PostgreSQL Archive Database Interface for PV Discovery.</p>
+<p>This module provides relational database access functions required by the ACMS Template Editor
+and Auto Conditioning Tool frameworks to retrieve archived EPICS Process Variable (PV) records.</p>
+<p>It uses the modern <code class="docutils literal notranslate"><span class="pre">psycopg</span> <span class="pre">3</span></code> library to open managed database connections and query
+archived channel inventories from target SQL databases (such as the local <code class="docutils literal notranslate"><span class="pre">lipac_mock</span></code> archive
+or production EPICS archiver appliances). The resulting PV lists are passed to
+<a class="reference internal" href="editor_interface.html#module-editor_interface" title="editor_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">editor_interface</span></code></a> for multi-threaded Channel Access profiling.</p>
+<dl class="simple">
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">psycopg</span></code>: PostgreSQL database adapter for Python.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.db_query.get_list_of_pvs">
 <span class="sig-prename descclassname"><span class="pre">utilities.db_query.</span></span><span class="sig-name descname"><span class="pre">get_list_of_pvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lipac_mock'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'archive'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rockoDD1o'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_dashboard</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_alive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/utilities/db_query.html#get_list_of_pvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.db_query.get_list_of_pvs" title="Link to this definition"></a></dt>
-<dd><p>Connects to the local lipac_mock database and retrieves a clean list of PV strings.</p>
+<dd><p>Connect to a PostgreSQL EPICS archive database and retrieve a sorted list of PV strings.</p>
+<p>Establishes a connection context using <code class="docutils literal notranslate"><span class="pre">psycopg.connect()</span></code> and executes targeted SQL
+queries based on the specified source table and state filtering parameters:</p>
 <ul class="simple">
-<li><p>use_dashboard: If True, pulls from ‘pv_status’. If False, pulls from ‘channel’.</p></li>
-<li><p>only_alive: If True and using dashboard, returns only PVs currently active on the network.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">use_dashboard=True</span></code>, queries the <code class="docutils literal notranslate"><span class="pre">pv_status</span></code> dashboard table.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">use_dashboard=False</span></code>, queries the static <code class="docutils literal notranslate"><span class="pre">channel</span></code> archiver catalog table.</p></li>
 </ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server</strong> (<em>str</em><em>, </em><em>optional</em>) – Hostname or IP address of the PostgreSQL database server. Defaults to <code class="docutils literal notranslate"><span class="pre">'localhost'</span></code>.</p></li>
+<li><p><strong>database</strong> (<em>str</em><em>, </em><em>optional</em>) – Target SQL database name. Defaults to <code class="docutils literal notranslate"><span class="pre">'lipac_mock'</span></code>.</p></li>
+<li><p><strong>username</strong> (<em>str</em><em>, </em><em>optional</em>) – Database role user account. Defaults to <code class="docutils literal notranslate"><span class="pre">'archive'</span></code>.</p></li>
+<li><p><strong>password</strong> (<em>str</em><em>, </em><em>optional</em>) – Authentication password. Defaults to <code class="docutils literal notranslate"><span class="pre">'rockoDD1o'</span></code>.</p></li>
+<li><p><strong>use_dashboard</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, queries live status records from <code class="docutils literal notranslate"><span class="pre">pv_status</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, queries registered channel definitions from <code class="docutils literal notranslate"><span class="pre">channel</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>only_alive</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (and <code class="docutils literal notranslate"><span class="pre">use_dashboard=True</span></code>), restricts results
+to active PVs where <code class="docutils literal notranslate"><span class="pre">alive</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A sorted list of unique EPICS PV names extracted from the database query.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>psycopg.Error</strong> – If a database connection error, authentication failure, or SQL
+execution exception occurs.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

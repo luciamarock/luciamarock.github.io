@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -105,7 +110,9 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -126,7 +133,11 @@
 </li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._auto_load_action">_auto_load_action() (SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
+      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto._auto_mode_mapping_data">_auto_mode_mapping_data (workflows.automatic_workflow.RMSauto attribute)</a>
+</li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._bobfile_callback">_bobfile_callback() (workflows.srf_sentinel.SRFsentinel method)</a>
+</li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._build_pv_dict">_build_pv_dict() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
 </li>
       <li><a href="SmartControllers.interfaces.softIoc_Interface.html#SmartControllers.interfaces.softIoc_Interface.softIoc_settings._calculate_readback_PV">_calculate_readback_PV() (SmartControllers.interfaces.softIoc_Interface.softIoc_settings method)</a>
 
@@ -142,29 +153,59 @@
 </li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._compare_with_current_action">_compare_with_current_action() (SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._connect">_connect() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
+</li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._connect_pvs">_connect_pvs() (workflows.srf_sentinel.SRFsentinel method)</a>
 </li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._continuous_monitoring">_continuous_monitoring() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.rgaInterface._create_or_update_PVs">_create_or_update_PVs() (SmartControllers.interfaces.RGA_Interface.rgaInterface method)</a>
+</li>
+      <li><a href="workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory._create_worker_from_file">_create_worker_from_file() (workers.factories.factory_interface.WorkerFactory method)</a>
 </li>
       <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._enable_callback">_enable_callback() (workflows.workers_manager.WorkerManager method)</a>
 </li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._export_to_file">_export_to_file() (utilities.template_editor_gui.JSONFilterApp method)</a>
 </li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._factoryInterface">_factoryInterface (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._general_callback">_general_callback() (workflows.srf_sentinel.SRFsentinel method)</a>
 </li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._generate_steps_update_dict">_generate_steps_update_dict() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._get_current_system_state">_get_current_system_state() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._get_max_depth">_get_max_depth() (utilities.template_editor_gui.JSONFilterApp method)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmi_table">_hmi_table (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmi_timestamps">_hmi_timestamps (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmiBobfile">_hmiBobfile (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmiItlkCount">_hmiItlkCount (workflows.srf_sentinel.SRFsentinel attribute)</a>
 </li>
       <li><a href="main_program.html#main_program._init">_init() (in module main_program)</a>
 </li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._initialize_first_filter">_initialize_first_filter() (utilities.template_editor_gui.JSONFilterApp method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._jobs">_jobs (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._load_action">_load_action() (SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._load_sentinel_rules">_load_sentinel_rules() (workflows.srf_sentinel.SRFsentinel method)</a>
 </li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._looped_operations">_looped_operations() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._looped_verifications">_looped_verifications() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._on_user_control_change">_on_user_control_change() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
+</li>
       <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._parse_xml_workers">_parse_xml_workers() (workflows.workers_manager.WorkerManager method)</a>
+</li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._perform_rearming_procedure">_perform_rearming_procedure() (workers.auto_rearm_manager.AutoRearmManager method)</a>
 </li>
       <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.rgaInterface._put_all">_put_all() (SmartControllers.interfaces.RGA_Interface.rgaInterface method)</a>
 </li>
@@ -172,21 +213,51 @@
 </li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._remove_from_list">_remove_from_list() (utilities.template_editor_gui.JSONFilterApp method)</a>
 </li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._restore_all_amplifiers">_restore_all_amplifiers() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._rules">_rules (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._save_action">_save_action() (SmartControllers.factories.instances_factories.common_instance method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._selected_sequence_callback">_selected_sequence_callback() (workers.factories.worker_factory.Worker method)</a>
 </li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice._send">_send() (utilities.scopelib.ScopeDevice method)</a>
 </li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker._set_amplifier_state">_set_amplifier_state() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
+</li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance._set_combo_list">_set_combo_list() (SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
+      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto._settings">_settings (workflows.automatic_workflow.RMSauto attribute)</a>
+
+      <ul>
+        <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment._settings">(workflows.rfq_phase_alignment.RFQPhaseAlignment attribute)</a>
+</li>
+        <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._settings">(workflows.workers_manager.WorkerManager attribute)</a>
+</li>
+      </ul></li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._setup_ui">_setup_ui() (utilities.template_editor_gui.JSONFilterApp method)</a>
 </li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._sleep">_sleep() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="controllersInterface.html#controllersInterface._start_log">_start_log() (in module controllersInterface)</a>
+</li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._sync_frequency_mode">_sync_frequency_mode() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._template_editor_request">_template_editor_request (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._track_derivatives">_track_derivatives() (workers.factories.worker_factory.Worker method)</a>
 </li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._update_filters">_update_filters() (utilities.template_editor_gui.JSONFilterApp method)</a>
 </li>
       <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._update_macro">_update_macro() (workflows.workers_manager.WorkerManager method)</a>
 </li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._update_rearm_registry">_update_rearm_registry() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp._update_result_label">_update_result_label() (utilities.template_editor_gui.JSONFilterApp method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._update_sequence_list">_update_sequence_list() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker._update_steps_count">_update_steps_count() (workers.factories.worker_factory.Worker method)</a>
 </li>
       <li><a href="SmartControllers.interfaces.softIoc_Interface.html#SmartControllers.interfaces.softIoc_Interface.softIoc_settings._verify">_verify() (SmartControllers.interfaces.softIoc_Interface.softIoc_settings method)</a>
 
@@ -194,7 +265,11 @@
         <li><a href="SmartControllers.interfaces.TPG_Interface.html#SmartControllers.interfaces.TPG_Interface.TPG_settings._verify">(SmartControllers.interfaces.TPG_Interface.TPG_settings method)</a>
 </li>
       </ul></li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._verify_readback">_verify_readback() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="SmartControllers.interfaces.PLC_Interface.html#SmartControllers.interfaces.PLC_Interface.PLC_settings._verify_step">_verify_step() (SmartControllers.interfaces.PLC_Interface.PLC_settings method)</a>
+</li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._workers_dir">_workers_dir (workflows.workers_manager.WorkerManager attribute)</a>
 </li>
       <li><a href="SmartControllers.interfaces.softIoc_Interface.html#SmartControllers.interfaces.softIoc_Interface.softIoc_settings._writePVs">_writePVs() (SmartControllers.interfaces.softIoc_Interface.softIoc_settings method)</a>
 
@@ -208,9 +283,17 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.abort">abort() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.abort_due_to_error">abort_due_to_error() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.ACT_presence">ACT_presence (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
       <li><a href="API.models.html#API.models.ActionExecutionRequest.action_execution_id">action_execution_id (API.models.ActionExecutionRequest attribute)</a>
 </li>
       <li><a href="API.models.html#API.models.ActionExecutionRequest">ActionExecutionRequest (class in API.models)</a>
+</li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.add_button">add_button (utilities.template_editor_gui.JSONFilterApp attribute)</a>
 </li>
       <li><a href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel.add_node">add_node() (projectmodel.projectModel.projectmodel method)</a>
 </li>
@@ -251,6 +334,20 @@
         <li><a href="API.runner.html#module-API.runner">module</a>
 </li>
       </ul></li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.LogWindow.append_log">append_log() (GUI.gui_main.LogWindow method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.apply_step">apply_step() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.argument">argument (workflows.automatic_workflow.RMSauto attribute)</a>
+
+      <ul>
+        <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.argument">(workflows.rfq_phase_alignment.RFQPhaseAlignment attribute)</a>
+</li>
+        <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.argument">(workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager">AutoRearmManager (class in workers.auto_rearm_manager)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -259,13 +356,23 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utilities.tool_internals.html#utilities.tool_internals.calculate_min_stable_time">calculate_min_stable_time() (in module utilities.tool_internals)</a>
 </li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.can_auto_rearm">can_auto_rearm() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.case_warning">case_warning() (workers.factories.worker_factory.Worker method)</a>
+</li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.channelScale">channelScale() (utilities.scopelib.ScopeDevice method)</a>
 </li>
       <li><a href="validation.validation_interface.html#validation.validation_interface.worker_validator.check_data">check_data() (validation.validation_interface.worker_validator method)</a>
 </li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.check_observables">check_observables() (workers.factories.worker_factory.Worker method)</a>
+</li>
       <li><a href="utilities.util_functions.html#utilities.util_functions.UserIntention.checkCommand">checkCommand() (utilities.util_functions.UserIntention method)</a>
 </li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.close">close() (utilities.scopelib.ScopeDevice method)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.closeEvent">closeEvent() (GUI.gui_main.MainWindow method)</a>
+</li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.comboboxes">comboboxes (utilities.template_editor_gui.JSONFilterApp attribute)</a>
 </li>
       <li><a href="API.models.html#API.models.ActionExecutionRequest.command">command (API.models.ActionExecutionRequest attribute)</a>
 </li>
@@ -278,9 +385,15 @@
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.connect">connect() (utilities.scopelib.ScopeDevice method)</a>
 
       <ul>
+        <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.connect">(workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
+        <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.connect">(workers.factories.worker_factory.Worker method)</a>
+</li>
         <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.connect">(workflows.workers_manager.WorkerManager method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     controllersInterface
 
@@ -288,8 +401,6 @@
         <li><a href="controllersInterface.html#module-controllersInterface">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="SmartControllers.interfaces.PLC_Interface.html#SmartControllers.interfaces.PLC_Interface.create">create() (in module SmartControllers.interfaces.PLC_Interface)</a>
 
       <ul>
@@ -318,6 +429,8 @@
 </li>
       <li><a href="controllersInterface.html#controllersInterface.create_validators">create_validators() (in module controllersInterface)</a>
 </li>
+      <li><a href="workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory.create_worker">create_worker() (workers.factories.factory_interface.WorkerFactory method)</a>
+</li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.createMeasure">createMeasure() (utilities.scopelib.ScopeDevice method)</a>
 </li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.CreateScope">CreateScope() (in module utilities.scopelib)</a>
@@ -328,6 +441,14 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.data">data (utilities.template_editor_gui.JSONFilterApp attribute)</a>
+
+      <ul>
+        <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.data">(workflows.rfq_phase_alignment.RFQPhaseAlignment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.detect_interlocks">detect_interlocks() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.diagnose">diagnose() (SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
       <li><a href="SmartControllers.html#SmartControllers.discover_and_run_modules">discover_and_run_modules() (in module SmartControllers)</a>
@@ -339,6 +460,12 @@
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.doFit">doFit() (in module utilities.rfq_calib_utils)</a>
 </li>
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.doScan">doScan() (in module utilities.rfq_calib_utils)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.driven_pv">driven_pv (workflows.srf_sentinel.SentinelRule attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.driven_pvs">driven_pvs (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.driven_val">driven_val (workflows.srf_sentinel.SentinelRule attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -359,21 +486,35 @@
 </li>
       <li><a href="utilities.tool_internals.html#utilities.tool_internals.element_with_attributes_to_dict">element_with_attributes_to_dict() (in module utilities.tool_internals)</a>
 </li>
-      <li><a href="utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler.emit">emit() (utilities.tool_internals.EPICSLogHandler method)</a>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.QtLogHandler.emit">emit() (GUI.gui_main.QtLogHandler method)</a>
+
+      <ul>
+        <li><a href="utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler.emit">(utilities.tool_internals.EPICSLogHandler method)</a>
+</li>
+      </ul></li>
+      <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.enableStatistics">enableStatistics() (utilities.scopelib.ScopeDevice method)</a>
+</li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.epics_interfaces">epics_interfaces (workflows.workers_manager.WorkerManager attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.enableStatistics">enableStatistics() (utilities.scopelib.ScopeDevice method)</a>
-</li>
       <li><a href="utilities.tool_internals.html#utilities.tool_internals.EPICSLogHandler">EPICSLogHandler (class in utilities.tool_internals)</a>
 </li>
       <li><a href="notify.html#notify.error">error() (in module notify)</a>
 </li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.evaluate">evaluate() (workflows.srf_sentinel.SentinelRule method)</a>
 </li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.execute">execute (workflows.srf_sentinel.SentinelRule attribute)</a>
+</li>
       <li><a href="API.api_server.html#API.api_server.execute_action">execute_action() (in module API.api_server)</a>
 </li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment">execute_full_alignment() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
+</li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.execute_rearming_workflow">execute_rearming_workflow() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel.export">export() (projectmodel.projectModel.projectmodel method)</a>
+</li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.export_button">export_button (utilities.template_editor_gui.JSONFilterApp attribute)</a>
 </li>
       <li><a href="utilities.bob_parser.html#utilities.bob_parser.extract_pvs_from_bob">extract_pvs_from_bob() (in module utilities.bob_parser)</a>
 </li>
@@ -385,9 +526,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.F">F() (in module utilities.rfq_calib_utils)</a>
 </li>
+      <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.Ferr">Ferr() (in module utilities.rfq_calib_utils)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.Ferr">Ferr() (in module utilities.rfq_calib_utils)</a>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.LogWindow.filter_logs">filter_logs() (GUI.gui_main.LogWindow method)</a>
 </li>
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.firstGuess">firstGuess() (in module utilities.rfq_calib_utils)</a>
 </li>
@@ -397,9 +540,11 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.general_settings">general_settings() (workflows.automatic_workflow.RMSauto method)</a>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.MockRecipeManager.general_settings">general_settings() (utilities.util_functions.MockRecipeManager method)</a>
 
       <ul>
+        <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.general_settings">(workflows.automatic_workflow.RMSauto method)</a>
+</li>
         <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.general_settings">(workflows.rfq_phase_alignment.RFQPhaseAlignment method)</a>
 </li>
         <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.general_settings">(workflows.srf_sentinel.SRFsentinel method)</a>
@@ -409,6 +554,8 @@
       </ul></li>
       <li><a href="notify.html#notify.get_caller_module">get_caller_module() (in module notify)</a>
 </li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.get_current_system_state">get_current_system_state() (workers.factories.worker_factory.Worker method)</a>
+</li>
       <li><a href="utilities.tool_internals.html#utilities.tool_internals.get_epics_log_handler">get_epics_log_handler() (in module utilities.tool_internals)</a>
 </li>
       <li><a href="utilities.db_query.html#utilities.db_query.get_list_of_pvs">get_list_of_pvs() (in module utilities.db_query)</a>
@@ -417,14 +564,24 @@
 </li>
       <li><a href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.common_type.get_registered_instances_keys">get_registered_instances_keys() (SmartControllers.factories.types_factories.common_type method)</a>
 </li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.LogWindow.get_selected_levelno">get_selected_levelno() (GUI.gui_main.LogWindow method)</a>
+</li>
       <li><a href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.common_type.get_settings">get_settings() (SmartControllers.factories.types_factories.common_type method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.get_status">get_status() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="API.bridge.html#API.bridge.get_system_status">get_system_status() (in module API.bridge)</a>
+</li>
+      <li><a href="GUI.tabs.main_control_tab.html#GUI.tabs.main_control_tab.get_tab">get_tab() (in module GUI.tabs.main_control_tab)</a>
+
+      <ul>
+        <li><a href="GUI.tabs.placeholder_tab.html#GUI.tabs.placeholder_tab.get_tab">(in module GUI.tabs.placeholder_tab)</a>
+</li>
+      </ul></li>
+      <li><a href="notify.html#notify.get_timestamp">get_timestamp() (in module notify)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="API.bridge.html#API.bridge.get_system_status">get_system_status() (in module API.bridge)</a>
-</li>
-      <li><a href="notify.html#notify.get_timestamp">get_timestamp() (in module notify)</a>
-</li>
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.getCurrentPhase">getCurrentPhase() (in module utilities.rfq_calib_utils)</a>
 </li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.getMeasValue">getMeasValue() (utilities.scopelib.ScopeDevice method)</a>
@@ -433,6 +590,41 @@
 </li>
       <li><a href="validation.validation_engine.html#validation.validation_engine.group_validator">group_validator (class in validation.validation_engine)</a>
 </li>
+      <li>
+    GUI
+
+      <ul>
+        <li><a href="GUI.html#module-GUI">module</a>
+</li>
+      </ul></li>
+      <li>
+    GUI.gui_main
+
+      <ul>
+        <li><a href="GUI.gui_main.html#module-GUI.gui_main">module</a>
+</li>
+      </ul></li>
+      <li>
+    GUI.tabs
+
+      <ul>
+        <li><a href="GUI.tabs.html#module-GUI.tabs">module</a>
+</li>
+      </ul></li>
+      <li>
+    GUI.tabs.main_control_tab
+
+      <ul>
+        <li><a href="GUI.tabs.main_control_tab.html#module-GUI.tabs.main_control_tab">module</a>
+</li>
+      </ul></li>
+      <li>
+    GUI.tabs.placeholder_tab
+
+      <ul>
+        <li><a href="GUI.tabs.placeholder_tab.html#module-GUI.tabs.placeholder_tab">module</a>
+</li>
+      </ul></li>
       <li>
     gui_launcher
 
@@ -457,6 +649,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.hmi_macro">hmi_macro (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.horizontalPosition">horizontalPosition() (utilities.scopelib.ScopeDevice method)</a>
 </li>
   </ul></td>
@@ -467,9 +661,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notify.html#notify.info">info() (in module notify)</a>
 </li>
+      <li><a href="workflows_interface.html#workflows_interface.init">init() (in module workflows_interface)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows_interface.html#workflows_interface.init">init() (in module workflows_interface)</a>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.isInterlocked">isInterlocked (workflows.srf_sentinel.SentinelRule attribute)</a>
+</li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.isolate_slave_chain">isolate_slave_chain() (workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -487,9 +685,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gui_process_launcher.html#gui_process_launcher.launch_template_editor">launch_template_editor() (in module gui_process_launcher)</a>
 </li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.list_widget">list_widget (utilities.template_editor_gui.JSONFilterApp attribute)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.load_compare_save">load_compare_save() (workers.factories.worker_factory.Worker method)</a>
+</li>
       <li><a href="editor_interface.html#editor_interface.load_configuration">load_configuration() (in module editor_interface)</a>
 </li>
       <li><a href="gui_launcher.html#gui_launcher.load_json">load_json() (in module gui_launcher)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.load_tabs">load_tabs() (GUI.gui_main.MainWindow method)</a>
 </li>
       <li><a href="SmartControllers.interfaces.PLC_Interface.html#SmartControllers.interfaces.PLC_Interface.PLC_settings.loadRecipe">loadRecipe() (SmartControllers.interfaces.PLC_Interface.PLC_settings method)</a>
 
@@ -505,7 +709,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.rgaInterface.loadRecipe_test">loadRecipe_test() (SmartControllers.interfaces.RGA_Interface.rgaInterface method)</a>
 </li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.LogSignalEmitter.log_signal">log_signal (GUI.gui_main.LogSignalEmitter attribute)</a>
+</li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.log_to_waveform">log_to_waveform() (workflows.srf_sentinel.SRFsentinel method)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.LogSignalEmitter">LogSignalEmitter (class in GUI.gui_main)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.LogWindow">LogWindow (class in GUI.gui_main)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -520,6 +730,16 @@
         <li><a href="main_program.html#module-main_program">module</a>
 </li>
       </ul></li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow">MainWindow (class in GUI.gui_main)</a>
+</li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.managerPVs">managerPVs (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.max_depth">max_depth (utilities.template_editor_gui.JSONFilterApp attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.message">message (workflows.srf_sentinel.SentinelRule attribute)</a>
+</li>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.MockRecipeManager">MockRecipeManager (class in utilities.util_functions)</a>
+</li>
       <li>
     module
 
@@ -537,6 +757,16 @@
         <li><a href="controllersInterface.html#module-controllersInterface">controllersInterface</a>
 </li>
         <li><a href="editor_interface.html#module-editor_interface">editor_interface</a>
+</li>
+        <li><a href="GUI.html#module-GUI">GUI</a>
+</li>
+        <li><a href="GUI.gui_main.html#module-GUI.gui_main">GUI.gui_main</a>
+</li>
+        <li><a href="GUI.tabs.html#module-GUI.tabs">GUI.tabs</a>
+</li>
+        <li><a href="GUI.tabs.main_control_tab.html#module-GUI.tabs.main_control_tab">GUI.tabs.main_control_tab</a>
+</li>
+        <li><a href="GUI.tabs.placeholder_tab.html#module-GUI.tabs.placeholder_tab">GUI.tabs.placeholder_tab</a>
 </li>
         <li><a href="gui_launcher.html#module-gui_launcher">gui_launcher</a>
 </li>
@@ -592,6 +822,18 @@
 </li>
         <li><a href="validation.validation_interface.html#module-validation.validation_interface">validation.validation_interface</a>
 </li>
+        <li><a href="workers.html#module-workers">workers</a>
+</li>
+        <li><a href="workers.auto_rearm_manager.html#module-workers.auto_rearm_manager">workers.auto_rearm_manager</a>
+</li>
+        <li><a href="workers.factories.html#module-workers.factories">workers.factories</a>
+</li>
+        <li><a href="workers.factories.factory_interface.html#module-workers.factories.factory_interface">workers.factories.factory_interface</a>
+</li>
+        <li><a href="workers.factories.worker_factory.html#module-workers.factories.worker_factory">workers.factories.worker_factory</a>
+</li>
+        <li><a href="workers.phase_alignment_worker.html#module-workers.phase_alignment_worker">workers.phase_alignment_worker</a>
+</li>
         <li><a href="workflows.html#module-workflows">workflows</a>
 </li>
         <li><a href="workflows.automatic_workflow.html#module-workflows.automatic_workflow">workflows.automatic_workflow</a>
@@ -608,7 +850,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.monitor_actions">monitor_actions() (SmartControllers.factories.instances_factories.common_instance method)</a>
+
+      <ul>
+        <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.monitor_actions">(workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -629,6 +875,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.open_documentation">open_documentation() (GUI.gui_main.MainWindow method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -644,13 +898,19 @@
 </li>
       <li><a href="API.models.html#API.models.ActionExecutionRequest.payload">payload (API.models.ActionExecutionRequest attribute)</a>
 </li>
-      <li><a href="SmartControllers.interfaces.PLC_Interface.html#SmartControllers.interfaces.PLC_Interface.PLC_settings">PLC_settings (class in SmartControllers.interfaces.PLC_Interface)</a>
+      <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.phase_alignment_worker">phase_alignment_worker (workflows.rfq_phase_alignment.RFQPhaseAlignment attribute)</a>
+</li>
+      <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker">PhaseAlignmentWorker (class in workers.phase_alignment_worker)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="SmartControllers.interfaces.PLC_Interface.html#SmartControllers.interfaces.PLC_Interface.PLC_settings">PLC_settings (class in SmartControllers.interfaces.PLC_Interface)</a>
+</li>
       <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.rgaInterface.populate_recipe_list">populate_recipe_list() (SmartControllers.interfaces.RGA_Interface.rgaInterface method)</a>
 </li>
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.prepareScopeChannel">prepareScopeChannel() (in module utilities.rfq_calib_utils)</a>
+</li>
+      <li><a href="controllersInterface.html#controllersInterface.Project">Project (in module controllersInterface)</a>
 </li>
       <li>
     projectmodel
@@ -671,26 +931,50 @@
   </ul></td>
 </tr></table>
 
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.QtLogHandler">QtLogHandler (class in GUI.gui_main)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.common_type.register_instance">register_instance() (SmartControllers.factories.types_factories.common_type method)</a>
 </li>
+      <li><a href="controllersInterface.html#controllersInterface.registered_instances">registered_instances (in module controllersInterface)</a>
+</li>
+      <li><a href="controllersInterface.html#controllersInterface.registered_types">registered_types (in module controllersInterface)</a>
+</li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.remove_button">remove_button (utilities.template_editor_gui.JSONFilterApp attribute)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.reset">reset() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.reset_rearm_registry">reset_rearm_registry() (workers.auto_rearm_manager.AutoRearmManager method)</a>
+</li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.resetStatistics">resetStatistics() (utilities.scopelib.ScopeDevice method)</a>
 </li>
       <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment">RFQPhaseAlignment (class in workflows.rfq_phase_alignment)</a>
 </li>
-      <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.rgaInterface">rgaInterface (class in SmartControllers.interfaces.RGA_Interface)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.rgaInterface">rgaInterface (class in SmartControllers.interfaces.RGA_Interface)</a>
+</li>
       <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto">RMSauto (class in workflows.automatic_workflow)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.rollback_step">rollback_step() (workers.factories.worker_factory.Worker method)</a>
+</li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.run">run() (workers.factories.worker_factory.Worker method)</a>
 </li>
       <li><a href="SmartControllers.interfaces.RGA_Interface.html#SmartControllers.interfaces.RGA_Interface.run_bash_script">run_bash_script() (in module SmartControllers.interfaces.RGA_Interface)</a>
 </li>
       <li><a href="API.models.html#API.models.ActionExecutionRequest.run_id">run_id (API.models.ActionExecutionRequest attribute)</a>
 </li>
       <li><a href="editor_interface.html#editor_interface.run_network_sweep">run_network_sweep() (in module editor_interface)</a>
+</li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.running">running (workflows.workers_manager.WorkerManager attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -710,12 +994,18 @@
 </li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice">ScopeDevice (class in utilities.scopelib)</a>
 </li>
+      <li><a href="utilities.template_editor_gui.html#utilities.template_editor_gui.JSONFilterApp.selected_items">selected_items (utilities.template_editor_gui.JSONFilterApp attribute)</a>
+</li>
       <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule">SentinelRule (class in workflows.srf_sentinel)</a>
 </li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.set_auto_mode_mapping">set_auto_mode_mapping() (SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
-      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.set_auto_mode_mapping_data">set_auto_mode_mapping_data() (workflows.automatic_workflow.RMSauto method)</a>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.MockRecipeManager.set_auto_mode_mapping_data">set_auto_mode_mapping_data() (utilities.util_functions.MockRecipeManager method)</a>
+
+      <ul>
+        <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.set_auto_mode_mapping_data">(workflows.automatic_workflow.RMSauto method)</a>
 </li>
+      </ul></li>
       <li><a href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.common_type.set_project_properties">set_project_properties() (SmartControllers.factories.types_factories.common_type method)</a>
 </li>
       <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.set_PVs">set_PVs() (SmartControllers.factories.instances_factories.common_instance method)</a>
@@ -723,6 +1013,16 @@
       <li><a href="utilities.util_functions.html#utilities.util_functions.UserIntention.setCommand">setCommand() (utilities.util_functions.UserIntention method)</a>
 </li>
       <li><a href="utilities.rfq_calib_utils.html#utilities.rfq_calib_utils.setPhase">setPhase() (in module utilities.rfq_calib_utils)</a>
+</li>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.settings">settings (in module utilities.util_functions)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.setup_logging">setup_logging() (GUI.gui_main.MainWindow method)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.setup_menu">setup_menu() (GUI.gui_main.MainWindow method)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.show_about">show_about() (GUI.gui_main.MainWindow method)</a>
+</li>
+      <li><a href="GUI.gui_main.html#GUI.gui_main.MainWindow.show_log_window">show_log_window() (GUI.gui_main.MainWindow method)</a>
 </li>
       <li>
     SmartControllers
@@ -752,6 +1052,8 @@
         <li><a href="SmartControllers.factories.types_factories.html#module-SmartControllers.factories.types_factories">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     SmartControllers.interfaces
 
@@ -759,8 +1061,6 @@
         <li><a href="SmartControllers.interfaces.html#module-SmartControllers.interfaces">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     SmartControllers.interfaces.PLC_Interface
 
@@ -800,16 +1100,26 @@
 </li>
         <li><a href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.common_instance.start">(SmartControllers.factories.instances_factories.common_instance method)</a>
 </li>
+        <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.start">(workers.factories.worker_factory.Worker method)</a>
+</li>
       </ul></li>
       <li><a href="API.runner.html#API.runner.start_api_server">start_api_server() (in module API.runner)</a>
 </li>
       <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.start_worker">start_worker() (workflows.workers_manager.WorkerManager method)</a>
 </li>
       <li><a href="API.api_server.html#API.api_server.status">status() (in module API.api_server)</a>
-</li>
-      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.stop">stop() (workflows.automatic_workflow.RMSauto method)</a>
 
       <ul>
+        <li><a href="workers.phase_alignment_worker.html#workers.phase_alignment_worker.PhaseAlignmentWorker.status">(workers.phase_alignment_worker.PhaseAlignmentWorker method)</a>
+</li>
+      </ul></li>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.MockRecipeManager.stop">stop() (utilities.util_functions.MockRecipeManager method)</a>
+
+      <ul>
+        <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker.stop">(workers.factories.worker_factory.Worker method)</a>
+</li>
+        <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.stop">(workflows.automatic_workflow.RMSauto method)</a>
+</li>
         <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.stop">(workflows.rfq_phase_alignment.RFQPhaseAlignment method)</a>
 </li>
         <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.stop">(workflows.srf_sentinel.SRFsentinel method)</a>
@@ -827,9 +1137,13 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.talk">talk() (workflows.automatic_workflow.RMSauto method)</a>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.table_index">table_index (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.MockRecipeManager.talk">talk() (utilities.util_functions.MockRecipeManager method)</a>
 
       <ul>
+        <li><a href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.talk">(workflows.automatic_workflow.RMSauto method)</a>
+</li>
         <li><a href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.talk">(workflows.rfq_phase_alignment.RFQPhaseAlignment method)</a>
 </li>
         <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.talk">(workflows.srf_sentinel.SRFsentinel method)</a>
@@ -845,6 +1159,12 @@
 </li>
       <li><a href="validation.validation_engine.html#validation.validation_engine.TPG_validator">TPG_validator (class in validation.validation_engine)</a>
 </li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.trigger_condition">trigger_condition (workflows.srf_sentinel.SentinelRule attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.trigger_pv">trigger_pv (workflows.srf_sentinel.SentinelRule attribute)</a>
+</li>
+      <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.trigger_pvs">trigger_pvs (workflows.srf_sentinel.SRFsentinel attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -856,6 +1176,8 @@
       <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.update_status">update_status() (workflows.workers_manager.WorkerManager method)</a>
 </li>
       <li><a href="API.models.html#API.models.ActionExecutionRequest.user_id">user_id (API.models.ActionExecutionRequest attribute)</a>
+</li>
+      <li><a href="utilities.util_functions.html#utilities.util_functions.user_intentions">user_intentions (in module utilities.util_functions)</a>
 </li>
       <li><a href="utilities.util_functions.html#utilities.util_functions.UserIntention">UserIntention (class in utilities.util_functions)</a>
 </li>
@@ -880,6 +1202,8 @@
         <li><a href="utilities.command_line_interface.html#module-utilities.command_line_interface">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     utilities.db_query
 
@@ -887,8 +1211,6 @@
         <li><a href="utilities.db_query.html#module-utilities.db_query">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     utilities.rfq_calib_utils
 
@@ -955,6 +1277,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="controllersInterface.html#controllersInterface.validators">validators (in module controllersInterface)</a>
+</li>
       <li><a href="utilities.scopelib.html#utilities.scopelib.ScopeDevice.vbarPosition">vbarPosition() (utilities.scopelib.ScopeDevice method)</a>
 </li>
       <li><a href="SmartControllers.interfaces.PLC_Interface.html#SmartControllers.interfaces.PLC_Interface.PLC_settings.verifyRecipe">verifyRecipe() (SmartControllers.interfaces.PLC_Interface.PLC_settings method)</a>
@@ -987,9 +1311,61 @@
         <li><a href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.work">(workflows.srf_sentinel.SRFsentinel method)</a>
 </li>
       </ul></li>
+      <li><a href="workers.factories.worker_factory.html#workers.factories.worker_factory.Worker">Worker (class in workers.factories.worker_factory)</a>
+</li>
       <li><a href="validation.validation_interface.html#validation.validation_interface.worker_validator">worker_validator (class in validation.validation_interface)</a>
 </li>
+      <li><a href="workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory">WorkerFactory (class in workers.factories.factory_interface)</a>
+</li>
       <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager">WorkerManager (class in workflows.workers_manager)</a>
+</li>
+      <li>
+    workers
+
+      <ul>
+        <li><a href="workers.html#module-workers">module</a>
+</li>
+      </ul></li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.workers">workers (workflows.workers_manager.WorkerManager attribute)</a>
+</li>
+      <li>
+    workers.auto_rearm_manager
+
+      <ul>
+        <li><a href="workers.auto_rearm_manager.html#module-workers.auto_rearm_manager">module</a>
+</li>
+      </ul></li>
+      <li>
+    workers.factories
+
+      <ul>
+        <li><a href="workers.factories.html#module-workers.factories">module</a>
+</li>
+      </ul></li>
+      <li>
+    workers.factories.factory_interface
+
+      <ul>
+        <li><a href="workers.factories.factory_interface.html#module-workers.factories.factory_interface">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    workers.factories.worker_factory
+
+      <ul>
+        <li><a href="workers.factories.worker_factory.html#module-workers.factories.worker_factory">module</a>
+</li>
+      </ul></li>
+      <li>
+    workers.phase_alignment_worker
+
+      <ul>
+        <li><a href="workers.phase_alignment_worker.html#module-workers.phase_alignment_worker">module</a>
+</li>
+      </ul></li>
+      <li><a href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.workers_list_pv">workers_list_pv (workflows.workers_manager.WorkerManager attribute)</a>
 </li>
       <li>
     workflows
@@ -998,8 +1374,6 @@
         <li><a href="workflows.html#module-workflows">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     workflows.automatic_workflow
 

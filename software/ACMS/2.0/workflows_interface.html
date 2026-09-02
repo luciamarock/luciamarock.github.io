@@ -60,9 +60,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -98,27 +103,91 @@
              
   <section id="module-workflows_interface">
 <span id="workflows-interface-module"></span><h1>workflows_interface module<a class="headerlink" href="#module-workflows_interface" title="Link to this heading"></a></h1>
-<p>Interace module for the Workflows</p>
-<p>Created on Thu Jan 26 15:47:32 2023</p>
-<p>It explicitly uses the module-level entities of <a class="reference internal" href="utilities.util_functions.html#module-utilities.util_functions" title="utilities.util_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utilities.util_functions</span></code></a> and <a class="reference internal" href="controllersInterface.html#module-controllersInterface" title="controllersInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">controllersInterface</span></code></a></p>
-<p>This interface is called from the main_program and constitutes the operational beginning of the program. In fact, all the tasks performed
-before this module’s call are stricty focused on the “aquisition of knowledge” of the Recipe Management System program about the real
-Smart Controllers components by means of the configuration files (resources .xml files).</p>
+<p>Interface module for the Workflows.</p>
+<p>This module constitutes the operational starting point of the Recipe Management System
+and ACMS execution framework. It is invoked directly by <code class="docutils literal notranslate"><span class="pre">main_program.py</span></code> after the
+hardware configuration and discovery phase (“knowledge acquisition”) has finished loading
+the physical Smart Controller definitions from system resource XML files.</p>
+<dl class="simple">
+<dt>The interface is responsible for:</dt><dd><ol class="arabic simple">
+<li><p>Validating recipe folder structures and subsystem integrity.</p></li>
+<li><p>Registering and starting background background workflow processing threads.</p></li>
+<li><p>Dispatching execution to the requested User Interface / Operation Mode:</p>
+<ul class="simple">
+<li><p><strong>API Mode:</strong> Boots the ACMS background API client and execution runner to interact
+with the LIPAc Campaign Manager (LCM) via polling (<cite>GET /api/v0.5/automation/jobs/next</cite>),
+event batching (<cite>POST /api/v0.5/automation/jobs/{job_id}/events</cite>), and 2-second heartbeats.</p></li>
+<li><p><strong>GUI Mode:</strong> Launches the PyQt5 graphical interface for local operator control.</p></li>
+<li><p><strong>CLI Mode:</strong> Provides an interactive command-line loop for debugging, manual workflow
+querying, and safe process spawning of tools like the Template Editor.</p></li>
+</ul>
+</li>
+</ol>
+</dd>
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="utilities.util_functions.html#module-utilities.util_functions" title="utilities.util_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.util_functions</span></code></a>: Global workspace configuration and settings state.</p></li>
+<li><p><a class="reference internal" href="controllersInterface.html#module-controllersInterface" title="controllersInterface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">controllersInterface</span></code></a>: Type and instance registration for EPICS controllers.</p></li>
+<li><p><a class="reference internal" href="editor_interface.html#module-editor_interface" title="editor_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">editor_interface</span></code></a>: Archive scanning and template editor operations.</p></li>
+<li><p><a class="reference internal" href="gui_process_launcher.html#module-gui_process_launcher" title="gui_process_launcher"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gui_process_launcher</span></code></a>: Isolated process launcher for external PySide/PyQt tools.</p></li>
+<li><p><a class="reference internal" href="API.runner.html#module-API.runner" title="API.runner"><code class="xref py py-mod docutils literal notranslate"><span class="pre">API.runner</span></code></a>: Entry point for launching the ACMS-LCM communication loop.</p></li>
+</ul>
+</dd>
+</dl>
 <p>&#64;author: luciamarock</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="workflows_interface.init">
 <span class="sig-prename descclassname"><span class="pre">workflows_interface.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows_interface.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows_interface.init" title="Link to this definition"></a></dt>
-<dd><p>Check existence of recipe files and directories</p>
-<p>In case not existing, this function generates the default recipes directories.
-It also checks if, all the controller’s type objects belong to the same substistem and if all the declared instances
-belong to one and only one controller type.</p>
+<dd><p>Initialize workspace recipe directories and validate subsystem controller integrity.</p>
+<dl class="simple">
+<dt>This function performs structural pre-flight checks before workflows can be safely executed:</dt><dd><ul class="simple">
+<li><p>Verifies the existence of the base <code class="docutils literal notranslate"><span class="pre">recipes/</span></code> directory in the workspace, creating it if missing.</p></li>
+<li><p>Ensures all registered controller types belong to a single, unified hardware subsystem.</p></li>
+<li><p>Checks that every controller instance declared inside a controller type actually exists within
+the registered instances dictionary, creating instance sub-folders as needed.</p></li>
+<li><p>Establishes network/EPICS connectivity if an <code class="docutils literal notranslate"><span class="pre">AutoConditioningWorkflow</span></code> instance is registered.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if initialization and connectivity checks succeeded, enabling
+<code class="docutils literal notranslate"><span class="pre">main_program</span></code> to invoke <a class="reference internal" href="#workflows_interface.start" title="workflows_interface.start"><code class="xref py py-func docutils literal notranslate"><span class="pre">start()</span></code></a>; <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="workflows_interface.start">
 <span class="sig-prename descclassname"><span class="pre">workflows_interface.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows_interface.html#start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows_interface.start" title="Link to this definition"></a></dt>
-<dd><p>Starts the program workflow</p>
-<p>It loads the available recipes in the corresponding Controller’s instance and start the User Interface</p>
+<dd><p>Start workflow worker threads and launch the selected operating mode.</p>
+<dl class="simple">
+<dt>The execution flow progresses as follows:</dt><dd><ol class="arabic simple">
+<li><p>Invokes <code class="xref py py-func docutils literal notranslate"><span class="pre">CI.create_validators()</span></code> to build runtime validators across all controllers.</p></li>
+<li><p>Configures general settings and spawns dedicated background daemon threads for every
+registered workflow (e.g., automatic workflow, sentinel workers, phase alignment).</p></li>
+<li><p>Evaluates <code class="docutils literal notranslate"><span class="pre">UF.settings[&quot;UI&quot;]</span></code> to branch into the designated interface loop:</p>
+<ul class="simple">
+<li><p><strong>API Mode:</strong> Imports and launches the ACMS API Runner service (<a class="reference internal" href="API.runner.html#API.runner.start_api_server" title="API.runner.start_api_server"><code class="xref py py-func docutils literal notranslate"><span class="pre">API.runner.start_api_server()</span></code></a>),
+connecting ACMS to the LIPAc Campaign Manager (LCM) backend endpoints over HTTP. Blocks on a 1-second
+keep-alive loop until interrupted.</p></li>
+<li><p><strong>GUI Mode:</strong> Initializes a <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QApplication</span></code> instance and displays the
+main desktop application window.</p></li>
+<li><p><strong>CLI Mode:</strong> Enters a terminal loop processing interactive commands (<code class="docutils literal notranslate"><span class="pre">status</span></code>, <code class="docutils literal notranslate"><span class="pre">editor</span></code>,
+<code class="docutils literal notranslate"><span class="pre">help</span></code>, <code class="docutils literal notranslate"><span class="pre">exit</span></code>) and gracefully stops registered workflows upon termination.</p></li>
+</ul>
+</li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyboardInterrupt</strong> – Trapped during API or CLI modes to safely halt registered workflow threads
+    and release hardware/EPICS resources prior to process shutdown.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

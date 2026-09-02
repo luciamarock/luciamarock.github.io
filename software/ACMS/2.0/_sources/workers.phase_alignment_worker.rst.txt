@@ -1,0 +1,8 @@
+workers.phase\_alignment\_worker module
+=======================================
+
+.. automodule:: workers.phase_alignment_worker
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

@@ -47,11 +47,15 @@
 <li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">controllersInterface module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controllersInterface._check_dir"><code class="docutils literal notranslate"><span class="pre">_check_dir()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controllersInterface._start_log"><code class="docutils literal notranslate"><span class="pre">_start_log()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controllersInterface.create_validators"><code class="docutils literal notranslate"><span class="pre">create_validators()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controllersInterface.parse_xml_instances"><code class="docutils literal notranslate"><span class="pre">parse_xml_instances()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controllersInterface.parse_xml_types"><code class="docutils literal notranslate"><span class="pre">parse_xml_types()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.registered_instances"><code class="docutils literal notranslate"><span class="pre">registered_instances</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.registered_types"><code class="docutils literal notranslate"><span class="pre">registered_types</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controllersInterface.validators"><code class="docutils literal notranslate"><span class="pre">validators</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
@@ -63,9 +67,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -101,80 +110,163 @@
              
   <section id="module-controllersInterface">
 <span id="controllersinterface-module"></span><h1>controllersInterface module<a class="headerlink" href="#module-controllersInterface" title="Link to this heading"></a></h1>
-<p>Controllers Interface module</p>
+<p>Controllers Interface Module.</p>
 <p>Created on Thu Jan  5 11:57:03 2023</p>
-<p>This module is firstly imported by the main_program right after the _init function.</p>
+<p>Serves as the central registry and parser interface for Smart Controller types and
+instances. Discovers XML definition files, instantiates controller hardware/software
+objects via factories, populates the central <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-class docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a>
+tree, and manages validation engines.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is imported by <a class="reference internal" href="main_program.html#module-main_program" title="main_program"><code class="xref py py-mod docutils literal notranslate"><span class="pre">main_program</span></code></a> immediately following
+the execution of the <code class="docutils literal notranslate"><span class="pre">_init()</span></code> setup function.</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">param registered_types<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A module-level dictionary containing all the instantiated Smart Controller’s types</p>
-</dd>
-<dt class="field-even">param registered_instances<span class="colon">:</span></dt>
-<dd class="field-even"><p>A module-level dictionary containing all the Smart Controller’s instantiated (as read from the .xml files)</p>
-</dd>
-<dt class="field-odd">param Project<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an instance of <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a> class.</p>
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
 </dd>
 </dl>
-<p>&#64;author: luciamarock</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="controllersInterface.Project">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#controllersInterface.Project" title="Link to this definition"></a></dt>
+<dd><p>Global reference to the active project model instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel">projectmodel.projectModel.projectmodel</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="controllersInterface._check_dir">
 <span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">_check_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#_check_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface._check_dir" title="Link to this definition"></a></dt>
-<dd><p>Checks if the directory exists</p>
+<dd><p>Verify filesystem directory existence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory</strong> (<em>str</em>) – Absolute or relative directory path to inspect.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the path exists, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="controllersInterface._start_log">
 <span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">_start_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#_start_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface._start_log" title="Link to this definition"></a></dt>
-<dd><p>Function for starting the log</p>
-<p>Called by parse_xml_types function.</p>
+<dd><p>Write system startup state and active settings to the logging stream.</p>
+<p>Called automatically during <a class="reference internal" href="#controllersInterface.parse_xml_types" title="controllersInterface.parse_xml_types"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_xml_types()</span></code></a>. Iterates through
+<a class="reference internal" href="utilities.util_functions.html#utilities.util_functions.settings" title="utilities.util_functions.settings"><code class="xref py py-data docutils literal notranslate"><span class="pre">utilities.util_functions.settings</span></code></a> and logs key-value pairs at
+<code class="docutils literal notranslate"><span class="pre">INFO</span></code> level.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="controllersInterface.create_validators">
 <span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">create_validators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#create_validators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface.create_validators" title="Link to this definition"></a></dt>
-<dd><p>Recipes (from file .json) loaders</p>
+<dd><p>Initialize recipe validators declared in configuration settings.</p>
+<p>Attempts to instantiate each validator listed in <code class="docutils literal notranslate"><span class="pre">UF.settings[&quot;validators&quot;]</span></code>
+via <a class="reference internal" href="validation.validation_engine.html#validation.validation_engine.create" title="validation.validation_engine.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">validation.validation_engine.create()</span></code></a>. Successfully created objects
+are registered in the <a class="reference internal" href="#controllersInterface.validators" title="controllersInterface.validators"><code class="xref py py-data docutils literal notranslate"><span class="pre">validators</span></code></a> dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>errors</strong> a list of error messages</p>
+<dd class="field-odd"><p>A list of error message strings describing any failed validator instantiations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of str</p>
 </dd>
 </dl>
-<p>At the beginning this function tries to create the validator objects (<code class="xref py py-obj docutils literal notranslate"><span class="pre">utilities.validation.validation_engine.create</span></code>),
-if the creation is successfull it register the object in the
-module level validators dictionary (in case to be reused by other modules).
-The validators are declared in the settings.ini file.</p>
-<p>call the validate method like this:</p>
-<p>errors = validators[validator_name].validate(registered_instances[instance],PVs,os.path.splitext(filename)[0])</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Registered validators can subsequently be executed using:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="n">validators</span><span class="p">[</span><span class="n">validator_name</span><span class="p">]</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+    <span class="n">registered_instances</span><span class="p">[</span><span class="n">instance</span><span class="p">],</span> <span class="n">PVs</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="controllersInterface.parse_xml_instances">
 <span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">parse_xml_instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#parse_xml_instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface.parse_xml_instances" title="Link to this definition"></a></dt>
-<dd><p>Called right after parse_xml_types function by the main_program.</p>
-<blockquote>
-<div><p>This function mirrors parse_xml_types but parses the .xml configuration files for the Controller’s instances.
-Unlikely the parse_xml_types, this function “walks” also the sub-directories of the UF.settings[“controller_instances_location”].
-This allows the users to create their own organization structure in the file-system.</p>
-<p>When parsing the xml files, if the instance name is not found in the module-level registered_instances dictionary, this function
-proceed to the call of <a class="reference internal" href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.create_instance" title="SmartControllers.factories.instances_factories.create_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.factories.instances_factories.create_instance</span></code></a> creation function for the Instances.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Later on, if the returned instance is not None, it register the object in the registered_instance dictionary and</dt><dd><p>it calls the project model class to add the new created object among the  ProjectModel nodes.</p>
-</dd>
-</dl>
+<dd><p>Recursively parse and register Smart Controller instance definitions.</p>
+<p>Walks the root directory and all subdirectories within
+<code class="docutils literal notranslate"><span class="pre">UF.settings[&quot;controller_instances_location&quot;]</span></code> to load instance XML files.</p>
+<p>For each unique instance name encountered:</p>
+<ol class="arabic simple">
+<li><p>Invokes <a class="reference internal" href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.create_instance" title="SmartControllers.factories.instances_factories.create_instance"><code class="xref py py-func docutils literal notranslate"><span class="pre">SmartControllers.factories.instances_factories.create_instance()</span></code></a>
+passing the root node and <a class="reference internal" href="#controllersInterface.registered_types" title="controllersInterface.registered_types"><code class="xref py py-data docutils literal notranslate"><span class="pre">registered_types</span></code></a>.</p></li>
+<li><p>Registers successfully created instance objects in <a class="reference internal" href="#controllersInterface.registered_instances" title="controllersInterface.registered_instances"><code class="xref py py-data docutils literal notranslate"><span class="pre">registered_instances</span></code></a>.</p></li>
+<li><p>Appends the instance node to the global <a class="reference internal" href="#controllersInterface.Project" title="controllersInterface.Project"><code class="xref py py-data docutils literal notranslate"><span class="pre">Project</span></code></a> tree.</p></li>
+<li><p>Triggers <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel.export" title="projectmodel.projectModel.projectmodel.export"><code class="xref py py-meth docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel.export()</span></code></a> upon completion.</p></li>
+</ol>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#controllersInterface.parse_xml_types" title="controllersInterface.parse_xml_types"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_xml_types()</span></code></a></p></li>
+<li><p><a class="reference internal" href="SmartControllers.factories.instances_factories.html#SmartControllers.factories.instances_factories.create_instance" title="SmartControllers.factories.instances_factories.create_instance"><code class="xref py py-func docutils literal notranslate"><span class="pre">SmartControllers.factories.instances_factories.create_instance()</span></code></a></p></li>
+</ul>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="controllersInterface.parse_xml_types">
 <span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">parse_xml_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controllersInterface.html#parse_xml_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controllersInterface.parse_xml_types" title="Link to this definition"></a></dt>
-<dd><p>It gets called immediately from the main_program</p>
-<p>This function is responsible for collecting the .xml files describing the Controller’s types.</p>
-<p>It goes into the directory specified in UF.settings[“controller_types_location”] and collects all the .xml files in the root folder,
-please notice it does not walk the sub-folders !</p>
-<p>For each type .xml file it retrieves the root node and with that, it invokes the <a class="reference internal" href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.create_type" title="SmartControllers.factories.types_factories.create_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.factories.types_factories.create_type</span></code></a>
-function in order to create a class object representing the current type of Smart Controller.</p>
-<p>Once the software object is created it register it in the module level registered_types dictionary.</p>
-<p>At the beginning this function also initializes the log (writing all the settings) and instantiates the <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projectmodel.projectModel.projectmodel</span></code></a>
-software object (Project).</p>
+<dd><p>Parse and register Smart Controller type definitions from XML.</p>
+<p>Scans the directory specified by <code class="docutils literal notranslate"><span class="pre">UF.settings[&quot;controller_types_location&quot;]</span></code>
+for XML configuration files (ignoring subdirectories). For each file:</p>
+<ol class="arabic simple">
+<li><p>Parses the XML tree using <code class="xref py py-mod docutils literal notranslate"><span class="pre">lxml.etree</span></code>.</p></li>
+<li><p>Invokes <a class="reference internal" href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.create_type" title="SmartControllers.factories.types_factories.create_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">SmartControllers.factories.types_factories.create_type()</span></code></a> to instantiate
+the controller type class object.</p></li>
+<li><p>Registers the returned object into <a class="reference internal" href="#controllersInterface.registered_types" title="controllersInterface.registered_types"><code class="xref py py-data docutils literal notranslate"><span class="pre">registered_types</span></code></a>.</p></li>
+</ol>
+<p>Additionally, this function calls <a class="reference internal" href="#controllersInterface._start_log" title="controllersInterface._start_log"><code class="xref py py-func docutils literal notranslate"><span class="pre">_start_log()</span></code></a> to record startup runtime
+settings and instantiates the global <a class="reference internal" href="projectmodel.projectModel.html#projectmodel.projectModel.projectmodel" title="projectmodel.projectModel.projectmodel"><code class="xref py py-class docutils literal notranslate"><span class="pre">projectmodel</span></code></a>
+object (<a class="reference internal" href="#controllersInterface.Project" title="controllersInterface.Project"><code class="xref py py-data docutils literal notranslate"><span class="pre">Project</span></code></a>).</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#controllersInterface.parse_xml_instances" title="controllersInterface.parse_xml_instances"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_xml_instances()</span></code></a> - Invoked after type parsing completes.</p></li>
+<li><p><a class="reference internal" href="SmartControllers.factories.types_factories.html#SmartControllers.factories.types_factories.create_type" title="SmartControllers.factories.types_factories.create_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">SmartControllers.factories.types_factories.create_type()</span></code></a></p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="controllersInterface.registered_instances">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">registered_instances</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#controllersInterface.registered_instances" title="Link to this definition"></a></dt>
+<dd><p>Registry mapping instance names to instantiated Smart Controller objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="controllersInterface.registered_types">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">registered_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#controllersInterface.registered_types" title="Link to this definition"></a></dt>
+<dd><p>Registry mapping type names to instantiated Smart Controller type objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="controllersInterface.validators">
+<span class="sig-prename descclassname"><span class="pre">controllersInterface.</span></span><span class="sig-name descname"><span class="pre">validators</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#controllersInterface.validators" title="Link to this definition"></a></dt>
+<dd><p>Registry containing instantiated validation engines specified in runtime settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

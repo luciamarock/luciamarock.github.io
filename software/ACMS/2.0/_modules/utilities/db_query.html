@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
 </ul>
@@ -91,8 +96,22 @@
              
   <h1>Source code for utilities.db_query</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="c1"># securely connect to a PostgreSQL database using the psycopg library and retrieve specific data</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;PostgreSQL Archive Database Interface for PV Discovery.</span>
 
+<span class="sd">This module provides relational database access functions required by the ACMS Template Editor </span>
+<span class="sd">and Auto Conditioning Tool frameworks to retrieve archived EPICS Process Variable (PV) records.</span>
+
+<span class="sd">It uses the modern ``psycopg 3`` library to open managed database connections and query </span>
+<span class="sd">archived channel inventories from target SQL databases (such as the local ``lipac_mock`` archive </span>
+<span class="sd">or production EPICS archiver appliances). The resulting PV lists are passed to </span>
+<span class="sd">:mod:`editor_interface` for multi-threaded Channel Access profiling.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`psycopg`: PostgreSQL database adapter for Python.</span>
+
+<span class="sd">:author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">psycopg</span>
 <span class="kn">import</span> <span class="nn">logging</span> 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -107,11 +126,34 @@
     <span class="n">use_dashboard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">only_alive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Connects to the local lipac_mock database and retrieves a clean list of PV strings.</span>
-<span class="sd">    </span>
-<span class="sd">    - use_dashboard: If True, pulls from &#39;pv_status&#39;. If False, pulls from &#39;channel&#39;.</span>
-<span class="sd">    - only_alive: If True and using dashboard, returns only PVs currently active on the network.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Connect to a PostgreSQL EPICS archive database and retrieve a sorted list of PV strings.</span>
+
+<span class="sd">    Establishes a connection context using ``psycopg.connect()`` and executes targeted SQL </span>
+<span class="sd">    queries based on the specified source table and state filtering parameters:</span>
+
+<span class="sd">    - When ``use_dashboard=True``, queries the ``pv_status`` dashboard table.</span>
+<span class="sd">    - When ``use_dashboard=False``, queries the static ``channel`` archiver catalog table.</span>
+
+<span class="sd">    :param server: Hostname or IP address of the PostgreSQL database server. Defaults to ``&#39;localhost&#39;``.</span>
+<span class="sd">    :type server: str, optional</span>
+<span class="sd">    :param database: Target SQL database name. Defaults to ``&#39;lipac_mock&#39;``.</span>
+<span class="sd">    :type database: str, optional</span>
+<span class="sd">    :param username: Database role user account. Defaults to ``&#39;archive&#39;``.</span>
+<span class="sd">    :type username: str, optional</span>
+<span class="sd">    :param password: Authentication password. Defaults to ``&#39;rockoDD1o&#39;``.</span>
+<span class="sd">    :type password: str, optional</span>
+<span class="sd">    :param use_dashboard: If ``True``, queries live status records from ``pv_status``. </span>
+<span class="sd">        If ``False``, queries registered channel definitions from ``channel``. Defaults to ``True``.</span>
+<span class="sd">    :type use_dashboard: bool, optional</span>
+<span class="sd">    :param only_alive: If ``True`` (and ``use_dashboard=True``), restricts results </span>
+<span class="sd">        to active PVs where ``alive = TRUE``. Defaults to ``True``.</span>
+<span class="sd">    :type only_alive: bool, optional</span>
+
+<span class="sd">    :return: A sorted list of unique EPICS PV names extracted from the database query.</span>
+<span class="sd">    :rtype: list of str</span>
+
+<span class="sd">    :raises psycopg.Error: If a database connection error, authentication failure, or SQL </span>
+<span class="sd">        execution exception occurs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">conn_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;postgresql://</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">password</span><span class="si">}</span><span class="s1">@</span><span class="si">{</span><span class="n">server</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">database</span><span class="si">}</span><span class="s1">&#39;</span>
     
@@ -132,6 +174,7 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span></div>
 
 
+<span class="c1"># Quick local testing entry point reference:</span>
 <span class="c1">#p = get_list_of_pvs(&#39;epics.ifmif.org&#39;, &#39;lipac&#39;, &#39;archive&#39;, &#39;$archive&#39;) line below for local tests</span>
 
 </pre></div>

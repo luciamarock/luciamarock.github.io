@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers.factories.factory_interface &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">workers.factories.factory_interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for workers.factories.factory_interface</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">utilities.tool_internals</span> <span class="k">as</span> <span class="nn">UF</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">validation.validation_interface</span> <span class="k">as</span> <span class="nn">validators</span>
+<span class="kn">import</span> <span class="nn">workers.factories.worker_factory</span> <span class="k">as</span> <span class="nn">WF</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WorkerFactory">
+<a class="viewcode-back" href="../../../workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory">[docs]</a>
+<span class="k">class</span> <span class="nc">WorkerFactory</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A factory class for creating worker instances from XML configuration files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the WorkerFactory.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            worker_module_name (str): The name of the module containing the worker classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating WorkerFactory&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+
+<div class="viewcode-block" id="WorkerFactory.create_worker">
+<a class="viewcode-back" href="../../../workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory.create_worker">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf_file</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a worker instance from an XML configuration file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config_file (str): The path to the XML configuration file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object: An instance of the worker class, or None if an error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">created_workers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ACTinterfacesPV</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf_file</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">workers_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;workers&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+            <span class="k">for</span> <span class="n">worker_config</span> <span class="ow">in</span> <span class="n">conf_file</span><span class="p">:</span>
+                <span class="n">current_conf_file</span> <span class="o">=</span> <span class="n">workers_path</span> <span class="o">+</span> <span class="n">worker_config</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;generating worker instance using </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">current_conf_file</span><span class="p">))</span>
+                <span class="n">worker_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">worker_config</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">worker_instance</span><span class="p">,</span> <span class="n">interfacePV</span><span class="p">,</span> <span class="n">macroString</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_worker_from_file</span><span class="p">(</span><span class="n">current_conf_file</span><span class="p">,</span> <span class="n">worker_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">worker_instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">created_workers</span><span class="p">[</span><span class="n">worker_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker_instance</span>
+                    <span class="k">if</span> <span class="n">macroString</span> <span class="ow">in</span> <span class="n">macros</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cannot assign </span><span class="si">{</span><span class="n">macroString</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">worker_name</span><span class="si">}</span><span class="s2">, macro already in use&quot;</span><span class="p">)</span>
+                    <span class="n">macros</span><span class="p">[</span><span class="n">worker_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">macroString</span>
+                    <span class="k">if</span> <span class="n">interfacePV</span> <span class="ow">in</span> <span class="n">ACTinterfacesPV</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">interfacePV</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cannot assign </span><span class="si">{</span><span class="n">interfacePV</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">worker_name</span><span class="si">}</span><span class="s2">, unexistent or already in use&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+                    <span class="n">ACTinterfacesPV</span><span class="p">[</span><span class="n">interfacePV</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Operator request from HMI ...&quot;</span><span class="p">)</span>
+            <span class="c1">#TODO do stuff, this means that the request comes from the Phoebus HMI</span>
+        <span class="k">return</span> <span class="n">created_workers</span><span class="p">,</span> <span class="n">ACTinterfacesPV</span><span class="p">,</span> <span class="n">macros</span></div>
+
+    
+<div class="viewcode-block" id="WorkerFactory._create_worker_from_file">
+<a class="viewcode-back" href="../../../workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory._create_worker_from_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">_create_worker_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;conditioning_parameters&quot;</span><span class="p">)</span>
+            <span class="n">parameters_dict</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">element_to_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="c1"># pass this to worker instance </span>
+            <span class="n">observables</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;observable_pvs&quot;</span><span class="p">)</span>
+            <span class="n">observable_variables</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">element_to_list</span><span class="p">(</span><span class="n">observables</span><span class="p">)</span> <span class="c1"># also this list of observables</span>
+            <span class="n">interlocks_element</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;interlocks&quot;</span><span class="p">)</span>
+            <span class="n">interlocks</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">element_with_attributes_to_dict</span><span class="p">(</span><span class="n">interlocks_element</span><span class="p">)</span> <span class="c1"># also this</span>
+            <span class="n">workflow_element</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;workflow_pvs&quot;</span><span class="p">)</span>
+            <span class="n">workflow_pvs</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">element_to_dict</span><span class="p">(</span><span class="n">workflow_element</span><span class="p">)</span>
+            <span class="n">operation</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;epics&quot;</span><span class="p">)</span>
+            <span class="n">operation_variables</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">element_to_dict</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span> <span class="c1"># also this dictionary</span>
+            <span class="n">sequence</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;sequence&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">auto_rearm_file</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;auto_rearm_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">interfacePV</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ACTinterface&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">macroString</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;macroed_string&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">sequence</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">sequence</span> <span class="o">+=</span> <span class="s1">&#39;.csv&#39;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">auto_rearm_file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">auto_rearm_file</span> <span class="o">+=</span> <span class="s1">&#39;.xml&#39;</span>
+            <span class="n">sequences_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;sequences&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+            <span class="n">autorearm_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;autorearm&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sequences_dir</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sequence directory &#39;</span><span class="si">{</span><span class="n">sequences_dir</span><span class="si">}</span><span class="s2">&#39; does not exist. Creating it. Put your &#39;</span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">&#39; there.&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">sequences_dir</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">autorearm_dir</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Autorearm directory &#39;</span><span class="si">{</span><span class="n">autorearm_dir</span><span class="si">}</span><span class="s2">&#39; does not exist. Creating it. Put your &#39;</span><span class="si">{</span><span class="n">auto_rearm_file</span><span class="si">}</span><span class="s2">&#39; there.&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">autorearm_dir</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="n">sequence_file</span> <span class="o">=</span> <span class="n">sequences_dir</span> <span class="o">+</span> <span class="n">sequence</span> 
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sequence_file</span><span class="p">))</span>
+            <span class="n">sequence_data</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">parse_csv</span><span class="p">(</span><span class="n">sequence_file</span><span class="p">)</span> <span class="c1"># also this list of dictionaries </span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sequence_data</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span> 
+            <span class="n">autorearm_file_path</span> <span class="o">=</span> <span class="n">autorearm_dir</span> <span class="o">+</span> <span class="n">auto_rearm_file</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">autorearm_file_path</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">autorearm_file_path</span><span class="p">))</span>
+                <span class="n">rearm_conf_tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">autorearm_file_path</span><span class="p">)</span>
+                <span class="n">epics_pvs</span> <span class="o">=</span> <span class="n">rearm_conf_tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+                <span class="n">auto_rearm_data</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">parse_epics_xml_by_tag</span><span class="p">(</span><span class="n">epics_pvs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;specified auto-rearm configuration file </span><span class="si">{}</span><span class="s2"> does not exists&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">autorearm_file_path</span><span class="p">))</span>
+                <span class="n">auto_rearm_data</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">HMI_count_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">HMI_count_dict</span><span class="p">[</span><span class="s2">&quot;total_steps_pv_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;total_steps&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">HMI_count_dict</span><span class="p">[</span><span class="s2">&quot;current_step_pv_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;current_step&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">HMI_count_dict</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">sequence_all</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_combo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">worker_validation</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">worker_validator</span><span class="p">(</span><span class="n">parameters_dict</span><span class="p">,</span> <span class="n">interlocks</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">)</span>
+            <span class="n">phase_one_results</span> <span class="o">=</span> <span class="n">worker_validation</span><span class="o">.</span><span class="n">check_data</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">phase_one_results</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">phase_one_results</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="c1">#TODO Verification of the sequence_data based on the rules, if successfull continue, else return None</span>
+            <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_data</span>
+            <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;sequence_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence</span>
+            <span class="n">sequence_all</span><span class="p">[</span><span class="s2">&quot;HMI_count_dict&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HMI_count_dict</span>
+            <span class="k">return</span> <span class="n">WF</span><span class="o">.</span><span class="n">Worker</span><span class="p">(</span><span class="n">parameters_dict</span><span class="p">,</span> <span class="n">observable_variables</span><span class="p">,</span> <span class="n">interlocks</span><span class="p">,</span> <span class="n">workflow_pvs</span><span class="p">,</span> <span class="n">operation_variables</span><span class="p">,</span>  
+            <span class="n">instance_name</span><span class="p">,</span> <span class="n">auto_rearm_data</span><span class="p">,</span> <span class="n">sequence_all</span><span class="p">),</span> <span class="n">interfacePV</span><span class="p">,</span> <span class="n">macroString</span>
+
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Configuration file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="n">ET</span><span class="o">.</span><span class="n">ParseError</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Invalid XML format in &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Missing Attributes in &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An unexpected error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

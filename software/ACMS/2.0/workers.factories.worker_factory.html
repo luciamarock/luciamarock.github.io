@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers.factories.worker_factory module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="workers.auto_rearm_manager module" href="workers.auto_rearm_manager.html" />
+    <link rel="prev" title="workers.factories.factory_interface module" href="workers.factories.factory_interface.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="workers.html">workers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="workers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="workers.factories.html">workers.factories package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="workers.factories.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="workers.factories.html#module-workers.factories">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html#module-workers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="workers.html">workers package</a></li>
+          <li class="breadcrumb-item"><a href="workers.factories.html">workers.factories package</a></li>
+      <li class="breadcrumb-item active">workers.factories.worker_factory module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/workers.factories.worker_factory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-workers.factories.worker_factory">
+<span id="workers-factories-worker-factory-module"></span><h1>workers.factories.worker_factory module<a class="headerlink" href="#module-workers.factories.worker_factory" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workers.factories.worker_factory.</span></span><span class="sig-name descname"><span class="pre">Worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observable_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_interlocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow_pvs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_rearm_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence_all</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker._generate_steps_update_dict">
+<span class="sig-name descname"><span class="pre">_generate_steps_update_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">HMI_count_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker._generate_steps_update_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker._generate_steps_update_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker._selected_sequence_callback">
+<span class="sig-name descname"><span class="pre">_selected_sequence_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker._selected_sequence_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker._selected_sequence_callback" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker._track_derivatives">
+<span class="sig-name descname"><span class="pre">_track_derivatives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_sequence_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_worker_state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker._track_derivatives"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker._track_derivatives" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker._update_sequence_list">
+<span class="sig-name descname"><span class="pre">_update_sequence_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker._update_sequence_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker._update_sequence_list" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker._update_steps_count">
+<span class="sig-name descname"><span class="pre">_update_steps_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker._update_steps_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker._update_steps_count" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.abort">
+<span class="sig-name descname"><span class="pre">abort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.abort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.abort" title="Link to this definition"></a></dt>
+<dd><p>Abort the worker process.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.abort_due_to_error">
+<span class="sig-name descname"><span class="pre">abort_due_to_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.abort_due_to_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.abort_due_to_error" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.apply_step">
+<span class="sig-name descname"><span class="pre">apply_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.apply_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.apply_step" title="Link to this definition"></a></dt>
+<dd><p>Apply the configuration settings for the current step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.case_warning">
+<span class="sig-name descname"><span class="pre">case_warning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.case_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.case_warning" title="Link to this definition"></a></dt>
+<dd><p>Handle a warning state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.check_observables">
+<span class="sig-name descname"><span class="pre">check_observables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.check_observables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.check_observables" title="Link to this definition"></a></dt>
+<dd><p>Check if any observable PVs are in an error or warning state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.connect" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.get_current_system_state">
+<span class="sig-name descname"><span class="pre">get_current_system_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.get_current_system_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.get_current_system_state" title="Link to this definition"></a></dt>
+<dd><p>Retrieve current system state as a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.get_status">
+<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.get_status" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.load_compare_save">
+<span class="sig-name descname"><span class="pre">load_compare_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workspace_directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.load_compare_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.load_compare_save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.reset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.rollback_step">
+<span class="sig-name descname"><span class="pre">rollback_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.rollback_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.rollback_step" title="Link to this definition"></a></dt>
+<dd><p>Rollback to the previous step in case of an error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.start" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.factories.worker_factory.Worker.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/factories/worker_factory.html#Worker.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.factories.worker_factory.Worker.stop" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="workers.factories.factory_interface.html" class="btn btn-neutral float-left" title="workers.factories.factory_interface module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workers.auto_rearm_manager.html" class="btn btn-neutral float-right" title="workers.auto_rearm_manager module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

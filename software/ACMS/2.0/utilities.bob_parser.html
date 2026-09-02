@@ -56,9 +56,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -112,10 +117,45 @@
              
   <section id="module-utilities.bob_parser">
 <span id="utilities-bob-parser-module"></span><h1>utilities.bob_parser module<a class="headerlink" href="#module-utilities.bob_parser" title="Link to this heading"></a></h1>
+<p>Phoebus Display (.bob) XML Parser for EPICS PV Discovery.</p>
+<p>This utility module provides XML parsing capabilities for Phoebus Display Builder (<code class="docutils literal notranslate"><span class="pre">.bob</span></code>)
+HMI screen files used in CS-Studio.</p>
+<p>It enables the ACMS Template Editor to automatically discover all Process Variables (PVs)
+embedded within screen widgets (such as Text Updates, Action Buttons, and Gauges).
+The extracted PV list is deduplicated, filtered to remove unexpanded Phoebus macros,
+and sorted before being passed to <a class="reference internal" href="editor_interface.html#module-editor_interface" title="editor_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">editor_interface</span></code></a> for live Channel Access profiling.</p>
+<dl class="simple">
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xml.etree.ElementTree</span></code>: Standard library XML parsing engine.</p></li>
+</ul>
+</dd>
+</dl>
+<p>&#64;author: luciamarock</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.bob_parser.extract_pvs_from_bob">
 <span class="sig-prename descclassname"><span class="pre">utilities.bob_parser.</span></span><span class="sig-name descname"><span class="pre">extract_pvs_from_bob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bob_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/utilities/bob_parser.html#extract_pvs_from_bob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.bob_parser.extract_pvs_from_bob" title="Link to this definition"></a></dt>
-<dd><p>Parses a Phoebus .bob file and extracts all configured PV names.</p>
+<dd><p>Parse a CS-Studio Phoebus <code class="docutils literal notranslate"><span class="pre">.bob</span></code> display file and extract all configured PV names.</p>
+<p>Recursively scans the XML tree structure for <code class="docutils literal notranslate"><span class="pre">&lt;pv_name&gt;</span></code> tags, strips whitespace,
+filters out unexpanded local macros (e.g., <code class="docutils literal notranslate"><span class="pre">$(PV_NAME)</span></code>), deduplicates identical
+widget channels, and returns a sorted list of concrete PV names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bob_file_path</strong> (<em>str</em><em> or </em><em>Path</em>) – File path to the target Phoebus <code class="docutils literal notranslate"><span class="pre">.bob</span></code> XML screen file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A sorted list of unique, valid EPICS Process Variable names extracted
+from the file. Returns an empty list <code class="docutils literal notranslate"><span class="pre">[]</span></code> if XML parsing fails or if the file
+cannot be found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Error Handling:</dt><dd><p>Catches <code class="xref py py-class docutils literal notranslate"><span class="pre">xml.etree.ElementTree.ParseError</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">FileNotFoundError</span></code>,
+logging an error message and returning an empty list to prevent application crashes.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

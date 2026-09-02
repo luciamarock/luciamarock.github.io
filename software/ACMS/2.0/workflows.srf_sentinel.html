@@ -56,6 +56,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="workflows.html">workflows package</a><ul class="current">
@@ -74,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="workflows.html#module-workflows">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -110,62 +115,246 @@
              
   <section id="module-workflows.srf_sentinel">
 <span id="workflows-srf-sentinel-module"></span><h1>workflows.srf_sentinel module<a class="headerlink" href="#module-workflows.srf_sentinel" title="Link to this heading"></a></h1>
+<p>Superconducting Radio Frequency (SRF) Interlock Sentinel Workflow Module.</p>
+<p>This module implements the <code class="docutils literal notranslate"><span class="pre">SRFsentinel</span></code> continuous interlock monitoring daemon and the
+associated <code class="docutils literal notranslate"><span class="pre">SentinelRule</span></code> rule engine.</p>
+<dl class="simple">
+<dt>Key Functionality:</dt><dd><ol class="arabic simple">
+<li><p>CSV-Driven Interlock Rules: Loads sentinel rules from <code class="docutils literal notranslate"><span class="pre">srf_sentinel.csv</span></code> to monitor
+EPICS trigger Process Variables (PVs) against condition statements (including logical
+operators like <code class="docutils literal notranslate"><span class="pre">AND</span></code> / <code class="docutils literal notranslate"><span class="pre">OR</span></code> and <code class="docutils literal notranslate"><span class="pre">NaN</span></code> readback guards).</p></li>
+<li><p>Interlock Action Dispatching: Automatically writes specified target values to driven
+PVs whenever interlock trigger conditions evaluate to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p>Waveform Logging &amp; HMI Metrics: Logs interlock activity messages and timestamps to EPICS
+waveform arrays (capped at 500 entries) and updates the total active interlock count.</p></li>
+<li><p>Template Editor Subprocess Execution: Monitors requests via EPICS to launch external
+GUI template editor processes via <a class="reference internal" href="gui_process_launcher.html#module-gui_process_launcher" title="gui_process_launcher"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gui_process_launcher</span></code></a> and <a class="reference internal" href="editor_interface.html#module-editor_interface" title="editor_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">editor_interface</span></code></a>.</p></li>
+</ol>
+</dd>
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="workflows_interface.html#module-workflows_interface" title="workflows_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflows_interface</span></code></a>: Workflow registration repository.</p></li>
+<li><p><a class="reference internal" href="editor_interface.html#module-editor_interface" title="editor_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">editor_interface</span></code></a>: Phoebus display (.bob) sanitization and preparation utilities.</p></li>
+<li><p><a class="reference internal" href="gui_process_launcher.html#module-gui_process_launcher" title="gui_process_launcher"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gui_process_launcher</span></code></a>: Subprocess launcher for external GUI editors.</p></li>
+</ul>
+</dd>
+</dl>
 <p>Created on Fri Feb  2 09:10:28 2024</p>
 <p>&#64;author: luciamarock</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workflows.srf_sentinel.</span></span><span class="sig-name descname"><span class="pre">SRFsentinel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Superconducting RF Sentinel interlock monitoring and execution engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argument</strong> (<em>int</em>) – Control state flag. <code class="docutils literal notranslate"><span class="pre">0</span></code> keeps the sentinel loop active; non-zero
+triggers graceful loop exit.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.argument">
+<span class="sig-name descname"><span class="pre">argument</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.argument" title="Link to this definition"></a></dt>
+<dd><p>Execution loop control state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.trigger_pvs">
+<span class="sig-name descname"><span class="pre">trigger_pvs</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.trigger_pvs" title="Link to this definition"></a></dt>
+<dd><p>Map of connected trigger EPICS PV instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, epics.PV]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.driven_pvs">
+<span class="sig-name descname"><span class="pre">driven_pvs</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.driven_pvs" title="Link to this definition"></a></dt>
+<dd><p>Map of connected target/driven EPICS PV instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, epics.PV]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._template_editor_request">
+<span class="sig-name descname"><span class="pre">_template_editor_request</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._template_editor_request" title="Link to this definition"></a></dt>
+<dd><p>Current pending template editor request payload key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._rules">
+<span class="sig-name descname"><span class="pre">_rules</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._rules" title="Link to this definition"></a></dt>
+<dd><p>List of parsed sentinel interlock rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#workflows.srf_sentinel.SentinelRule" title="workflows.srf_sentinel.SentinelRule">SentinelRule</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._hmi_table">
+<span class="sig-name descname"><span class="pre">_hmi_table</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._hmi_table" title="Link to this definition"></a></dt>
+<dd><p>Waveform PV storing recent interlock alert messages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._hmi_timestamps">
+<span class="sig-name descname"><span class="pre">_hmi_timestamps</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._hmi_timestamps" title="Link to this definition"></a></dt>
+<dd><p>Waveform PV storing interlock alert timestamps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._hmiItlkCount">
+<span class="sig-name descname"><span class="pre">_hmiItlkCount</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._hmiItlkCount" title="Link to this definition"></a></dt>
+<dd><p>PV outputting the total number of active interlocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._hmiBobfile">
+<span class="sig-name descname"><span class="pre">_hmiBobfile</span></span><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._hmiBobfile" title="Link to this definition"></a></dt>
+<dd><p>PV receiving template editor launch commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._bobfile_callback">
 <span class="sig-name descname"><span class="pre">_bobfile_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel._bobfile_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._bobfile_callback" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>EPICS callback monitoring template editor launch requests from HMI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pvname</strong> (<em>str</em><em>, </em><em>optional</em>) – Monitored PV name.</p></li>
+<li><p><strong>value</strong> (<em>str</em><em>, </em><em>optional</em>) – Target .bob filename requested for template editing.</p></li>
+<li><p><strong>**kwargs</strong> – Additional callback parameters.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._connect_pvs">
 <span class="sig-name descname"><span class="pre">_connect_pvs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel._connect_pvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._connect_pvs" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Establish EPICS PV connections for HMI status logging, triggers, and driven targets.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._general_callback">
 <span class="sig-name descname"><span class="pre">_general_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel._general_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._general_callback" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>EPICS callback triggered when a monitored trigger PV value changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pvname</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the updating EPICS PV.</p></li>
+<li><p><strong>value</strong> (<em>any</em><em>, </em><em>optional</em>) – New value received from EPICS.</p></li>
+<li><p><strong>**kwargs</strong> – Additional callback parameters.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel._load_sentinel_rules">
 <span class="sig-name descname"><span class="pre">_load_sentinel_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel._load_sentinel_rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel._load_sentinel_rules" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Parse interlock rules from the specified CSV file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – Path to the <code class="docutils literal notranslate"><span class="pre">srf_sentinel.csv</span></code> rules file.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.general_settings">
 <span class="sig-name descname"><span class="pre">general_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel.general_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.general_settings" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Ingest global project configuration and initialize rule parsing and PV connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>settings</strong> (<em>dict</em>) – Configuration dictionary containing console position and resources directory.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.log_to_waveform">
 <span class="sig-name descname"><span class="pre">log_to_waveform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_timestamp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel.log_to_waveform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.log_to_waveform" title="Link to this definition"></a></dt>
-<dd><p>Prepends a new message to the SRF:Messages waveform.</p>
+<dd><p>Prepend a new interlock event message and timestamp to HMI EPICS waveforms.</p>
+<p>Maintains synchronized, non-empty waveform lists capped at a maximum of 500 entries (NELM).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_message</strong> (<em>str</em>) – Interlock alert message string (truncated to 39 chars max).</p></li>
+<li><p><strong>new_timestamp</strong> (<em>str</em>) – Formatted timestamp string (<code class="docutils literal notranslate"><span class="pre">%Y-%m-%d</span> <span class="pre">%H:%M:%S</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.stop">
 <span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.stop" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Gracefully terminate the sentinel execution loop.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.talk">
 <span class="sig-name descname"><span class="pre">talk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel.talk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.talk" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Print active interlock statuses and pending puts to stdout.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.wait_please">
 <span class="sig-name descname"><span class="pre">wait_please</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel.wait_please"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.wait_please" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Pacing delay (~0.99s) between sentinel polling iterations.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SRFsentinel.work">
 <span class="sig-name descname"><span class="pre">work</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SRFsentinel.work"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SRFsentinel.work" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Continuous sentinel execution loop.</p>
+<dl class="simple">
+<dt>Performs:</dt><dd><ol class="arabic simple">
+<li><p>Template editor subprocess launch handling.</p></li>
+<li><p>Interlock actuation dispatching to driven PVs.</p></li>
+<li><p>Logging interlock events and timestamps to EPICS waveform PVs.</p></li>
+<li><p>Updating active interlock count metric (<code class="docutils literal notranslate"><span class="pre">SRF:ItlkCount</span></code>).</p></li>
+</ol>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -173,17 +362,117 @@
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workflows.srf_sentinel.</span></span><span class="sig-name descname"><span class="pre">SentinelRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger_pv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigger_condition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driven_pv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driven_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SentinelRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a single CSV-defined interlock evaluation rule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trigger_pv</strong> (<em>str</em>) – Name of the EPICS PV to monitor as the rule trigger.</p></li>
+<li><p><strong>trigger_condition</strong> (<em>str</em>) – Condition expression string (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;&lt;=</span> <span class="pre">45</span> <span class="pre">or</span> <span class="pre">&gt;=</span> <span class="pre">100&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;==</span> <span class="pre">1&quot;</span></code>).</p></li>
+<li><p><strong>driven_pv</strong> (<em>str</em>) – Name of the target EPICS PV to actuate upon interlock trigger.</p></li>
+<li><p><strong>driven_val</strong> (<em>float</em><em> or </em><em>str</em>) – Numerical value to put to <code class="docutils literal notranslate"><span class="pre">driven_pv</span></code> when triggered.</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Diagnostic message describing the interlock event.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.trigger_pv">
+<span class="sig-name descname"><span class="pre">trigger_pv</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.trigger_pv" title="Link to this definition"></a></dt>
+<dd><p>Monitored trigger PV name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.trigger_condition">
+<span class="sig-name descname"><span class="pre">trigger_condition</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.trigger_condition" title="Link to this definition"></a></dt>
+<dd><p>Expression condition string evaluated against trigger values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.driven_pv">
+<span class="sig-name descname"><span class="pre">driven_pv</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.driven_pv" title="Link to this definition"></a></dt>
+<dd><p>Target actuation PV name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.driven_val">
+<span class="sig-name descname"><span class="pre">driven_val</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.driven_val" title="Link to this definition"></a></dt>
+<dd><p>Floating-point value set on interlock trigger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.message">
+<span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.message" title="Link to this definition"></a></dt>
+<dd><p>Human-readable interlock alert message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.execute" title="Link to this definition"></a></dt>
+<dd><p>Flag indicating that an interlock actuation needs to be dispatched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.isInterlocked">
+<span class="sig-name descname"><span class="pre">isInterlocked</span></span><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.isInterlocked" title="Link to this definition"></a></dt>
+<dd><p>Current active interlock status flag for this rule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.SentinelRule.evaluate">
 <span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#SentinelRule.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.SentinelRule.evaluate" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Evaluate incoming trigger PV value against rule condition expression.</p>
+<p>Handles string casting, <code class="docutils literal notranslate"><span class="pre">NaN</span></code> detection (forcing interlock on invalid numbers),
+and compound logical conditions (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;and&quot;</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;or&quot;</span></code> splits).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>trigger_value</strong> (<em>float</em><em> or </em><em>str</em>) – Fresh readback value received from the trigger PV callback.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="workflows.srf_sentinel.create_instance">
 <span class="sig-prename descclassname"><span class="pre">workflows.srf_sentinel.</span></span><span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/srf_sentinel.html#create_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.srf_sentinel.create_instance" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Factory function to instantiate and register <code class="docutils literal notranslate"><span class="pre">SRFsentinel</span></code>.</p>
+<p>Creates an instance of <a class="reference internal" href="#workflows.srf_sentinel.SRFsentinel" title="workflows.srf_sentinel.SRFsentinel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SRFsentinel</span></code></a> initialized with control flag <code class="docutils literal notranslate"><span class="pre">0</span></code>
+and registers it in <code class="xref py py-data docutils literal notranslate"><span class="pre">workflows_interface.registered_workflows</span></code> under key <code class="docutils literal notranslate"><span class="pre">&quot;SRFsentinel&quot;</span></code>.</p>
+</dd></dl>
 
 </section>
 

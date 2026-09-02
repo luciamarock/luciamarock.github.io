@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
 </ul>
@@ -91,13 +96,31 @@
              
   <h1>Source code for workflows_interface</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Interace module for the Workflows </span>
+<span class="sd">&quot;&quot;&quot;Interface module for the Workflows.</span>
 
-<span class="sd">Created on Thu Jan 26 15:47:32 2023 \n</span>
-<span class="sd">It explicitly uses the module-level entities of :obj:`utilities.util_functions` and :obj:`controllersInterface` \n</span>
-<span class="sd">This interface is called from the main_program and constitutes the operational beginning of the program. In fact, all the tasks performed </span>
-<span class="sd">before this module&#39;s call are stricty focused on the &quot;aquisition of knowledge&quot; of the Recipe Management System program about the real </span>
-<span class="sd">Smart Controllers components by means of the configuration files (resources .xml files). </span>
+<span class="sd">This module constitutes the operational starting point of the Recipe Management System</span>
+<span class="sd">and ACMS execution framework. It is invoked directly by ``main_program.py`` after the </span>
+<span class="sd">hardware configuration and discovery phase (&quot;knowledge acquisition&quot;) has finished loading </span>
+<span class="sd">the physical Smart Controller definitions from system resource XML files.</span>
+
+<span class="sd">The interface is responsible for:</span>
+<span class="sd">    1. Validating recipe folder structures and subsystem integrity.</span>
+<span class="sd">    2. Registering and starting background background workflow processing threads.</span>
+<span class="sd">    3. Dispatching execution to the requested User Interface / Operation Mode:</span>
+<span class="sd">       </span>
+<span class="sd">       * **API Mode:** Boots the ACMS background API client and execution runner to interact </span>
+<span class="sd">         with the LIPAc Campaign Manager (LCM) via polling (`GET /api/v0.5/automation/jobs/next`), </span>
+<span class="sd">         event batching (`POST /api/v0.5/automation/jobs/{job_id}/events`), and 2-second heartbeats.</span>
+<span class="sd">       * **GUI Mode:** Launches the PyQt5 graphical interface for local operator control.</span>
+<span class="sd">       * **CLI Mode:** Provides an interactive command-line loop for debugging, manual workflow </span>
+<span class="sd">         querying, and safe process spawning of tools like the Template Editor.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`utilities.util_functions`: Global workspace configuration and settings state.</span>
+<span class="sd">    - :mod:`controllersInterface`: Type and instance registration for EPICS controllers.</span>
+<span class="sd">    - :mod:`editor_interface`: Archive scanning and template editor operations.</span>
+<span class="sd">    - :mod:`gui_process_launcher`: Isolated process launcher for external PySide/PyQt tools.</span>
+<span class="sd">    - :mod:`API.runner`: Entry point for launching the ACMS-LCM communication loop.</span>
 
 <span class="sd">@author: luciamarock</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -108,13 +131,6 @@
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
 <span class="kn">import</span> <span class="nn">logging</span> 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="c1"># consider to get the settings and start a workflow class (or more)</span>
-<span class="c1"># create an instance of the workflow class e register into the utils</span>
-<span class="c1"># the workflow classes must have .json dumps methods (use prototypes, define here)</span>
-
-<span class="c1"># allow multithreading consider using process pool instead of threading</span>
-<span class="c1"># How to terminate a thread when main program ends (example in tests/test_thread)</span>
-<span class="c1">#  --&gt; https://stackoverflow.com/questions/2564137/how-to-terminate-a-thread-when-main-program-ends</span>
 
 <span class="n">subsystem</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">registered_workflows</span> <span class="o">=</span> <span class="p">{}</span>
@@ -127,11 +143,18 @@
 <div class="viewcode-block" id="init">
 <a class="viewcode-back" href="../workflows_interface.html#workflows_interface.init">[docs]</a>
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check existence of recipe files and directories </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize workspace recipe directories and validate subsystem controller integrity.</span>
 <span class="sd">    </span>
-<span class="sd">    In case not existing, this function generates the default recipes directories. </span>
-<span class="sd">    It also checks if, all the controller&#39;s type objects belong to the same substistem and if all the declared instances </span>
-<span class="sd">    belong to one and only one controller type.     </span>
+<span class="sd">    This function performs structural pre-flight checks before workflows can be safely executed:</span>
+<span class="sd">        - Verifies the existence of the base ``recipes/`` directory in the workspace, creating it if missing.</span>
+<span class="sd">        - Ensures all registered controller types belong to a single, unified hardware subsystem.</span>
+<span class="sd">        - Checks that every controller instance declared inside a controller type actually exists within</span>
+<span class="sd">          the registered instances dictionary, creating instance sub-folders as needed.</span>
+<span class="sd">        - Establishes network/EPICS connectivity if an ``AutoConditioningWorkflow`` instance is registered.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: ``True`` if initialization and connectivity checks succeeded, enabling </span>
+<span class="sd">        ``main_program`` to invoke :func:`start()`; ``False`` otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">subsystem</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;workflows interface started&quot;</span><span class="p">)</span>
@@ -162,9 +185,25 @@
 <div class="viewcode-block" id="start">
 <a class="viewcode-back" href="../workflows_interface.html#workflows_interface.start">[docs]</a>
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Starts the program workflow </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start workflow worker threads and launch the selected operating mode.</span>
 <span class="sd">    </span>
-<span class="sd">    It loads the available recipes in the corresponding Controller&#39;s instance and start the User Interface</span>
+<span class="sd">    The execution flow progresses as follows:</span>
+<span class="sd">        1. Invokes :func:`CI.create_validators()` to build runtime validators across all controllers.</span>
+<span class="sd">        2. Configures general settings and spawns dedicated background daemon threads for every </span>
+<span class="sd">           registered workflow (e.g., automatic workflow, sentinel workers, phase alignment).</span>
+<span class="sd">        3. Evaluates ``UF.settings[&quot;UI&quot;]`` to branch into the designated interface loop:</span>
+<span class="sd">        </span>
+<span class="sd">           - **API Mode:** Imports and launches the ACMS API Runner service (:func:`API.runner.start_api_server`),</span>
+<span class="sd">             connecting ACMS to the LIPAc Campaign Manager (LCM) backend endpoints over HTTP. Blocks on a 1-second </span>
+<span class="sd">             keep-alive loop until interrupted.</span>
+<span class="sd">           - **GUI Mode:** Initializes a :class:`PyQt5.QtWidgets.QApplication` instance and displays the </span>
+<span class="sd">             main desktop application window.</span>
+<span class="sd">           - **CLI Mode:** Enters a terminal loop processing interactive commands (``status``, ``editor``, </span>
+<span class="sd">             ``help``, ``exit``) and gracefully stops registered workflows upon termination.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyboardInterrupt: Trapped during API or CLI modes to safely halt registered workflow threads </span>
+<span class="sd">            and release hardware/EPICS resources prior to process shutdown.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">CI</span><span class="o">.</span><span class="n">create_validators</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
@@ -183,14 +222,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">workflow_instance</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># , args=(1,), daemon=True</span>
             <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GUI&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;API&quot;</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting ACMS API Service for LCM communication...&quot;</span><span class="p">)</span>
         <span class="kn">from</span> <span class="nn">API.runner</span> <span class="kn">import</span> <span class="n">start_api_server</span>
         
         <span class="n">host</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_host&quot;</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">)</span>
         <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_port&quot;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">))</span>
         <span class="n">start_api_server</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
-        
+        <span class="c1">#TODO Operate the workflows</span>
         <span class="c1"># Keep main thread alive if running strictly in API mode</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">time</span>
@@ -200,6 +239,17 @@
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stopping ACMS API service...&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">registered_workflows</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;GUI&quot;</span><span class="p">:</span>
+        <span class="c1">#TODO Operate the workflows instead</span>
+        <span class="n">recipe_manager</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">MockRecipeManager</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting PyQt5 Graphical User Interface&quot;</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
+        <span class="kn">from</span> <span class="nn">GUI.gui_main</span> <span class="kn">import</span> <span class="n">MainWindow</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+        <span class="n">main_win</span> <span class="o">=</span> <span class="n">MainWindow</span><span class="p">(</span><span class="n">recipe_manager</span><span class="p">)</span>
+        <span class="n">main_win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="c1"># Exec loop blocks until main window is closed</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
     <span class="k">elif</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;UI&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CLI&quot;</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;using the CLI&quot;</span><span class="p">)</span>
         <span class="kn">import</span> <span class="nn">utilities.command_line_interface</span> <span class="k">as</span> <span class="nn">cli</span>

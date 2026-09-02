@@ -1,0 +1,20 @@
+workers.factories package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   workers.factories.factory_interface
+   workers.factories.worker_factory
+
+Module contents
+---------------
+
+.. automodule:: workers.factories
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

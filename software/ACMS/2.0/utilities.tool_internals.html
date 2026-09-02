@@ -56,9 +56,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -74,6 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="utilities.scopelib.html">utilities.scopelib module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utilities.template_editor_gui.html">utilities.template_editor_gui module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">utilities.tool_internals module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tool-internals-module">Tool Internals Module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#utilities.tool_internals.EPICSLogHandler"><code class="docutils literal notranslate"><span class="pre">EPICSLogHandler</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#utilities.tool_internals.calculate_min_stable_time"><code class="docutils literal notranslate"><span class="pre">calculate_min_stable_time()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#utilities.tool_internals.element_to_dict"><code class="docutils literal notranslate"><span class="pre">element_to_dict()</span></code></a></li>
@@ -120,44 +126,38 @@
              
   <section id="module-utilities.tool_internals">
 <span id="utilities-tool-internals-module"></span><h1>utilities.tool_internals module<a class="headerlink" href="#module-utilities.tool_internals" title="Link to this heading"></a></h1>
-<p>Tool Internals Module</p>
-<p>This module provides core functionality for managing tool settings and logging configuration.
-It implements a singleton pattern for settings management to ensure consistent configuration
-across the entire application.</p>
-<dl class="simple">
-<dt>Classes:</dt><dd><dl class="simple">
-<dt>Settings: Manages tool configuration and logging setup</dt><dd><ul class="simple">
-<li><p>Stores configuration parameters</p></li>
-<li><p>Provides logging configuration and handler setup</p></li>
-<li><p>Implements singleton pattern via get_settings()</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-<dt>Functions:</dt><dd><dl class="simple">
-<dt>get_settings(parameters=None): Returns singleton Settings instance</dt><dd><ul class="simple">
-<li><p>Creates new Settings instance if none exists</p></li>
-<li><p>Returns existing instance if already initialized</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-</dl>
-<p>The module handles:
-1. Centralized settings management through singleton pattern
-2. Logging configuration including file and stream handlers
-3. Dynamic logger creation with configurable log levels
-4. Consistent logging format across the application</p>
+<section id="tool-internals-module">
+<h2>Tool Internals Module<a class="headerlink" href="#tool-internals-module" title="Link to this heading"></a></h2>
+<p>Provides core utility functions, XML/CSV parsing routines, EPICS database parsers,
+and custom logging handlers.</p>
+<p>This module contains the <a class="reference internal" href="#utilities.tool_internals.EPICSLogHandler" title="utilities.tool_internals.EPICSLogHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">EPICSLogHandler</span></code></a> for streaming application logs
+directly to EPICS Process Variables (PVs) for SCADA integration, alongside helper
+functions for XML element transformations, CSV parsing, and cavity stabilization math.</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="utilities.tool_internals.EPICSLogHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">EPICSLogHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_str_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">39</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#EPICSLogHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.EPICSLogHandler" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></p>
+<p>Custom logging handler that broadcasts log messages to EPICS Process Variables.</p>
+<p>Buffers recent log entries using fixed-length deques and publishes timestamps,
+log levels, and message chunks to defined EPICS record names via Channel Access.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxlen</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of recent log records to retain in ring buffers, defaults to 25.</p></li>
+<li><p><strong>max_str_len</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum length per string chunk for EPICS waveform/string compatibility, defaults to 39.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.tool_internals.EPICSLogHandler.emit">
 <span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#EPICSLogHandler.emit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.EPICSLogHandler.emit" title="Link to this definition"></a></dt>
-<dd><p>Do whatever it takes to actually log the specified logging record.</p>
-<p>This version is intended to be implemented by subclasses and so
-raises a NotImplementedError.</p>
+<dd><p>Process a log record, chunk strings into ASCII, and publish to EPICS PVs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>record</strong> (<em>logging.LogRecord</em>) – Log record emitted by the Python logging framework.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -165,19 +165,34 @@ raises a NotImplementedError.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.calculate_min_stable_time">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">calculate_min_stable_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta_v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ramp_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cavity_phase</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#calculate_min_stable_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.calculate_min_stable_time" title="Link to this definition"></a></dt>
-<dd><p>Calculates the minimum stable time based on the ramp rate and cavity phase.</p>
+<dd><p>Calculate minimum required stabilization time based on voltage step, ramp rate, and cavity phase angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta_v</strong> (<em>float</em>) – Voltage step magnitude.</p></li>
+<li><p><strong>ramp_rate</strong> (<em>float</em>) – Configured rate of voltage ramping.</p></li>
+<li><p><strong>cavity_phase</strong> (<em>float</em>) – Current cavity phase angle in degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Minimum stabilization duration in seconds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.element_to_dict">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">element_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#element_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.element_to_dict" title="Link to this definition"></a></dt>
-<dd><p>Transforms an Element object into a dictionary.</p>
+<dd><p>Transform an XML Element object into a dictionary of child tag-text pairs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>element</strong> (<em>ET.Element</em>) – The Element object to transform.</p>
+<dd class="field-odd"><p><strong>element</strong> (<em>xml.etree.ElementTree.Element</em>) – XML Element instance to transform.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary representing the Element’s children.</p>
+<dd class="field-even"><p>Dictionary mapping child tag names to their inner text contents.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -188,13 +203,13 @@ raises a NotImplementedError.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.element_to_list">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">element_to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#element_to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.element_to_list" title="Link to this definition"></a></dt>
-<dd><p>Transforms an observable_pvs Element object into a list of PV names.</p>
+<dd><p>Transform an XML parent Element into a list of child text values (e.g., PV lists).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>observable_pvs_element</strong> (<em>ET.Element</em>) – The observable_pvs Element object.</p>
+<dd class="field-odd"><p><strong>list_element</strong> (<em>xml.etree.ElementTree.Element</em>) – XML Element containing list items as children.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of PV names.</p>
+<dd class="field-even"><p>List of text strings extracted from child elements.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
@@ -205,14 +220,13 @@ raises a NotImplementedError.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.element_with_attributes_to_dict">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">element_with_attributes_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#element_with_attributes_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.element_with_attributes_to_dict" title="Link to this definition"></a></dt>
-<dd><p>Transforms an Element object (and its children) into a dictionary,
-including attributes.</p>
+<dd><p>Transform an XML Element and its children into a dictionary including element attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>element</strong> (<em>ET.Element</em>) – The Element object to transform.</p>
+<dd class="field-odd"><p><strong>element</strong> (<em>xml.etree.ElementTree.Element</em>) – XML Element instance to parse.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary representing the Element’s data and attributes.</p>
+<dd class="field-even"><p>Dictionary mapping element text values to their attribute dictionaries.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -223,18 +237,27 @@ including attributes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.get_epics_log_handler">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">get_epics_log_handler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#get_epics_log_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.get_epics_log_handler" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve the singleton EPICS log handler instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted singleton instance of EPICSLogHandler.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#utilities.tool_internals.EPICSLogHandler" title="utilities.tool_internals.EPICSLogHandler">EPICSLogHandler</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.parse_csv">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">parse_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#parse_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.parse_csv" title="Link to this definition"></a></dt>
-<dd><p>Parses a CSV file with the given structure.</p>
+<dd><p>Parse a CSV file into a list of row dictionaries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path to the CSV file.</p>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to the target CSV file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of dictionaries, where each dictionary represents a row.</p>
+<dd class="field-even"><p>List of dictionaries representing CSV rows keyed by column header.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
@@ -245,20 +268,32 @@ including attributes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.parse_epics_db">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">parse_epics_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#parse_epics_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.parse_epics_db" title="Link to this definition"></a></dt>
-<dd><p>Parses EPICS .db content into a dictionary.</p>
+<dd><p>Parse an EPICS database (<code class="docutils literal notranslate"><span class="pre">.db</span></code>) text file into a structured dictionary.</p>
+<p>Extracts record types, record names, and nested field assignments using regular expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to the EPICS <code class="docutils literal notranslate"><span class="pre">.db</span></code> file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing parsed records with keys as record names, or None if file not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="utilities.tool_internals.parse_epics_xml_by_tag">
 <span class="sig-prename descclassname"><span class="pre">utilities.tool_internals.</span></span><span class="sig-name descname"><span class="pre">parse_epics_xml_by_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epics_pv_root</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/tool_internals.html#parse_epics_xml_by_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.tool_internals.parse_epics_xml_by_tag" title="Link to this definition"></a></dt>
-<dd><p>Parses an EPICS XML file and returns a dictionary where each key is the tag name (e.g., rearm_workflow_status),
-and the value is a dict with ‘pv_name’ (from the ‘name’ attribute) and ‘description’ (from the element text).</p>
+<dd><p>Parse an EPICS configuration XML tree by tag name.</p>
+<p>Extracts PV names from element attributes and descriptions from element inner text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to the XML file.</p>
+<dd class="field-odd"><p><strong>epics_pv_root</strong> (<em>xml.etree.ElementTree.Element</em>) – Root XML Element containing PV definitions.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>{tag: {‘pv_name’: …, ‘description’: …}, …}</p>
+<dd class="field-even"><p>Dictionary structured as <code class="docutils literal notranslate"><span class="pre">{tag:</span> <span class="pre">{'pv_name':</span> <span class="pre">...,</span> <span class="pre">'description':</span> <span class="pre">...}}</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>

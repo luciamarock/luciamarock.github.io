@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers.phase_alignment_worker module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SmartControllers package" href="SmartControllers.html" />
+    <link rel="prev" title="workers.auto_rearm_manager module" href="workers.auto_rearm_manager.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="workers.html">workers package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="workers.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="workers.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="workers.auto_rearm_manager.html">workers.auto_rearm_manager module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">workers.phase_alignment_worker module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phase-alignment-worker-module">Phase Alignment Worker Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#workers.phase_alignment_worker.PhaseAlignmentWorker"><code class="docutils literal notranslate"><span class="pre">PhaseAlignmentWorker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workers.html#module-workers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="workers.html">workers package</a></li>
+      <li class="breadcrumb-item active">workers.phase_alignment_worker module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/workers.phase_alignment_worker.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-workers.phase_alignment_worker">
+<span id="workers-phase-alignment-worker-module"></span><h1>workers.phase_alignment_worker module<a class="headerlink" href="#module-workers.phase_alignment_worker" title="Link to this heading"></a></h1>
+<section id="phase-alignment-worker-module">
+<h2>Phase Alignment Worker Module<a class="headerlink" href="#phase-alignment-worker-module" title="Link to this heading"></a></h2>
+<p>Provides the <a class="reference internal" href="#workers.phase_alignment_worker.PhaseAlignmentWorker" title="workers.phase_alignment_worker.PhaseAlignmentWorker"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhaseAlignmentWorker</span></code></a> execution engine to perform real-time
+multi-chain RF phase alignment for RFQ cavities.</p>
+<p>The worker orchestrates EPICS Channel Access PV connections, chain hardware isolation,
+oscilloscope sampling via <a class="reference internal" href="utilities.scopelib.html#module-utilities.scopelib" title="utilities.scopelib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.scopelib</span></code></a>, Levenberg-Marquardt field fitting
+via <a class="reference internal" href="utilities.rfq_calib_utils.html#module-utilities.rfq_calib_utils" title="utilities.rfq_calib_utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.rfq_calib_utils</span></code></a>, and automated safety validation checks.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workers.phase_alignment_worker.</span></span><span class="sig-name descname"><span class="pre">PhaseAlignmentWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Orchestrates multi-chain RF phase alignment, hardware isolation, and safety checks.</p>
+<p>Communicates with EPICS Process Variables (PVs) to manage master and slave amplifier
+states, monitor runtime user commands (RUN, PAUSE, ABORT), and perform least-squares
+optimization of cavity phase setpoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Configuration dictionary containing hardware topologies, worker parameters,
+EPICS PV configurations, and safety threshold limits.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker._build_pv_dict">
+<span class="sig-name descname"><span class="pre">_build_pv_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_suffix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cavity_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplifier_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplifier_suffix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker._build_pv_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker._build_pv_dict" title="Link to this definition"></a></dt>
+<dd><p>Construct EPICS PV name mapping structure based on hardware topology settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pv_suffix</strong> (<em>str</em>) – PV suffix corresponding to open or closed loop operation.</p></li>
+<li><p><strong>chain_prefix</strong> (<em>str</em>) – Prefix string identifying the RF chain address.</p></li>
+<li><p><strong>cavity_prefix</strong> (<em>str</em>) – Prefix string identifying cavity addresses.</p></li>
+<li><p><strong>amplifier_prefix</strong> (<em>str</em>) – Prefix string for amplifier control PVs.</p></li>
+<li><p><strong>amplifier_suffix</strong> (<em>str</em>) – Suffix string for amplifier control PVs.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker._connect">
+<span class="sig-name descname"><span class="pre">_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker._connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker._connect" title="Link to this definition"></a></dt>
+<dd><p>Establish EPICS Channel Access PV instances and assign update callbacks.</p>
+<p>Connects user control PVs, master chain amplifier/target PVs, and all slave chain PVs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if any PV connection timed out or failed; False if all connected.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker._on_user_control_change">
+<span class="sig-name descname"><span class="pre">_on_user_control_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker._on_user_control_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker._on_user_control_change" title="Link to this definition"></a></dt>
+<dd><p>Asynchronous EPICS Channel Access callback triggered on PV value update.</p>
+<dl class="simple">
+<dt>Maps raw integer PV values to human-readable control commands:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">RUN</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">PAUSE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">ABORT</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pvname</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the updated EPICS Process Variable, defaults to None.</p></li>
+<li><p><strong>value</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Updated value received from Channel Access, defaults to None.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments passed by <code class="docutils literal notranslate"><span class="pre">epics.PV</span></code> callbacks.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker._restore_all_amplifiers">
+<span class="sig-name descname"><span class="pre">_restore_all_amplifiers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker._restore_all_amplifiers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker._restore_all_amplifiers" title="Link to this definition"></a></dt>
+<dd><p>Re-enable all master and slave amplifier chains.</p>
+<p>Called upon sequence completion or procedure abort to restore full operating state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker._set_amplifier_state">
+<span class="sig-name descname"><span class="pre">_set_amplifier_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amp_pv_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker._set_amplifier_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker._set_amplifier_state" title="Link to this definition"></a></dt>
+<dd><p>Toggle an amplifier state using its connected <code class="docutils literal notranslate"><span class="pre">epics.PV</span></code> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>amp_pv_dict</strong> (<em>dict</em>) – Dictionary holding the amplifier PV name and PV object instance.</p></li>
+<li><p><strong>enable</strong> (<em>bool</em><em>, </em><em>optional</em>) – True to enable (set to 1), False to disable (set to 0), defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment">
+<span class="sig-name descname"><span class="pre">execute_full_alignment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker.execute_full_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment" title="Link to this definition"></a></dt>
+<dd><p>Execute complete multi-chain RF phase alignment scan sequence.</p>
+<p>Iterates over all configured slave chains, isolates each target chain, acquires
+phase scan voltage samples using the oscilloscope interface, and performs
+Levenberg-Marquardt least-squares curve fitting.</p>
+<dl class="simple">
+<dt>Evaluates safety constraints prior to setting new phase angles:</dt><dd><ul class="simple">
+<li><p><strong>Forward Wave Unbalance Limit:</strong> Must not exceed <code class="docutils literal notranslate"><span class="pre">max_allowed_unbalance_percent</span></code>.</p></li>
+<li><p><strong>Minimum Cavity Voltage:</strong> Peak voltage must equal or exceed <code class="docutils literal notranslate"><span class="pre">min_expected_cavity_voltage</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If an error or safety violation occurs, the current slave chain is restored to its
+original initial phase setpoint and all amplifiers are re-enabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If forward wave unbalance exceeds safety limit or cavity peak voltage drops below minimum.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker.isolate_slave_chain">
+<span class="sig-name descname"><span class="pre">isolate_slave_chain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_slave_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker.isolate_slave_chain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker.isolate_slave_chain" title="Link to this definition"></a></dt>
+<dd><p>Isolate RF fields for a specific slave chain.</p>
+<p>Enforces Master AMP1 = ON and Target Slave AMP = ON, while turning off all
+other slave amplifiers. Pauses for 5 seconds post-switching to allow fields to settle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target_slave_idx</strong> (<em>int</em>) – Index of the slave chain to isolate and keep active.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker.monitor_actions">
+<span class="sig-name descname"><span class="pre">monitor_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker.monitor_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker.monitor_actions" title="Link to this definition"></a></dt>
+<dd><p>Monitor state transitions and dispatch asynchronous execution threads.</p>
+<p>Evaluates current worker status against operator control commands (RUN, PAUSE, ABORT)
+received from EPICS or user intentions. Launches <a class="reference internal" href="#workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment" title="workers.phase_alignment_worker.PhaseAlignmentWorker.execute_full_alignment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">execute_full_alignment()</span></code></a> in a
+daemon thread when moving to the <code class="docutils literal notranslate"><span class="pre">running</span></code> state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="workers.phase_alignment_worker.PhaseAlignmentWorker.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workers/phase_alignment_worker.html#PhaseAlignmentWorker.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workers.phase_alignment_worker.PhaseAlignmentWorker.status" title="Link to this definition"></a></dt>
+<dd><p>Log and display the current worker state dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="workers.auto_rearm_manager.html" class="btn btn-neutral float-left" title="workers.auto_rearm_manager module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SmartControllers.html" class="btn btn-neutral float-right" title="SmartControllers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

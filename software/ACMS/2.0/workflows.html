@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="workflows.automatic_workflow module" href="workflows.automatic_workflow.html" />
-    <link rel="prev" title="API.runner module" href="API.runner.html" /> 
+    <link rel="prev" title="GUI.gui_main module" href="GUI.gui_main.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,6 +56,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">workflows package</a><ul>
@@ -69,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-workflows">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -110,6 +115,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.automatic_workflow.html">workflows.automatic_workflow module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto"><code class="docutils literal notranslate"><span class="pre">RMSauto</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.argument"><code class="docutils literal notranslate"><span class="pre">RMSauto.argument</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto._auto_mode_mapping_data"><code class="docutils literal notranslate"><span class="pre">RMSauto._auto_mode_mapping_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto._settings"><code class="docutils literal notranslate"><span class="pre">RMSauto._settings</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.general_settings"><code class="docutils literal notranslate"><span class="pre">RMSauto.general_settings()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.set_auto_mode_mapping_data"><code class="docutils literal notranslate"><span class="pre">RMSauto.set_auto_mode_mapping_data()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.automatic_workflow.html#workflows.automatic_workflow.RMSauto.stop"><code class="docutils literal notranslate"><span class="pre">RMSauto.stop()</span></code></a></li>
@@ -123,6 +131,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.rfq_phase_alignment.html">workflows.rfq_phase_alignment module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.argument"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment.argument</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment._settings"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment._settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.data"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.phase_alignment_worker"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment.phase_alignment_worker</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.general_settings"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment.general_settings()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.stop"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment.stop()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.rfq_phase_alignment.html#workflows.rfq_phase_alignment.RFQPhaseAlignment.talk"><code class="docutils literal notranslate"><span class="pre">RFQPhaseAlignment.talk()</span></code></a></li>
@@ -133,6 +145,15 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.srf_sentinel.html">workflows.srf_sentinel module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel"><code class="docutils literal notranslate"><span class="pre">SRFsentinel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.argument"><code class="docutils literal notranslate"><span class="pre">SRFsentinel.argument</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.trigger_pvs"><code class="docutils literal notranslate"><span class="pre">SRFsentinel.trigger_pvs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel.driven_pvs"><code class="docutils literal notranslate"><span class="pre">SRFsentinel.driven_pvs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._template_editor_request"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._template_editor_request</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._rules"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._rules</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmi_table"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._hmi_table</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmi_timestamps"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._hmi_timestamps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmiItlkCount"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._hmiItlkCount</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._hmiBobfile"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._hmiBobfile</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._bobfile_callback"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._bobfile_callback()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._connect_pvs"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._connect_pvs()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SRFsentinel._general_callback"><code class="docutils literal notranslate"><span class="pre">SRFsentinel._general_callback()</span></code></a></li>
@@ -146,6 +167,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule"><code class="docutils literal notranslate"><span class="pre">SentinelRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.trigger_pv"><code class="docutils literal notranslate"><span class="pre">SentinelRule.trigger_pv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.trigger_condition"><code class="docutils literal notranslate"><span class="pre">SentinelRule.trigger_condition</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.driven_pv"><code class="docutils literal notranslate"><span class="pre">SentinelRule.driven_pv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.driven_val"><code class="docutils literal notranslate"><span class="pre">SentinelRule.driven_val</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.message"><code class="docutils literal notranslate"><span class="pre">SentinelRule.message</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.execute"><code class="docutils literal notranslate"><span class="pre">SentinelRule.execute</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.isInterlocked"><code class="docutils literal notranslate"><span class="pre">SentinelRule.isInterlocked</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.srf_sentinel.html#workflows.srf_sentinel.SentinelRule.evaluate"><code class="docutils literal notranslate"><span class="pre">SentinelRule.evaluate()</span></code></a></li>
 </ul>
 </li>
@@ -154,6 +182,18 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.workers_manager.html">workflows.workers_manager module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager"><code class="docutils literal notranslate"><span class="pre">WorkerManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.workers"><code class="docutils literal notranslate"><span class="pre">WorkerManager.workers</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.epics_interfaces"><code class="docutils literal notranslate"><span class="pre">WorkerManager.epics_interfaces</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.managerPVs"><code class="docutils literal notranslate"><span class="pre">WorkerManager.managerPVs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._jobs"><code class="docutils literal notranslate"><span class="pre">WorkerManager._jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._settings"><code class="docutils literal notranslate"><span class="pre">WorkerManager._settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._factoryInterface"><code class="docutils literal notranslate"><span class="pre">WorkerManager._factoryInterface</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._workers_dir"><code class="docutils literal notranslate"><span class="pre">WorkerManager._workers_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.ACT_presence"><code class="docutils literal notranslate"><span class="pre">WorkerManager.ACT_presence</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.hmi_macro"><code class="docutils literal notranslate"><span class="pre">WorkerManager.hmi_macro</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.table_index"><code class="docutils literal notranslate"><span class="pre">WorkerManager.table_index</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.workers_list_pv"><code class="docutils literal notranslate"><span class="pre">WorkerManager.workers_list_pv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager.running"><code class="docutils literal notranslate"><span class="pre">WorkerManager.running</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._enable_callback"><code class="docutils literal notranslate"><span class="pre">WorkerManager._enable_callback()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._parse_xml_workers"><code class="docutils literal notranslate"><span class="pre">WorkerManager._parse_xml_workers()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="workflows.workers_manager.html#workflows.workers_manager.WorkerManager._update_macro"><code class="docutils literal notranslate"><span class="pre">WorkerManager._update_macro()</span></code></a></li>
@@ -183,7 +223,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="API.runner.html" class="btn btn-neutral float-left" title="API.runner module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="GUI.gui_main.html" class="btn btn-neutral float-left" title="GUI.gui_main module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="workflows.automatic_workflow.html" class="btn btn-neutral float-right" title="workflows.automatic_workflow module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

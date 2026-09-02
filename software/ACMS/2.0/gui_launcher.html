@@ -59,9 +59,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -97,11 +102,50 @@
              
   <section id="module-gui_launcher">
 <span id="gui-launcher-module"></span><h1>gui_launcher module<a class="headerlink" href="#module-gui_launcher" title="Link to this heading"></a></h1>
+<p>Launcher Entry Point for the Template Editor Sub-Application.</p>
+<p>This module serves as the process entry-point script executed when launching the Template
+Editor GUI sub-application from <a class="reference internal" href="gui_process_launcher.html#module-gui_process_launcher" title="gui_process_launcher"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gui_process_launcher</span></code></a>.</p>
+<p>It is executed as an isolated child process using PySide2 (Qt5 bindings) to present
+operators with an interactive interface for editing recipe templates. The module handles
+data payload ingestion through dual modes:</p>
+<ol class="arabic simple">
+<li><p><strong>IPC Stream Mode (Primary):</strong> Intercepts <code class="docutils literal notranslate"><span class="pre">--stdin</span></code> arguments to stream JSON PV metadata
+directly from the parent process pipe via standard input.</p></li>
+<li><p><strong>Disk Cache Mode (Fallback/Testing):</strong> Reads a local cached JSON file (<code class="docutils literal notranslate"><span class="pre">PVINFO.json</span></code>)
+or returns dummy fallback structures for standalone execution and GUI layout debugging.</p></li>
+</ol>
+<dl class="simple">
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="utilities.template_editor_gui.html#module-utilities.template_editor_gui" title="utilities.template_editor_gui"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.template_editor_gui</span></code></a>: Provides the <code class="xref py py-class docutils literal notranslate"><span class="pre">JSONFilterApp</span></code> main GUI window class.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PySide2.QtWidgets.QApplication</span></code>: Manages the GUI application control flow and event loop.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gui_launcher.load_json">
 <span class="sig-prename descclassname"><span class="pre">gui_launcher.</span></span><span class="sig-name descname"><span class="pre">load_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui_launcher.html#load_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui_launcher.load_json" title="Link to this definition"></a></dt>
-<dd><p>Loads JSON data either directly from the subprocess pipe via stdin
-or falls back to the local file cache with latin-1 encoding.</p>
+<dd><p>Ingest JSON telemetry payload from piped standard input or disk cache.</p>
+<p>Determines the input source based on command-line arguments:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--stdin</span></code> is present in <code class="docutils literal notranslate"><span class="pre">sys.argv</span></code>, it reads the serialized JSON string
+directly from <code class="docutils literal notranslate"><span class="pre">sys.stdin</span></code>.</p></li>
+<li><p>Otherwise, it falls back to reading the local <code class="docutils literal notranslate"><span class="pre">PVINFO.json</span></code> file from disk.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parsed PV metadata payload dictionary containing PV names, fields,
+and operational attributes required to initialize the Template Editor widget.
+Returns an empty dict <code class="docutils literal notranslate"><span class="pre">{}</span></code> or fallback sample dictionary if ingestion fails.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

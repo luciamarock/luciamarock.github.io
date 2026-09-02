@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="SmartControllers package" href="SmartControllers.html" />
+    <link rel="next" title="workers package" href="workers.html" />
     <link rel="prev" title="workflows.srf_sentinel module" href="workflows.srf_sentinel.html" /> 
 </head>
 
@@ -56,6 +56,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="workflows.html">workflows package</a><ul class="current">
@@ -73,6 +77,7 @@
 <li class="toctree-l2"><a class="reference internal" href="workflows.html#module-workflows">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -109,80 +114,323 @@
              
   <section id="module-workflows.workers_manager">
 <span id="workflows-workers-manager-module"></span><h1>workflows.workers_manager module<a class="headerlink" href="#module-workflows.workers_manager" title="Link to this heading"></a></h1>
+<p>Auto-Conditioning Worker Manager Workflow Module.</p>
+<p>This module implements the <code class="docutils literal notranslate"><span class="pre">WorkerManager</span></code> workflow (registered as
+<code class="docutils literal notranslate"><span class="pre">&quot;AutoConditioningWorkflow&quot;</span></code> in <a class="reference internal" href="workflows_interface.html#module-workflows_interface" title="workflows_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflows_interface</span></code></a>), which manages
+the lifecycle, EPICS PV integration, HMI communications, and execution threads
+for automated conditioning workers.</p>
+<dl class="simple">
+<dt>Key Responsibilities:</dt><dd><ol class="arabic simple">
+<li><p>Worker Parsing &amp; Factory Instantiation: Parses XML configuration files from
+the resource directory via <a class="reference internal" href="workers.factories.factory_interface.html#workers.factories.factory_interface.WorkerFactory" title="workers.factories.factory_interface.WorkerFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">workers.factories.factory_interface.WorkerFactory</span></code></a>.</p></li>
+<li><p>EPICS Connection &amp; State Monitoring: Binds EPICS PV control interfaces to individual
+worker instances, handling enable/abort/reset/stop actions dynamically via callbacks.</p></li>
+<li><p>Multithreaded Execution: Spawns dedicated daemon threads for parallel worker execution.</p></li>
+<li><p>HMI Integration: Controls macro propagation and exports worker availability and status
+waveforms to EPICS for user display.</p></li>
+<li><p>Configuration Persistency: Synchronizes workspace state on connection setup.</p></li>
+</ol>
+</dd>
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="workflows_interface.html#module-workflows_interface" title="workflows_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflows_interface</span></code></a>: Central registration interface for system workflows.</p></li>
+<li><p><a class="reference internal" href="utilities.util_functions.html#module-utilities.util_functions" title="utilities.util_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.util_functions</span></code></a>: System-wide settings and utility functions.</p></li>
+<li><p><a class="reference internal" href="workers.factories.factory_interface.html#module-workers.factories.factory_interface" title="workers.factories.factory_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workers.factories.factory_interface</span></code></a>: Factory interface creating worker instances from XML.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workflows.workers_manager.</span></span><span class="sig-name descname"><span class="pre">WorkerManager</span></span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Orchestrator for Auto-Conditioning worker threads and EPICS control interfaces.</p>
+<p>This workflow manages worker lifecycle events (start, stop, abort, reset), handles
+EPICS PV callbacks, and communicates status updates to HMI displays.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.workers">
+<span class="sig-name descname"><span class="pre">workers</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.workers" title="Link to this definition"></a></dt>
+<dd><p>Map of active worker instances keyed by worker name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, object]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.epics_interfaces">
+<span class="sig-name descname"><span class="pre">epics_interfaces</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.epics_interfaces" title="Link to this definition"></a></dt>
+<dd><p>Map linking EPICS interface PV names to worker names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.managerPVs">
+<span class="sig-name descname"><span class="pre">managerPVs</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.managerPVs" title="Link to this definition"></a></dt>
+<dd><p>Map of connected EPICS PV instances managing worker state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, epics.PV]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._jobs">
+<span class="sig-name descname"><span class="pre">_jobs</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager._jobs" title="Link to this definition"></a></dt>
+<dd><p>Queue for pending HMI macro updates or state jobs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._settings">
+<span class="sig-name descname"><span class="pre">_settings</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager._settings" title="Link to this definition"></a></dt>
+<dd><p>Project settings retrieved from <a class="reference internal" href="utilities.util_functions.html#module-utilities.util_functions" title="utilities.util_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.util_functions</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._factoryInterface">
+<span class="sig-name descname"><span class="pre">_factoryInterface</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager._factoryInterface" title="Link to this definition"></a></dt>
+<dd><p>Worker factory instance for XML parsing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FI.WorkerFactory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._workers_dir">
+<span class="sig-name descname"><span class="pre">_workers_dir</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager._workers_dir" title="Link to this definition"></a></dt>
+<dd><p>Absolute file system path to the XML workers configuration folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.ACT_presence">
+<span class="sig-name descname"><span class="pre">ACT_presence</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.ACT_presence" title="Link to this definition"></a></dt>
+<dd><p>PV signaling the active presence of the Auto Conditioning Tool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.hmi_macro">
+<span class="sig-name descname"><span class="pre">hmi_macro</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.hmi_macro" title="Link to this definition"></a></dt>
+<dd><p>PV broadcasting selected macro parameters to HMI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.table_index">
+<span class="sig-name descname"><span class="pre">table_index</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.table_index" title="Link to this definition"></a></dt>
+<dd><p>PV monitoring table index selections from HMI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.workers_list_pv">
+<span class="sig-name descname"><span class="pre">workers_list_pv</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.workers_list_pv" title="Link to this definition"></a></dt>
+<dd><p>EPICS Waveform PV broadcasting active worker names and states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>epics.PV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.running">
+<span class="sig-name descname"><span class="pre">running</span></span><a class="headerlink" href="#workflows.workers_manager.WorkerManager.running" title="Link to this definition"></a></dt>
+<dd><p>Main loop execution state flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._enable_callback">
 <span class="sig-name descname"><span class="pre">_enable_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager._enable_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager._enable_callback" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>EPICS callback handling state transition requests for specific workers.</p>
+<p>Evaluates incoming control PV values against worker execution states (<code class="docutils literal notranslate"><span class="pre">running</span></code>,
+<code class="docutils literal notranslate"><span class="pre">completed</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>, <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">running</span></code>, <code class="docutils literal notranslate"><span class="pre">aborted</span></code>) to trigger <code class="docutils literal notranslate"><span class="pre">abort()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">stop()</span></code>, <code class="docutils literal notranslate"><span class="pre">reset()</span></code>, or <a class="reference internal" href="#workflows.workers_manager.WorkerManager.start_worker" title="workflows.workers_manager.WorkerManager.start_worker"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_worker()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pvname</strong> (<em>str</em><em>, </em><em>optional</em>) – Triggering EPICS PV name.</p></li>
+<li><p><strong>value</strong> (<em>int</em><em>, </em><em>optional</em>) – Control command value (<code class="docutils literal notranslate"><span class="pre">0</span></code> to stop/abort/reset, <code class="docutils literal notranslate"><span class="pre">1</span></code> to start).</p></li>
+<li><p><strong>char_value</strong> (<em>str</em><em>, </em><em>optional</em>) – String representation of the PV value.</p></li>
+<li><p><strong>**kw</strong> – Additional callback keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._parse_xml_workers">
 <span class="sig-name descname"><span class="pre">_parse_xml_workers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager._parse_xml_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager._parse_xml_workers" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Parse worker XML definitions from the resources directory and setup core EPICS PVs.</p>
+<p>Scans <code class="docutils literal notranslate"><span class="pre">self._workers_dir</span></code> for <cite>.xml</cite> files and invokes the factory to instantiate
+workers, EPICS interfaces, and macros. Initializes system presence and HMI selection PVs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if an error occurred or no XML files were found; <code class="docutils literal notranslate"><span class="pre">False</span></code> on success.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager._update_macro">
 <span class="sig-name descname"><span class="pre">_update_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager._update_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager._update_macro" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>EPICS callback triggered when the HMI table selection index changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pvname</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the EPICS PV.</p></li>
+<li><p><strong>value</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – New index value selected in the HMI table.</p></li>
+<li><p><strong>char_value</strong> (<em>str</em><em>, </em><em>optional</em>) – String representation of the value.</p></li>
+<li><p><strong>**kw</strong> – Additional keyword arguments from PyEpics callback engine.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.connect">
 <span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.connect" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Connect the manager and instantiated workers to the EPICS layer and synchronize workspace state.</p>
+<dl class="simple">
+<dt>Performs:</dt><dd><ol class="arabic simple">
+<li><p>XML configuration parsing (<a class="reference internal" href="#workflows.workers_manager.WorkerManager._parse_xml_workers" title="workflows.workers_manager.WorkerManager._parse_xml_workers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_parse_xml_workers()</span></code></a>).</p></li>
+<li><p>EPICS PV interface creation and callback setup for individual worker state management.</p></li>
+<li><p>Worker EPICS connectivity verification.</p></li>
+<li><p>Workspace initial state synchronization (load/compare/save).</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if all EPICS connections and worker synchronizations succeeded; <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.general_settings">
 <span class="sig-name descname"><span class="pre">general_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.general_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.general_settings" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Acknowledge ingestion of system settings (pre-initialized during construction).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>settings</strong> (<em>dict</em>) – General project configuration settings dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.start_worker">
 <span class="sig-name descname"><span class="pre">start_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.start_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.start_worker" title="Link to this definition"></a></dt>
-<dd><p>Starts a new worker thread if it’s not already running.</p>
+<dd><p>Start a target worker in a separate background daemon thread.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>worker</strong> (<em>object</em>) – Worker instance possessing a <code class="docutils literal notranslate"><span class="pre">start()</span></code> method.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.stop">
 <span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.stop" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Stop the main manager loop and notify external system of ACT tool shutdown.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.stop_all_workers">
 <span class="sig-name descname"><span class="pre">stop_all_workers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.stop_all_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.stop_all_workers" title="Link to this definition"></a></dt>
-<dd><p>Stops all active workers.</p>
+<dd><p>Iterate across all registered workers and initiate shutdown.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.stop_worker">
 <span class="sig-name descname"><span class="pre">stop_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.stop_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.stop_worker" title="Link to this definition"></a></dt>
-<dd><p>Stops a running worker and removes it from the manager.</p>
+<dd><p>Stop an active worker instance and unregister it from the manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>worker_id</strong> (<em>str</em>) – Key identifying the target worker in <a class="reference internal" href="workers.html#module-workers" title="workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">workers</span></code></a>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.talk">
 <span class="sig-name descname"><span class="pre">talk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.talk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.talk" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Print current status diagnostic summaries for all managed workers.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.update_active_workers">
 <span class="sig-name descname"><span class="pre">update_active_workers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.update_active_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.update_active_workers" title="Link to this definition"></a></dt>
-<dd><p>Updates EPICS waveform with the list of active workers and their status.</p>
+<dd><p>Format active worker step execution progress and update EPICS waveform PV.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="workflows.workers_manager.WorkerManager.update_status">
 <span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#WorkerManager.update_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.WorkerManager.update_status" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Query and display current execution status for a given worker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker_name</strong> (<em>str</em>) – Identifier of the worker.</p></li>
+<li><p><strong>worker_instance</strong> (<em>object</em>) – Target worker instance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="workflows.workers_manager.create_instance">
 <span class="sig-prename descclassname"><span class="pre">workflows.workers_manager.</span></span><span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflows/workers_manager.html#create_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#workflows.workers_manager.create_instance" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Factory function to instantiate and register the <code class="docutils literal notranslate"><span class="pre">AutoConditioningWorkflow</span></code>.</p>
+<p>Instantiates <a class="reference internal" href="#workflows.workers_manager.WorkerManager" title="workflows.workers_manager.WorkerManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">WorkerManager</span></code></a> and registers it in
+<code class="xref py py-data docutils literal notranslate"><span class="pre">workflows_interface.registered_workflows</span></code> under the key <code class="docutils literal notranslate"><span class="pre">&quot;AutoConditioningWorkflow&quot;</span></code>.</p>
+</dd></dl>
 
 </section>
 
@@ -191,7 +439,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="workflows.srf_sentinel.html" class="btn btn-neutral float-left" title="workflows.srf_sentinel module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="SmartControllers.html" class="btn btn-neutral float-right" title="SmartControllers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="workers.html" class="btn btn-neutral float-right" title="workers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

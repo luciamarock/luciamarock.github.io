@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
 </ul>
@@ -91,10 +96,15 @@
              
   <h1>Source code for notify</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Created on Thu Feb  1 15:42:43 2024</span>
+<span class="sd">&quot;&quot;&quot;Console Notification and Diagnostics Utility.</span>
 
-<span class="sd">@author: luciamarock</span>
+<span class="sd">Created on Thu Feb 1 15:42:43 2024</span>
+
+<span class="sd">Provides standardized, timestamped output logging functions for stdout/stderr </span>
+<span class="sd">during initialization and early runtime phases before full logging facilities </span>
+<span class="sd">are bound.</span>
+
+<span class="sd">:author: luciamarock</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">datetime</span>
@@ -103,7 +113,11 @@
 <div class="viewcode-block" id="get_timestamp">
 <a class="viewcode-back" href="../notify.html#notify.get_timestamp">[docs]</a>
 <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">():</span>
-    <span class="c1"># Get the current timestamp in the desired format</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a formatted timestamp string with millisecond precision.</span>
+
+<span class="sd">    :return: Formatted timestamp string in ``YYYY-MM-DD-HH:MM:SS:mmm`` format.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">-%H:%M:%S:</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">timestamp</span></div>
@@ -112,7 +126,14 @@
 <div class="viewcode-block" id="get_caller_module">
 <a class="viewcode-back" href="../notify.html#notify.get_caller_module">[docs]</a>
 <span class="k">def</span> <span class="nf">get_caller_module</span><span class="p">():</span>
-    <span class="c1"># Get the name of the calling module</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve the module name of the calling function.</span>
+
+<span class="sd">    Inspects the current execution call stack to extract the name of the module </span>
+<span class="sd">    two frames above this call.</span>
+
+<span class="sd">    :return: Name of the invoking module (e.g., ``&#39;main_program&#39;``).</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">frame_info</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">module_name</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">frame_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="k">return</span> <span class="n">module_name</span></div>
@@ -121,7 +142,11 @@
 <div class="viewcode-block" id="info">
 <a class="viewcode-back" href="../notify.html#notify.info">[docs]</a>
 <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="c1"># Print an info message with the current timestamp and module information</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print an informational message to stdout formatted with timestamp and module context.</span>
+
+<span class="sd">    :param message: Diagnostic information to display.</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
     <span class="n">module_name</span> <span class="o">=</span> <span class="n">get_caller_module</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> INFO: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">module_name</span><span class="p">,</span><span class="n">message</span><span class="p">))</span></div>
@@ -130,7 +155,11 @@
 <div class="viewcode-block" id="warning">
 <a class="viewcode-back" href="../notify.html#notify.warning">[docs]</a>
 <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="c1"># Print a warning message with the current timestamp and module information</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print a warning message to stdout formatted with timestamp and module context.</span>
+
+<span class="sd">    :param message: Warning details to display.</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
     <span class="n">module_name</span> <span class="o">=</span> <span class="n">get_caller_module</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> WARNING: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">module_name</span><span class="p">,</span><span class="n">message</span><span class="p">))</span></div>
@@ -139,7 +168,11 @@
 <div class="viewcode-block" id="error">
 <a class="viewcode-back" href="../notify.html#notify.error">[docs]</a>
 <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="c1"># Print an error message with the current timestamp and module information</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print an error message to stdout formatted with timestamp and module context.</span>
+
+<span class="sd">    :param message: Error details to display.</span>
+<span class="sd">    :type message: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
     <span class="n">module_name</span> <span class="o">=</span> <span class="n">get_caller_module</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> ERROR: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">module_name</span><span class="p">,</span><span class="n">message</span><span class="p">))</span></div>

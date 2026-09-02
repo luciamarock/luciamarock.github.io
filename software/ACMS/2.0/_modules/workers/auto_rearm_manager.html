@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workers.auto_rearm_manager &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">workers.auto_rearm_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for workers.auto_rearm_manager</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">utilities.tool_internals</span> <span class="k">as</span> <span class="nn">UF</span>
+<span class="kn">import</span> <span class="nn">epics</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AutoRearmManager">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager">[docs]</a>
+<span class="k">class</span> <span class="nc">AutoRearmManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages the auto-rearming procedure for interlocks in the conditioning workflow.</span>
+<span class="sd">    This class is responsible for detecting, validating, and executing interlock rearming.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_pvs</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">workflow_pvs</span><span class="p">,</span> <span class="n">interlocks</span><span class="p">,</span><span class="n">worker_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the AutoRearmManager.</span>
+<span class="sd">        </span>
+<span class="sd">        :param worker_pvs: Dictionary containing all PV instances organized by type</span>
+<span class="sd">        :param parameters: Worker parameters dictionary containing rearming settings</span>
+<span class="sd">        :param configuration: Operation variables configuration</span>
+<span class="sd">        :param workflow_pvs: Workflow PVs configuration</span>
+<span class="sd">        :param interlocks: Interlocks configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker_name</span> <span class="o">=</span> <span class="n">worker_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span> <span class="o">=</span> <span class="n">worker_pvs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">configuration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span> <span class="o">=</span> <span class="n">workflow_pvs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interlocks</span> <span class="o">=</span> <span class="n">interlocks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span> <span class="o">=</span> <span class="p">{}</span>
+    
+<div class="viewcode-block" id="AutoRearmManager.connect">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connect to the auto-rearm data.</span>
+<span class="sd">        Return False if no connection errors occured </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting connection to the auto-rearm PVs&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">data_dict</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">subkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;pv_name&quot;</span><span class="p">])</span> 
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;failed to connect to </span><span class="si">{}</span><span class="s2">, stopping now&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;pv_name&quot;</span><span class="p">]))</span>
+                    <span class="k">return</span> <span class="kc">True</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_instance</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Auto Rearm Manager for this worker is fully connected to the EPICS layer&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Auto Rearm Manager has nothing to do&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="kc">False</span> </div>
+
+        
+<div class="viewcode-block" id="AutoRearmManager.detect_interlocks">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.detect_interlocks">[docs]</a>
+    <span class="k">def</span> <span class="nf">detect_interlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Detect and return currently active interlocks.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: List of active interlock PV names, or None if no interlocks</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">interlocks_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">]</span>
+        <span class="n">active_interlocks</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">interlocks_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">interlock_severity</span> <span class="o">=</span> <span class="n">interlocks_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">severity</span>
+            <span class="k">if</span> <span class="n">interlock_severity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">active_interlocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                
+        <span class="k">return</span> <span class="n">active_interlocks</span> <span class="k">if</span> <span class="n">active_interlocks</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager.can_auto_rearm">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.can_auto_rearm">[docs]</a>
+    <span class="k">def</span> <span class="nf">can_auto_rearm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interlock_pv_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if an interlock can be auto-rearmed.</span>
+<span class="sd">        </span>
+<span class="sd">        :param interlock_pv_name: Name of the interlock PV</span>
+<span class="sd">        :return: True if auto-rearming is possible, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check if manual-restart is enabled</span>
+        <span class="n">manual_restart_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;rearming&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;manual_restart&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">manual_restart_value</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Restart is OFF, checking other conditions.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+            
+        <span class="c1"># Check if quick rearm mode is enabled</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span><span class="p">[</span><span class="s2">&quot;quick_rearm_mode&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quick Rearm Mode DISABLED, cannot rearm interlock&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+            
+        <span class="c1"># Check if interlock is rearmable</span>
+        <span class="n">interlock_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;interlocks&quot;</span><span class="p">][</span><span class="n">interlock_pv_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">interlock_dict</span><span class="p">[</span><span class="s2">&quot;rearmable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interlock </span><span class="si">{</span><span class="n">interlock_pv_name</span><span class="si">}</span><span class="s2"> is not rearmable.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">interlock_instance</span> <span class="o">=</span> <span class="n">interlock_dict</span><span class="p">[</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span>
+            <span class="n">interlock_codes</span> <span class="o">=</span> <span class="n">interlock_dict</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span>
+            <span class="n">codes_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">interlock_codes</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+            <span class="k">if</span> <span class="n">codes_list</span> <span class="ow">and</span> <span class="n">interlock_instance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">codes_list</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value of Interlock </span><span class="si">{</span><span class="n">interlock_pv_name</span><span class="si">}</span><span class="s2"> is not in the list of allowed codes.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            
+        <span class="c1"># Check rearm attempt limits and number of arcs limit </span>
+        <span class="k">if</span> <span class="n">interlock_pv_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="n">interlock_pv_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="n">interlock_pv_name</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;retry_attempts&quot;</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interlock </span><span class="si">{</span><span class="n">interlock_pv_name</span><span class="si">}</span><span class="s2"> has been rearmed too many times.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">&gt;=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;arc_limit&quot;</span><span class="p">]):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of arcs has exceeded the limit.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager.execute_rearming_workflow">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.execute_rearming_workflow">[docs]</a>
+    <span class="k">def</span> <span class="nf">execute_rearming_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interlock_pv_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the complete auto-rearming workflow for an interlock.</span>
+<span class="sd">        </span>
+<span class="sd">        :param interlock_pv_name: Name of the interlock PV to rearm</span>
+<span class="sd">        :return: True if rearming was successful, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_auto_rearm</span><span class="p">(</span><span class="n">interlock_pv_name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+            
+        <span class="c1"># Execute the rearming procedure</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perform_rearming_procedure</span><span class="p">(</span><span class="n">interlock_pv_name</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+            <span class="c1"># Update rearm registry</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="n">interlock_pv_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+        <span class="k">return</span> <span class="n">success</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager._perform_rearming_procedure">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._perform_rearming_procedure">[docs]</a>
+    <span class="k">def</span> <span class="nf">_perform_rearming_procedure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interlock_pv_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the actual rearming procedure.</span>
+<span class="sd">        </span>
+<span class="sd">        :param interlock_pv_name: Name of the interlock PV to rearm</span>
+<span class="sd">        :return: True if rearming was successful, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to rearm interlock </span><span class="si">{</span><span class="n">interlock_pv_name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Get current system state</span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_current_system_state</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sync_frequency_mode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_rearm_registry</span><span class="p">()</span>
+        
+        <span class="c1"># Step 1: Shutting down the system</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Previous rearming attempt failed&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Auto Rearm Manager of worker: </span><span class="si">{}</span><span class="s2">, is going to shutdown the power now&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worker_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># Ramp to Now </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep</span><span class="p">()</span>
+            <span class="n">target_value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">target_value</span><span class="p">)</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_get&quot;</span><span class="p">]]</span>
+            <span class="n">pv_description</span> <span class="o">=</span> <span class="s2">&quot;Cavity Voltage&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">target_value</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No previous failed rearming attempts were found&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;prev_ampref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;min_reference_voltage_setpoint&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Auto Rearm Manager of worker: </span><span class="si">{}</span><span class="s2">, is going to shutdown the power now&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">worker_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># Ramp to Now</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep</span><span class="p">()</span>
+            <span class="n">target_value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">target_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;amplitude_phase_control&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;beam_control_feedforward&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_get&quot;</span><span class="p">]]</span>
+            <span class="n">pv_description</span> <span class="o">=</span> <span class="s2">&quot;Cavity Voltage&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">target_value</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;auto_freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;auto_frequency_control_status&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;man_freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;manual_frequency_control_status&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+        
+        <span class="c1"># Step 2: turn off all frequency modes and loops</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Turning OFF all frequency modes and loops&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;manual_frequency_control_command&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;auto_frequency_control_command&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">target_value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_looped_operations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;loops_PV_suffix&quot;</span><span class="p">],</span><span class="n">target_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+        
+        <span class="c1"># Step 3: Rearm the interlock</span>
+        <span class="n">interlock_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interlocks</span><span class="p">[</span><span class="n">interlock_pv_name</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rearming interlock </span><span class="si">{</span><span class="n">interlock_pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interlocks</span><span class="p">[</span><span class="n">interlock_pv_name</span><span class="p">][</span><span class="s2">&quot;codes&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_looped_operations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;reset_PV_suffix&quot;</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_looped_operations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;reset_PV_suffix&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">interlock_instance</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+        
+        <span class="c1"># Step 4: synchronizing the conditioning process with the system&#39;s operating mode</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;continuous_wave_operation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;conditioning_mode_control&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;continuous_wave_operation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;conditioning_mode_control&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+        
+        <span class="c1"># Step 5: Set cavity voltage to percentage of previous value</span>
+        <span class="c1"># prev_cavvol = current_state[&quot;power_set&quot;]</span>
+        <span class="n">percentage</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;Vrestore_multiplier&quot;</span><span class="p">])</span>
+        <span class="n">new_cavity_voltage_value</span> <span class="o">=</span> <span class="n">current_state</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">percentage</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting cavity voltage to </span><span class="si">{</span><span class="n">new_cavity_voltage_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;is_pulsed_on_cw_mode&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">new_cavity_voltage_value</span><span class="p">)</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;reference_cavity_voltage&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span>
+            <span class="n">pv_description</span> <span class="o">=</span> <span class="s2">&quot;Reference Cavity Voltage&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">new_cavity_voltage_value</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># == 1</span>
+            <span class="n">previous_amp_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;prev_ampref&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;min_reference_voltage_setpoint&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">previous_amp_ref</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">new_cavity_voltage_value</span><span class="p">)</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_get&quot;</span><span class="p">]]</span>
+            <span class="n">pv_description</span> <span class="o">=</span> <span class="s2">&quot;Cavity Voltage&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">new_cavity_voltage_value</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
+        
+        <span class="c1"># Step 6: Turn the Loops ON</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Verifying Forward Power Readback&quot;</span><span class="p">)</span>
+        <span class="n">enabling_PV_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;forward_power_readback&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span>
+        <span class="n">pv_value</span> <span class="o">=</span> <span class="n">enabling_PV_instance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">min_threashod</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_FW_power&quot;</span><span class="p">])</span>
+        <span class="n">stable_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_stable_time&quot;</span><span class="p">])</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="mi">0</span> 
+        <span class="k">while</span> <span class="n">pv_value</span> <span class="o">&lt;</span> <span class="n">min_threashod</span> <span class="ow">and</span> <span class="n">elapsed_time</span> <span class="o">&lt;</span> <span class="n">stable_time</span><span class="p">:</span>
+            <span class="n">pv_value</span> <span class="o">=</span> <span class="n">enabling_PV_instance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pv_value</span> <span class="o">&lt;</span> <span class="n">min_threashod</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Verification of Forward Power Readback value has timed-out, can&#39;t proceed&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span> <span class="c1">#TODO increase arc count and do something else (maybe)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Turning the Loops ON&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_looped_operations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;loop_on_suffix&quot;</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_looped_verifications</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;loop_rdbk_suffix&quot;</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+
+        <span class="c1"># Step 7: Handle frequency mode restoration</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;auto_freq&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;man_freq&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;auto_frequency_control_command&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;auto_freq&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;man_freq&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;manual_frequency_control_command&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">17</span>
+            
+        <span class="c1"># Step 8: Restore cavity voltage to previous value</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Setting Cavity Voltage ramp to user_defined&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;is_pulsed_on_cw_mode&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ramp_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;final_voltage_ramp_speed&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">ramp_speed</span><span class="p">)</span> <span class="c1"># wait=True ?</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">second_restore_multiplier</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;V2restore_multiplier&quot;</span><span class="p">])</span>
+            <span class="n">intermediate_cavity_voltage</span> <span class="o">=</span> <span class="n">second_restore_multiplier</span> <span class="o">*</span> <span class="n">current_state</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]</span>
+            <span class="n">ramp_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;first_stage_voltage_ramp&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">ramp_speed</span><span class="p">)</span> <span class="c1"># wait=True ?</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Cavity Voltage value to intermediate value </span><span class="si">{</span><span class="n">intermediate_cavity_voltage</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">pv_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;reference_cavity_voltage&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span>
+            <span class="n">pv_description</span> <span class="o">=</span> <span class="s2">&quot;Reference Cavity Voltage&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">intermediate_cavity_voltage</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">intermediate_cavity_voltage</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ramp_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;second_stage_voltage_ramp&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">ramp_speed</span><span class="p">)</span> <span class="c1"># wait=True ?</span>
+        <span class="n">prev_cav_value</span> <span class="o">=</span> <span class="n">current_state</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Cavity Voltage value to </span><span class="si">{</span><span class="n">prev_cav_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">pv_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_get&quot;</span><span class="p">]]</span>
+        <span class="n">pv_description</span> <span class="o">=</span> <span class="s2">&quot;Cavity Voltage&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;power_set&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">prev_cav_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">prev_cav_value</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">22</span>
+        
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager._get_current_system_state">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._get_current_system_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">_get_current_system_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get current system state for operation variables.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Dictionary of current operation variable values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;readback_tolerance&quot;</span><span class="p">])))</span>
+            
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">operation_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">operation_dict</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+            <span class="n">pv_value</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">)</span>
+            <span class="n">state_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_value</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">pv_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">state_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_value</span>
+            
+        <span class="k">return</span> <span class="n">state_dict</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager._continuous_monitoring">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._continuous_monitoring">[docs]</a>
+    <span class="k">def</span> <span class="nf">_continuous_monitoring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_looped_verifications</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;all_interlocks_suffix&quot;</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#TODO use the return value </span>
+        <span class="n">this_worker_interloks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_interlocks</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">this_worker_interloks</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;while handling a previous rearming procedure a new interlock occured&quot;</span><span class="p">)</span> <span class="c1">#TODO do something here</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;rearming&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;manual_restart&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;A manual reastart has been requested while handling a raerming procedure&quot;</span><span class="p">)</span> <span class="c1">#TODO do something here</span></div>
+
+    
+    <span class="c1">#TODO when calling this function always ake sure that the class do something in case of returning False </span>
+<div class="viewcode-block" id="AutoRearmManager._verify_readback">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._verify_readback">[docs]</a>
+    <span class="k">def</span> <span class="nf">_verify_readback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_value</span><span class="p">,</span><span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">,</span><span class="n">monitoring</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify that cavity voltage readback matches expected value.</span>
+<span class="sd">        </span>
+<span class="sd">        :param expected_value: Expected cavity voltage value</span>
+<span class="sd">        :return: True if verification successful, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">readback_value</span> <span class="o">=</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">ramp_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_voltage_ramp_speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">cavity_phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_phase&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">new_min_stable_time</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">calculate_min_stable_time</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">readback_value</span> <span class="o">-</span> <span class="n">expected_value</span><span class="p">),</span> <span class="n">ramp_rate</span><span class="p">,</span> <span class="n">cavity_phase</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_stable_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_min_stable_time</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">readback_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">round</span><span class="p">(</span><span class="n">expected_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">)</span> <span class="ow">and</span> 
+               <span class="n">elapsed_time</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;min_stable_time&quot;</span><span class="p">])):</span>
+            <span class="n">readback_value</span> <span class="o">=</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="k">if</span> <span class="n">monitoring</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_continuous_monitoring</span><span class="p">()</span> <span class="c1">#TODO use the return variable </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep</span><span class="p">()</span>
+            
+        <span class="k">if</span> <span class="nb">round</span><span class="p">(</span><span class="n">readback_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">)</span> <span class="o">==</span> <span class="nb">round</span><span class="p">(</span><span class="n">expected_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens_digit</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> readback value has been verified&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_description</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+            
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Verification of </span><span class="si">{}</span><span class="s2"> readback value has timed-out&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv_description</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager._sync_frequency_mode">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._sync_frequency_mode">[docs]</a>
+    <span class="k">def</span> <span class="nf">_sync_frequency_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sync the frequency mode.&quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Syncing Frequency Mode&quot;</span><span class="p">)</span>
+        <span class="n">modality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span><span class="p">[</span><span class="s2">&quot;frequency_mode_get&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">modality</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">set_point_pv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_pvs</span><span class="p">[</span><span class="s2">&quot;workflow&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_pvs</span><span class="p">[</span><span class="s2">&quot;frequency_mode_set&quot;</span><span class="p">]]</span>
+            <span class="n">set_point_pv</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">modality</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager._update_rearm_registry">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._update_rearm_registry">[docs]</a>
+    <span class="k">def</span> <span class="nf">_update_rearm_registry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current rearm registry.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;script_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">conditioning_mode_control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;conditioning_mode_control&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">conditioning_mode_control</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;continuous_wave_operation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;continuous_wave_operation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_reference_voltage_setpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_rearm_data</span><span class="p">[</span><span class="s2">&quot;min_reference_voltage_setpoint&quot;</span><span class="p">][</span><span class="s2">&quot;PV_instance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">conditioning_mode_control</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">min_reference_voltage_setpoint</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;is_pulsed_on_cw_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span><span class="p">[</span><span class="s2">&quot;is_pulsed_on_cw_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+        
+    
+<div class="viewcode-block" id="AutoRearmManager.reset_rearm_registry">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager.reset_rearm_registry">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset_rearm_registry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the rearm registry and counter.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rearm_registry</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arc_counter</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+    
+<div class="viewcode-block" id="AutoRearmManager._sleep">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._sleep">[docs]</a>
+    <span class="k">def</span> <span class="nf">_sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="c1"># maybe take this number from the xml conf file</span></div>
+
+    <span class="c1">#TODO when calling this method ansure that something is done in case of error </span>
+<div class="viewcode-block" id="AutoRearmManager._looped_operations">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._looped_operations">[docs]</a>
+    <span class="k">def</span> <span class="nf">_looped_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">suffix</span><span class="p">,</span><span class="n">target_value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">chain_num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;chains_amount&quot;</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_amount&quot;</span><span class="p">])):</span>
+                <span class="n">cavity_char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">pv_name</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;main_prefix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;chain_prefix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chain_num</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;cavity_prefix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cavity_char</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+                        <span class="n">pv_instance</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">target_value</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Synchronous --&gt; wait for a confirmation from the EPICS server that the new value has been successfully written</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to connect to PV </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
+                        <span class="n">pv_instance</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully set </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">target_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1">#TODO when calling this method ansure that something is done in case of error </span>
+<div class="viewcode-block" id="AutoRearmManager._looped_verifications">
+<a class="viewcode-back" href="../../workers.auto_rearm_manager.html#workers.auto_rearm_manager.AutoRearmManager._looped_verifications">[docs]</a>
+    <span class="k">def</span> <span class="nf">_looped_verifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">suffix</span><span class="p">,</span><span class="n">target_value</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">chain_num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;chains_amount&quot;</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;cavity_amount&quot;</span><span class="p">])):</span>
+                <span class="n">cavity_char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">pv_name</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;main_prefix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;chain_prefix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chain_num</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;cavity_prefix&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cavity_char</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">pv_instance</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+                <span class="n">verification_result</span> <span class="o">=</span> <span class="kc">False</span> 
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+                        <span class="n">pv_description</span> <span class="o">=</span> <span class="n">pv_name</span>
+                        <span class="n">verification_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verify_readback</span><span class="p">(</span><span class="n">target_value</span><span class="p">,</span> <span class="n">pv_instance</span><span class="p">,</span><span class="n">pv_description</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to connect to PV </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pv_instance</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
+                        <span class="n">pv_instance</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+GUI.tabs.placeholder\_tab module
+================================
+
+.. automodule:: GUI.tabs.placeholder_tab
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

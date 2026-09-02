@@ -65,9 +65,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -103,45 +108,196 @@
              
   <section id="module-editor_interface">
 <span id="editor-interface-module"></span><h1>editor_interface module<a class="headerlink" href="#module-editor_interface" title="Link to this heading"></a></h1>
+<p>Template Editor Network Profiler and PV Discovery Interface.</p>
+<p>This module provides the backend discovery, extraction, and Channel Access (CA)
+sweeping capabilities required by the ACMS Template Editor sub-application.</p>
+<p>In the Recipe Management System (RMS) inherited by ACMS, recipes are dynamically
+generated from high-level operational templates. To assist operators in editing and
+authoring these templates, this module profiles EPICS Process Variables (PVs) by:</p>
+<ol class="arabic simple">
+<li><p>Extracting candidate PV lists from archive PostgreSQL databases or Display Builder
+(Phoebus <code class="docutils literal notranslate"><span class="pre">.bob</span></code>) HMI files.</p></li>
+<li><p>Executing concurrent multi-threaded EPICS CA network sweeps using a shared CA context loop.</p></li>
+<li><p>Collecting requested PV fields (e.g., limits, units, current values).</p></li>
+<li><p>Sanitizing telemetry payloads by converting IEEE floating-point <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values into
+JSON-compliant <code class="docutils literal notranslate"><span class="pre">null</span></code> literals to prevent serialization crashes.</p></li>
+<li><p>Formatting and delivering structured PV metadata dictionaries to the Template Editor GUI.</p></li>
+</ol>
+<dl class="simple">
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">epics</span></code>: PyEPICS Channel Access interface and thread context management.</p></li>
+<li><p><a class="reference internal" href="utilities.bob_parser.html#module-utilities.bob_parser" title="utilities.bob_parser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.bob_parser</span></code></a>: Utility for parsing Phoebus <code class="docutils literal notranslate"><span class="pre">.bob</span></code> XML screens.</p></li>
+<li><p><a class="reference internal" href="utilities.db_query.html#module-utilities.db_query" title="utilities.db_query"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.db_query</span></code></a>: Query helper for fetching archived PV lists from SQL.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.load_configuration">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">load_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#load_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.load_configuration" title="Link to this definition"></a></dt>
-<dd><p>Loads runtime variables and target fields from the config file.</p>
+<dd><p>Load runtime parameters and configuration fields from a JSON resource file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_path</strong> (<em>str</em><em> or </em><em>Path</em>) – File path to the JSON configuration file containing
+Channel Access settings, field specifications, and HMI display paths.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A 4-element tuple containing:</p>
+<ul class="simple">
+<li><p><strong>CA_TIMEOUT</strong> (<em>float</em>): Network connection timeout in seconds per PV.</p></li>
+<li><p><strong>CA_PARALLELISM</strong> (<em>int</em>): Maximum number of concurrent CA worker threads per batch.</p></li>
+<li><p><strong>PV_FIELDS</strong> (<em>list of str</em>): List of EPICS PV attributes to retrieve.</p></li>
+<li><p><strong>HMI_FILES</strong> (<em>dict</em>): Dictionary mapping display key identifiers to target <code class="docutils literal notranslate"><span class="pre">.bob</span></code> file paths.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SystemExit</strong> – If the configuration file is missing, contains invalid JSON syntax,
+or lacks required keys.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.run_network_sweep">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">run_network_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallelism</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields_to_get</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#run_network_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.run_network_sweep" title="Link to this definition"></a></dt>
-<dd><p>Orchestrates concurrent thread batches to profile the PV network.</p>
+<dd><p>Orchestrate concurrent thread batches to profile online EPICS PV channels.</p>
+<p>Initializes the C-level libca library context and spawns batch groups of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">epics.ca.CAThread</span></code> threads bounded by the <code class="docutils literal notranslate"><span class="pre">parallelism</span></code> limit to safely query
+the control network without overwhelming local socket descriptors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pv_names</strong> (<em>list</em><em> of </em><em>str</em>) – List of PV names to profile over Channel Access.</p></li>
+<li><p><strong>parallelism</strong> (<em>int</em>) – Number of concurrent worker threads allowed per execution batch.</p></li>
+<li><p><strong>fields_to_get</strong> (<em>list</em><em> of </em><em>str</em>) – PV attributes to fetch from connected channels.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em>) – Channel connection timeout in seconds per PV.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping PV names to attribute dicts (or <code class="docutils literal notranslate"><span class="pre">None</span></code> if unreachable).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.san_bob_file">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">san_bob_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#san_bob_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.san_bob_file" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Extract PVs referenced inside a specific Phoebus Display (.bob) file and profile them.</p>
+<p>Used when an operator requests template editing for a specific sub-system HMI display.
+It parses the targeted <code class="docutils literal notranslate"><span class="pre">.bob</span></code> XML screen file, extracts all embedded PV identifiers, and
+profiles their live EPICS network states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resources_dir</strong> (<em>str</em>) – Base path to the application’s resources directory containing <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p></li>
+<li><p><strong>key</strong> (<em>str</em>) – Lookup key in <code class="docutils literal notranslate"><span class="pre">HMI_FILES</span></code> corresponding to the target <code class="docutils literal notranslate"><span class="pre">.bob</span></code> display file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A sanitized dictionary of PVs extracted from the display file along with their
+live field metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SystemExit</strong> – If the target <code class="docutils literal notranslate"><span class="pre">.bob</span></code> display file cannot be located or parsed.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.sanitize_data">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">sanitize_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_map</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#sanitize_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.sanitize_data" title="Link to this definition"></a></dt>
-<dd><p>Deeply cleans floating NaN math flags into valid JSON nulls.</p>
+<dd><p>Sanitize scanned telemetry metadata by converting float NaN values to JSON nulls.</p>
+<p>EPICS floating-point PVs returning <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (Not a Number) cause serialization errors when
+converting dictionaries into standard JSON strings. This function replaces all <code class="docutils literal notranslate"><span class="pre">NaN</span></code> float
+values with <code class="docutils literal notranslate"><span class="pre">None</span></code> (which maps to JSON <code class="docutils literal notranslate"><span class="pre">null</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pv_map</strong> (<em>dict</em>) – The raw PV metadata dictionary produced by <a class="reference internal" href="#editor_interface.run_network_sweep" title="editor_interface.run_network_sweep"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_network_sweep()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sanitized PV dictionary suitable for JSON serialization and GUI consumption.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.save_manifest">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">save_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#save_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.save_manifest" title="Link to this definition"></a></dt>
-<dd><p>Dumps the final, sanitized map cleanly to disk.</p>
+<dd><p>Write the sanitized PV metadata dictionary to a JSON file on disk.</p>
+<p>Creates parent directories if missing and formats the JSON output with 4-space
+indentation and sorted keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pv_map</strong> (<em>dict</em>) – Sanitized dictionary mapping PV names to field values.</p></li>
+<li><p><strong>output_path</strong> (<em>Path</em><em> or </em><em>str</em>) – Target file destination path.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.scan_archive_network">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">scan_archive_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resources_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#scan_archive_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.scan_archive_network" title="Link to this definition"></a></dt>
-<dd><p>Scans the archive network and returns a list of PVs.</p>
+<dd><p>Fetch all archived PVs from the SQL database and profile their live network status.</p>
+<p>This function serves as the primary data payload builder when launching the Template Editor
+from the main ACMS CLI or GUI interface. It:</p>
+<ol class="arabic simple">
+<li><p>Loads system settings from <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p></li>
+<li><p>Retrieves the complete list of target PVs from the archive SQL database.</p></li>
+<li><p>Executes a live Channel Access network sweep.</p></li>
+<li><p>Sanitizes field data and returns the completed payload dictionary.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resources_dir</strong> (<em>str</em>) – Base path to the application’s resources directory containing <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A sanitized map of all archived PV names and their live EPICS field attributes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SystemExit</strong> – If database connection or querying fails critically.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="editor_interface.scan_pv_worker">
 <span class="sig-prename descclassname"><span class="pre">editor_interface.</span></span><span class="sig-name descname"><span class="pre">scan_pv_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields_to_get</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/editor_interface.html#scan_pv_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#editor_interface.scan_pv_worker" title="Link to this definition"></a></dt>
-<dd><p>Worker thread target to extract EPICS metadata safely via shared context.</p>
+<dd><p>Worker thread target to extract EPICS metadata safely via a shared CA context.</p>
+<p>Attaches the executing thread to the global C library CA context (<code class="xref py py-data docutils literal notranslate"><span class="pre">MAIN_CONTEXT</span></code>),
+attempts connection to the specified PV, reads requested attributes, and populates
+the shared results dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The EPICS Process Variable name to connect to.</p></li>
+<li><p><strong>results_dict</strong> (<em>dict</em>) – Shared dictionary where scanned PV metadata is recorded.</p></li>
+<li><p><strong>fields_to_get</strong> (<em>list</em><em> of </em><em>str</em>) – List of PV attributes/fields to query.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em>) – Connection timeout threshold in seconds.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

@@ -1,0 +1,8 @@
+workers.factories.worker\_factory module
+========================================
+
+.. automodule:: workers.factories.worker_factory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

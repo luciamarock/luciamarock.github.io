@@ -63,9 +63,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -101,32 +106,78 @@
              
   <section id="module-notify">
 <span id="notify-module"></span><h1>notify module<a class="headerlink" href="#module-notify" title="Link to this heading"></a></h1>
-<p>Created on Thu Feb  1 15:42:43 2024</p>
-<p>&#64;author: luciamarock</p>
+<p>Console Notification and Diagnostics Utility.</p>
+<p>Created on Thu Feb 1 15:42:43 2024</p>
+<p>Provides standardized, timestamped output logging functions for stdout/stderr
+during initialization and early runtime phases before full logging facilities
+are bound.</p>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="notify.error">
 <span class="sig-prename descclassname"><span class="pre">notify.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/notify.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#notify.error" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Print an error message to stdout formatted with timestamp and module context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Error details to display.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="notify.get_caller_module">
 <span class="sig-prename descclassname"><span class="pre">notify.</span></span><span class="sig-name descname"><span class="pre">get_caller_module</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/notify.html#get_caller_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#notify.get_caller_module" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve the module name of the calling function.</p>
+<p>Inspects the current execution call stack to extract the name of the module
+two frames above this call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the invoking module (e.g., <code class="docutils literal notranslate"><span class="pre">'main_program'</span></code>).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="notify.get_timestamp">
 <span class="sig-prename descclassname"><span class="pre">notify.</span></span><span class="sig-name descname"><span class="pre">get_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/notify.html#get_timestamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#notify.get_timestamp" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Generate a formatted timestamp string with millisecond precision.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted timestamp string in <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD-HH:MM:SS:mmm</span></code> format.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="notify.info">
 <span class="sig-prename descclassname"><span class="pre">notify.</span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/notify.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#notify.info" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Print an informational message to stdout formatted with timestamp and module context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Diagnostic information to display.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="notify.warning">
 <span class="sig-prename descclassname"><span class="pre">notify.</span></span><span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/notify.html#warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#notify.warning" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Print a warning message to stdout formatted with timestamp and module context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Warning details to display.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

@@ -59,9 +59,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -97,25 +102,47 @@
              
   <section id="module-main_program">
 <span id="main-program-module"></span><h1>main_program module<a class="headerlink" href="#module-main_program" title="Link to this heading"></a></h1>
-<p>This is the main program</p>
+<p>Main Program Entry Point.</p>
 <p>Created on Wed Nov  2 15:14:01 2022</p>
-<p>Please start the program passing your settings.ini file as an argument</p>
-<p>This document is intended to serve as a programmer Reference Manual.</p>
-<p>The format of this document follows the  Sphinx docstring format:</p>
-<p><a class="reference external" href="https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html">https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html</a></p>
-<p><a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#external-links">https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#external-links</a></p>
-<p>You can find the User Manual in pdf format in the documentation folder</p>
-<p>&#64;author: luciamarock</p>
+<p>Serves as the primary entry point for the Recipe Management System (RMS).
+Initializes system configurations, sets up logging handlers, populates global
+runtime settings, and boots system controller interfaces and workflows.</p>
+<dl class="simple">
+<dt>Usage:</dt><dd><p>$ python main_program.py path/to/settings.ini</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This document adheres to Sphinx/reStructuredText docstring format standards.
+For user-facing guides, refer to the PDF manual in the documentation folder.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
+</dd>
+</dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="main_program._init">
 <span class="sig-prename descclassname"><span class="pre">main_program.</span></span><span class="sig-name descname"><span class="pre">_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main_program.html#_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main_program._init" title="Link to this definition"></a></dt>
-<dd><p>Initialization function</p>
-<p>Uses the global variable “config” which is the Configuration Parser</p>
-<p>It first checks if the “settings.ini” file that you passed as an argument exists.</p>
-<p>If that’s the case it starts reading the .ini sections and building-up the settings dictionary.</p>
-<p>Finally it stores the finalized settings dictionary into <code class="xref py py-obj docutils literal notranslate"><span class="pre">utilities.util_functions.settings</span></code> from wich it can be accessed
-by all the other modules of the program.</p>
-<p>After this _init function the main program invokes the <a class="reference internal" href="controllersInterface.html#module-controllersInterface" title="controllersInterface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">controllersInterface</span></code></a> module.</p>
+<dd><p>Initialize system-wide configurations and setup application environment.</p>
+<p>Reads and validates the <code class="docutils literal notranslate"><span class="pre">settings.ini</span></code> file passed as a command-line argument.
+Initializes project directories, configures workspace paths, establishes file/EPICS
+logging streams, and populates the global runtime dictionary
+<a class="reference internal" href="utilities.util_functions.html#utilities.util_functions.settings" title="utilities.util_functions.settings"><code class="xref py py-data docutils literal notranslate"><span class="pre">utilities.util_functions.settings</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>SystemExit</strong> – If command-line arguments are missing, the target ini file does not exist,
+or required configuration sections (<code class="docutils literal notranslate"><span class="pre">project</span></code>, <code class="docutils literal notranslate"><span class="pre">workspace</span></code>, <code class="docutils literal notranslate"><span class="pre">logging</span></code>,
+<code class="docutils literal notranslate"><span class="pre">resources</span></code>, <code class="docutils literal notranslate"><span class="pre">validation</span></code>) are malformed or missing.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="controllersInterface.html#module-controllersInterface" title="controllersInterface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">controllersInterface</span></code></a> - Invoked following initialization to parse XML configurations.</p></li>
+<li><p><a class="reference internal" href="utilities.util_functions.html#module-utilities.util_functions" title="utilities.util_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.util_functions</span></code></a> - Holds the global <code class="docutils literal notranslate"><span class="pre">settings</span></code> dictionary updated here.</p></li>
+</ul>
+</div>
 </dd></dl>
 
 </section>

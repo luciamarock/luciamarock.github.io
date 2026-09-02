@@ -53,9 +53,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../validation.html">validation package</a></li>
 </ul>
@@ -91,17 +96,20 @@
              
   <h1>Source code for controllersInterface</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Controllers Interface module </span>
+<span class="sd">&quot;&quot;&quot;Controllers Interface Module.</span>
 
-<span class="sd">Created on Thu Jan  5 11:57:03 2023 \n</span>
-<span class="sd">This module is firstly imported by the main_program right after the _init function. \n</span>
+<span class="sd">Created on Thu Jan  5 11:57:03 2023</span>
 
-<span class="sd">:param registered_types: A module-level dictionary containing all the instantiated Smart Controller&#39;s types </span>
-<span class="sd">:param registered_instances: A module-level dictionary containing all the Smart Controller&#39;s instantiated (as read from the .xml files) </span>
-<span class="sd">:param Project: an instance of :obj:`projectmodel.projectModel.projectmodel` class. </span>
+<span class="sd">Serves as the central registry and parser interface for Smart Controller types and </span>
+<span class="sd">instances. Discovers XML definition files, instantiates controller hardware/software </span>
+<span class="sd">objects via factories, populates the central :class:`projectmodel.projectModel.projectmodel` </span>
+<span class="sd">tree, and manages validation engines.</span>
 
+<span class="sd">.. note::</span>
+<span class="sd">   This module is imported by :mod:`main_program` immediately following </span>
+<span class="sd">   the execution of the ``_init()`` setup function.</span>
 
-<span class="sd">@author: luciamarock</span>
+<span class="sd">:author: luciamarock</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -116,15 +124,27 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">validation.validation_engine</span> <span class="k">as</span> <span class="nn">validation</span>
 
+<span class="c1">#: dict: Registry mapping type names to instantiated Smart Controller type objects.</span>
 <span class="n">registered_types</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1">#: dict: Registry mapping instance names to instantiated Smart Controller objects.</span>
 <span class="n">registered_instances</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1">#: dict: Registry containing instantiated validation engines specified in runtime settings.</span>
 <span class="n">validators</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1">#: projectmodel.projectModel.projectmodel or None: Global reference to the active project model instance.</span>
 <span class="n">Project</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="_check_dir">
 <a class="viewcode-back" href="../controllersInterface.html#controllersInterface._check_dir">[docs]</a>
 <span class="k">def</span> <span class="nf">_check_dir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the directory exists</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify filesystem directory existence.</span>
+
+<span class="sd">    :param directory: Absolute or relative directory path to inspect.</span>
+<span class="sd">    :type directory: str</span>
+<span class="sd">    :return: ``True`` if the path exists, ``False`` otherwise.</span>
+<span class="sd">    :rtype: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -135,18 +155,23 @@
 <div class="viewcode-block" id="parse_xml_types">
 <a class="viewcode-back" href="../controllersInterface.html#controllersInterface.parse_xml_types">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_xml_types</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;It gets called immediately from the main_program</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and register Smart Controller type definitions from XML.</span>
+
+<span class="sd">    Scans the directory specified by ``UF.settings[&quot;controller_types_location&quot;]`` </span>
+<span class="sd">    for XML configuration files (ignoring subdirectories). For each file:</span>
 <span class="sd">    </span>
-<span class="sd">    This function is responsible for collecting the .xml files describing the Controller&#39;s types. \n</span>
-<span class="sd">    It goes into the directory specified in UF.settings[&quot;controller_types_location&quot;] and collects all the .xml files in the root folder, </span>
-<span class="sd">    please notice it does not walk the sub-folders ! \n</span>
-<span class="sd">    For each type .xml file it retrieves the root node and with that, it invokes the :obj:`SmartControllers.factories.types_factories.create_type`</span>
-<span class="sd">    function in order to create a class object representing the current type of Smart Controller. \n</span>
-<span class="sd">    Once the software object is created it register it in the module level registered_types dictionary. \n</span>
-<span class="sd">    </span>
-<span class="sd">    At the beginning this function also initializes the log (writing all the settings) and instantiates the :obj:`projectmodel.projectModel.projectmodel` </span>
-<span class="sd">    software object (Project). </span>
-<span class="sd">    </span>
+<span class="sd">    1. Parses the XML tree using :mod:`lxml.etree`.</span>
+<span class="sd">    2. Invokes :func:`SmartControllers.factories.types_factories.create_type` to instantiate </span>
+<span class="sd">       the controller type class object.</span>
+<span class="sd">    3. Registers the returned object into :data:`registered_types`.</span>
+
+<span class="sd">    Additionally, this function calls :func:`_start_log` to record startup runtime </span>
+<span class="sd">    settings and instantiates the global :class:`~projectmodel.projectModel.projectmodel` </span>
+<span class="sd">    object (:data:`Project`).</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">       * :func:`parse_xml_instances` - Invoked after type parsing completes.</span>
+<span class="sd">       * :func:`SmartControllers.factories.types_factories.create_type`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">Project</span>
     <span class="n">_start_log</span><span class="p">()</span>
@@ -181,16 +206,22 @@
 <div class="viewcode-block" id="parse_xml_instances">
 <a class="viewcode-back" href="../controllersInterface.html#controllersInterface.parse_xml_instances">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_xml_instances</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Called right after parse_xml_types function by the main_program. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively parse and register Smart Controller instance definitions.</span>
+
+<span class="sd">    Walks the root directory and all subdirectories within </span>
+<span class="sd">    ``UF.settings[&quot;controller_instances_location&quot;]`` to load instance XML files. </span>
 <span class="sd">    </span>
-<span class="sd">    This function mirrors parse_xml_types but parses the .xml configuration files for the Controller&#39;s instances. </span>
-<span class="sd">    Unlikely the parse_xml_types, this function &quot;walks&quot; also the sub-directories of the UF.settings[&quot;controller_instances_location&quot;]. </span>
-<span class="sd">    This allows the users to create their own organization structure in the file-system. \n</span>
-<span class="sd">    When parsing the xml files, if the instance name is not found in the module-level registered_instances dictionary, this function </span>
-<span class="sd">    proceed to the call of :obj:`SmartControllers.factories.instances_factories.create_instance` creation function for the Instances. </span>
-<span class="sd">    \n Later on, if the returned instance is not None, it register the object in the registered_instance dictionary and </span>
-<span class="sd">    it calls the project model class to add the new created object among the  ProjectModel nodes. </span>
+<span class="sd">    For each unique instance name encountered:</span>
 <span class="sd">    </span>
+<span class="sd">    1. Invokes :func:`SmartControllers.factories.instances_factories.create_instance` </span>
+<span class="sd">       passing the root node and :data:`registered_types`.</span>
+<span class="sd">    2. Registers successfully created instance objects in :data:`registered_instances`.</span>
+<span class="sd">    3. Appends the instance node to the global :data:`Project` tree.</span>
+<span class="sd">    4. Triggers :meth:`projectmodel.projectModel.projectmodel.export` upon completion.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">       * :func:`parse_xml_types`</span>
+<span class="sd">       * :func:`SmartControllers.factories.instances_factories.create_instance`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">Project</span>
     <span class="k">if</span> <span class="n">_check_dir</span><span class="p">(</span><span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;controller_instances_location&quot;</span><span class="p">]):</span>
@@ -225,9 +256,11 @@
 <div class="viewcode-block" id="_start_log">
 <a class="viewcode-back" href="../controllersInterface.html#controllersInterface._start_log">[docs]</a>
 <span class="k">def</span> <span class="nf">_start_log</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function for starting the log</span>
-<span class="sd">    </span>
-<span class="sd">    Called by parse_xml_types function.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write system startup state and active settings to the logging stream.</span>
+
+<span class="sd">    Called automatically during :func:`parse_xml_types`. Iterates through </span>
+<span class="sd">    :data:`utilities.util_functions.settings` and logs key-value pairs at </span>
+<span class="sd">    ``INFO`` level.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-------------------------------------------------&quot;</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; Started new session with the following settings:&quot;</span><span class="p">)</span>
@@ -239,17 +272,23 @@
 <div class="viewcode-block" id="create_validators">
 <a class="viewcode-back" href="../controllersInterface.html#controllersInterface.create_validators">[docs]</a>
 <span class="k">def</span> <span class="nf">create_validators</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recipes (from file .json) loaders</span>
-<span class="sd">    </span>
-<span class="sd">    :returns: **errors** a list of error messages  </span>
-<span class="sd">    </span>
-<span class="sd">    At the beginning this function tries to create the validator objects (:obj:`utilities.validation.validation_engine.create`), </span>
-<span class="sd">    if the creation is successfull it register the object in the </span>
-<span class="sd">    module level validators dictionary (in case to be reused by other modules).</span>
-<span class="sd">    The validators are declared in the settings.ini file.\n</span>
-<span class="sd">    call the validate method like this:\n</span>
-<span class="sd">    errors = validators[validator_name].validate(registered_instances[instance],PVs,os.path.splitext(filename)[0])</span>
-<span class="sd">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize recipe validators declared in configuration settings.</span>
+
+<span class="sd">    Attempts to instantiate each validator listed in ``UF.settings[&quot;validators&quot;]`` </span>
+<span class="sd">    via :func:`validation.validation_engine.create`. Successfully created objects </span>
+<span class="sd">    are registered in the :data:`validators` dictionary.</span>
+
+<span class="sd">    :return: A list of error message strings describing any failed validator instantiations.</span>
+<span class="sd">    :rtype: list of str</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">       Registered validators can subsequently be executed using:</span>
+<span class="sd">       </span>
+<span class="sd">       .. code-block:: python</span>
+
+<span class="sd">          errors = validators[validator_name].validate(</span>
+<span class="sd">              registered_instances[instance], PVs, os.path.splitext(filename)[0]</span>
+<span class="sd">          )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">validators</span><span class="p">:</span>

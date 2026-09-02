@@ -56,9 +56,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
 </ul>
@@ -112,49 +117,194 @@
              
   <section id="module-utilities.template_editor_gui">
 <span id="utilities-template-editor-gui-module"></span><h1>utilities.template_editor_gui module<a class="headerlink" href="#module-utilities.template_editor_gui" title="Link to this heading"></a></h1>
+<p>Cascading JSON Filter and Export GUI for Template Authoring.</p>
+<p>This module provides the core graphical interface component for the ACMS Template Editor
+sub-application.</p>
+<p>It defines the <a class="reference internal" href="#utilities.template_editor_gui.JSONFilterApp" title="utilities.template_editor_gui.JSONFilterApp"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONFilterApp</span></code></a> window class, which processes incoming EPICS PV telemetry
+payloads (structured as colon-delimited key names, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;SUBSYSTEM:DEVICE:PARAMETER:FIELD&quot;</span></code>)
+and presents a cascading set of dynamic dropdown filters (<code class="docutils literal notranslate"><span class="pre">QComboBox</span></code> widgets).</p>
+<dl class="simple">
+<dt>Operators use this interface to:</dt><dd><ol class="arabic simple">
+<li><p>Navigate hierarchical PV namespaces by filtering chunk by chunk.</p></li>
+<li><p>Inspect live telemetry values and metadata field definitions.</p></li>
+<li><p>Select specific PV entries and append them to an export manifest list.</p></li>
+<li><p>Save the finalized selection list to disk as a JSON recipe template file.</p></li>
+</ol>
+</dd>
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">PySide2.QtWidgets</span></code>: PySide2 (Qt5) layout and widget primitives.</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">PySide2.QtCore</span></code>: Qt alignment and dimensional constraints.</p></li>
+</ul>
+</dd>
+</dl>
+<p>&#64;author: luciamarock</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utilities.template_editor_gui.</span></span><span class="sig-name descname"><span class="pre">JSONFilterApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QMainWindow</span></code></p>
+<p>Main window class for cascading PV namespace filtering and recipe template export.</p>
+<p>This class parses colon-delimited dictionary keys from the provided JSON payload,
+dynamically calculates maximum hierarchy depth, builds matching cascading comboboxes,
+and handles list additions and file export operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>dict</em>) – Dictionary mapping colon-delimited PV names or configuration paths
+to their scanned field dictionaries or scalar values.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.data" title="Link to this definition"></a></dt>
+<dd><p>Ingested PV telemetry payload dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.max_depth">
+<span class="sig-name descname"><span class="pre">max_depth</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.max_depth" title="Link to this definition"></a></dt>
+<dd><p>Maximum depth (number of colon-separated chunks) found across all dictionary keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.comboboxes">
+<span class="sig-name descname"><span class="pre">comboboxes</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.comboboxes" title="Link to this definition"></a></dt>
+<dd><p>List of dynamic dropdown filter widgets, one per hierarchy depth level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of QComboBox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.selected_items">
+<span class="sig-name descname"><span class="pre">selected_items</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.selected_items" title="Link to this definition"></a></dt>
+<dd><p>Key-value map of PV items staged by the operator for file export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.list_widget">
+<span class="sig-name descname"><span class="pre">list_widget</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.list_widget" title="Link to this definition"></a></dt>
+<dd><p>Qt widget displaying staged items ready for export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QListWidget</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.add_button">
+<span class="sig-name descname"><span class="pre">add_button</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.add_button" title="Link to this definition"></a></dt>
+<dd><p>Button enabling addition of currently staged PV path to export list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QPushButton</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.remove_button">
+<span class="sig-name descname"><span class="pre">remove_button</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.remove_button" title="Link to this definition"></a></dt>
+<dd><p>Button allowing removal of selected staged items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QPushButton</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp.export_button">
+<span class="sig-name descname"><span class="pre">export_button</span></span><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp.export_button" title="Link to this definition"></a></dt>
+<dd><p>Button triggering file save dialog for JSON template generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QPushButton</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._add_to_list">
 <span class="sig-name descname"><span class="pre">_add_to_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._add_to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._add_to_list" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Stage the currently selected PV key and its metadata value into the export list widget.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._export_to_file">
 <span class="sig-name descname"><span class="pre">_export_to_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._export_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._export_to_file" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Open a file save dialog and write all staged PV items to a JSON template file.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._get_max_depth">
 <span class="sig-name descname"><span class="pre">_get_max_depth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._get_max_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._get_max_depth" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Compute the maximum depth of colon-separated tokens across all payload keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The highest count of colon-delimited chunks found in any key (e.g., 4 for <code class="docutils literal notranslate"><span class="pre">&quot;A:B:C:D&quot;</span></code>).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._initialize_first_filter">
 <span class="sig-name descname"><span class="pre">_initialize_first_filter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._initialize_first_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._initialize_first_filter" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Populate the primary (Chunk 1) dropdown filter with top-level namespace tokens.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._remove_from_list">
 <span class="sig-name descname"><span class="pre">_remove_from_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._remove_from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._remove_from_list" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Remove highlighted items from both the GUI list widget and internal staging map.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._setup_ui">
 <span class="sig-name descname"><span class="pre">_setup_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._setup_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._setup_ui" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Construct and assemble all Qt UI widgets, layouts, signals, and control slots.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._update_filters">
 <span class="sig-name descname"><span class="pre">_update_filters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_combo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._update_filters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._update_filters" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Update downstream dropdown options dynamically when an upstream filter selection changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_combo</strong> (<em>QComboBox</em>) – The combobox widget instance that emitted the selection change event.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="utilities.template_editor_gui.JSONFilterApp._update_result_label">
 <span class="sig-name descname"><span class="pre">_update_result_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_key_prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities/template_editor_gui.html#JSONFilterApp._update_result_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utilities.template_editor_gui.JSONFilterApp._update_result_label" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Update the result feedback label and toggle the ‘Add to List’ button state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>full_key_prefix</strong> (<em>str</em>) – The current constructed colon-delimited path prefix.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

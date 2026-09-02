@@ -1,0 +1,27 @@
+GUI package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GUI.tabs
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GUI.gui_main
+
+Module contents
+---------------
+
+.. automodule:: GUI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
