@@ -69,8 +69,8 @@
 <li class="toctree-l2 current"><a class="reference internal" href="validation.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">validation.validation_engine module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#validation.validation_engine.TPG_validator"><code class="docutils literal notranslate"><span class="pre">TPG_validator</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#validation.validation_engine.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#validation.validation_engine.group_validator"><code class="docutils literal notranslate"><span class="pre">group_validator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validation.validation_engine.worker_validator"><code class="docutils literal notranslate"><span class="pre">worker_validator</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="validation.validation_interface.html">validation.validation_interface module</a></li>
@@ -113,66 +113,130 @@
              
   <section id="module-validation.validation_engine">
 <span id="validation-validation-engine-module"></span><h1>validation.validation_engine module<a class="headerlink" href="#module-validation.validation_engine" title="Link to this heading"></a></h1>
-<p>This module contains the implementation of all the validators</p>
-<p>Created on Tue Mar 21 09:31:30 2023</p>
-<p>The create function is responsible for instantiating (and returning) the validator objects.</p>
-<p>The creation is generally done once when “loading” the recipes; in fact the “create” method is called by
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">SmartControllers.controllers_interface.load_recipes</span></code></p>
-<p>&#64;author: luciamarock</p>
+<p>Validation Engine Module for ACMS Recipe &amp; Worker Configurations.</p>
+<p>This module provides concrete implementations of validation classes used to verify
+recipe parameters, Smart Controller instance attributes, and worker execution rules.</p>
+<p>Validation logic relies on external rule definitions formatted as either INI configuration
+files (parsed via <code class="xref py py-class docutils literal notranslate"><span class="pre">configparser.ConfigParser</span></code>) or XML schema files (parsed via
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">xml.etree.ElementTree</span></code>).</p>
+<dl class="simple">
+<dt>Module Dependencies:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="utilities.tool_internals.html#module-utilities.tool_internals" title="utilities.tool_internals"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.tool_internals</span></code></a>: XML-to-dictionary translation utilities.</p></li>
+<li><p><a class="reference internal" href="utilities.util_functions.html#module-utilities.util_functions" title="utilities.util_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utilities.util_functions</span></code></a>: Access to system environment settings.</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">configparser</span></code>: INI rule configuration parser.</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xml.etree.ElementTree</span></code>: XML schema rule parser.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">author<span class="colon">:</span></dt>
+<dd class="field-odd"><p>luciamarock</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="validation.validation_engine.TPG_validator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">validation.validation_engine.</span></span><span class="sig-name descname"><span class="pre">TPG_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#TPG_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.TPG_validator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Recipe validator class</p>
-<p>The TPG_validator object is tipically used when loading the recipes from files (.json),
-this happens at workflow startup (for example).</p>
-<p>It receives the “filename” as initialization parameter; it is the full path to the “rules” file to load
-which is an .ini file named after the validator itself.</p>
-<p>The TPG_validator (as well as the other validator classes) is instantiated by the “create” function
-of this module.</p>
+<p>Recipe validator class for TPG Smart Controllers.</p>
+<p>The <a class="reference internal" href="#validation.validation_engine.TPG_validator" title="validation.validation_engine.TPG_validator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TPG_validator</span></code></a> object is typically instantiated during workflow startup when
+loading JSON recipe files. It reads rule expressions from an INI configuration file
+named after the target validator class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Absolute or relative path to the INI rules configuration file.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="validation.validation_engine.TPG_validator.validate">
 <span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PVs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#TPG_validator.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.TPG_validator.validate" title="Link to this definition"></a></dt>
-<dd><p>This method is responsible for validating the TPG instances</p>
-<p>it bases upon the reules file (which is an .ini file named after this validator).</p>
+<dd><p>Validate a TPG Smart Controller instance against loaded INI rules.</p>
+<p>Extracts target attributes from the controller instance and evaluates the rule
+expressions defined in the <code class="docutils literal notranslate"><span class="pre">[attributes]</span></code> section of the INI file. Furthermore,
+it maps and registers recipe parameters to the target controller instance if a
+matching recipe key exists in the <code class="docutils literal notranslate"><span class="pre">[recipes]</span></code> section.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>instance</strong> – The (Smart Controller) instance (as retrieved from <cite>controller_interface.registered_instances</cite>)</p></li>
-<li><p><strong>PVs</strong> – The dictionary of parameters, as retrieved from the .json file (recipes) at workflow startup.</p></li>
-<li><p><strong>filename</strong> – the .json file name found in the recipes folder (and sub-folders)</p></li>
+<li><p><strong>instance</strong> (<em>object</em>) – The Smart Controller instance registered in the runtime catalog.</p></li>
+<li><p><strong>PVs</strong> (<em>dict</em>) – Dictionary of Process Variables and parameters loaded from a JSON recipe.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Base filename of the target JSON recipe (without extension).</p></li>
 </ul>
 </dd>
-</dl>
-<p>The method tries to find the current “instance.attribute” among the “options” of the .ini file containing the rules,
-then it tries to evaluate the expression for that attribute, if the evaluation is successfully
-completed it means that the parameter has passed the validation phase.</p>
-<p>Next it searches for a key for storing the set of parameters inside the Controller’s Instance, in case,
-it appends the errors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the errors list (empty if no error occurred)</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of string error messages encountered during attribute evaluation or
+recipe key mapping. Returns an empty list if validation passes entirely.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
 </dd>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="validation.validation_engine.create">
-<span class="sig-prename descclassname"><span class="pre">validation.validation_engine.</span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resources_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.create" title="Link to this definition"></a></dt>
-<dd><p>Instantiates the requested validator class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the instance or <cite>None</cite> in case the rules (.ini) file does not exist or the requested validator class does not exist</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="validation.validation_engine.group_validator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">validation.validation_engine.</span></span><span class="sig-name descname"><span class="pre">group_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#group_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.group_validator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Group validator class for multi-controller aggregate verification.</p>
+<p>Reads combined rule sets from an INI configuration file to perform cross-controller
+attribute checks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Absolute or relative path to the group rules INI file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="validation.validation_engine.worker_validator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">validation.validation_engine.</span></span><span class="sig-name descname"><span class="pre">worker_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interlocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#worker_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.worker_validator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Validator class for worker process parameters and safety interlocks.</p>
+<p>Loads rule specifications from an XML schema file located in the application’s resources
+directory (<code class="docutils literal notranslate"><span class="pre">&lt;resources_directory&gt;/rules/&lt;instance_name&gt;_rules.xml</span></code>) to verify type
+constraints, range limits (min/max), and structural validity of interlock definitions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters_dict</strong> (<em>dict</em>) – Operational parameters configured for the worker instance.</p></li>
+<li><p><strong>interlocks</strong> (<em>dict</em>) – Dictionary of defined interlocks, rearm flags, and error codes.</p></li>
+<li><p><strong>instance_name</strong> (<em>str</em>) – Unique identifier name of the target worker instance.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="validation.validation_engine.worker_validator._check_float">
+<span class="sig-name descname"><span class="pre">_check_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#worker_validator._check_float"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.worker_validator._check_float" title="Link to this definition"></a></dt>
+<dd><p>Internal helper to validate float bounds against rule minimum and maximum limits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>int</em><em>, </em><em>float</em><em>, or </em><em>str</em>) – The raw parameter value to check.</p></li>
+<li><p><strong>rule</strong> (<em>dict</em>) – Rule dictionary specifying <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code> numerical bounds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="validation.validation_engine.worker_validator.check_data">
+<span class="sig-name descname"><span class="pre">check_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/validation/validation_engine.html#worker_validator.check_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#validation.validation_engine.worker_validator.check_data" title="Link to this definition"></a></dt>
+<dd><p>Execute validation checks across all parameters and interlocks.</p>
+<p>Evaluates configured parameters against loaded XML rule definitions (verifying data types
+and range constraints via helper methods) and validates that all interlock entries contain
+the required <code class="docutils literal notranslate"><span class="pre">rearmable</span></code> and <code class="docutils literal notranslate"><span class="pre">codes</span></code> fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the validation summary with key <code class="docutils literal notranslate"><span class="pre">status</span></code>
+(<code class="docutils literal notranslate"><span class="pre">'clean'</span></code> or <code class="docutils literal notranslate"><span class="pre">'error'</span></code>) and key <code class="docutils literal notranslate"><span class="pre">messages</span></code> listing encountered issues.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>

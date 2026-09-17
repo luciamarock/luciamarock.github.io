@@ -95,97 +95,62 @@
            <div itemprop="articleBody">
              
   <h1>Source code for validation.validation_interface</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">utilities.tool_internals</span> <span class="k">as</span> <span class="nn">TI</span>
-<span class="kn">import</span> <span class="nn">utilities.util_functions</span> <span class="k">as</span> <span class="nn">UF</span>
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Validation Factory Interface for ACMS Recipe &amp; Rules Engine.</span>
+
+<span class="sd">This module provides a dynamic factory mechanism for instantiating custom validator classes </span>
+<span class="sd">defined within :mod:`validation.validation_engine`. </span>
+
+<span class="sd">Validator instances are configured dynamically at runtime by loading dedicated INI configuration </span>
+<span class="sd">rules files (e.g., ``&lt;class_name&gt;_rules.ini``) from the system resources directory.</span>
+
+<span class="sd">Module Dependencies:</span>
+<span class="sd">    - :mod:`validation.validation_engine`: Core validation engine containing validator implementations.</span>
+
+<span class="sd">:author: luciamarock</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">validation.validation_engine</span> <span class="k">as</span> <span class="nn">VE</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="worker_validator">
-<a class="viewcode-back" href="../../validation.validation_interface.html#validation.validation_interface.worker_validator">[docs]</a>
-<span class="k">class</span> <span class="nc">worker_validator</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">parameters_dict</span><span class="p">,</span> <span class="n">interlocks</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">):</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;initializing </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s1"> validator&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_report</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;clean&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span> <span class="o">=</span> <span class="n">parameters_dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_interlocks</span> <span class="o">=</span> <span class="n">interlocks</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">[</span><span class="s2">&quot;resources_directory&quot;</span><span class="p">]</span>
-        <span class="n">rules_directory</span> <span class="o">=</span> <span class="n">base_dir</span> <span class="o">+</span> <span class="s2">&quot;rules&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
-        <span class="n">rules_filename</span> <span class="o">=</span> <span class="n">rules_directory</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;_rules.xml&quot;</span>
+
+<div class="viewcode-block" id="create">
+<a class="viewcode-back" href="../../validation.validation_interface.html#validation.validation_interface.create">[docs]</a>
+<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">class_name</span><span class="p">,</span><span class="n">resources_dir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate a requested validator class using a corresponding INI rules file.</span>
+
+<span class="sd">    Locates and parses the configuration file named ``&lt;class_name&gt;_rules.ini`` inside the </span>
+<span class="sd">    ``rules`` subdirectory of ``resources_dir``. If the rule file exists and the requested </span>
+<span class="sd">    validator class is defined within :mod:`validation.validation_engine`, it dynamically </span>
+<span class="sd">    instantiates and returns the validator object.</span>
+
+<span class="sd">    :param class_name: The name of the validator class to instantiate (e.g., ``&#39;RecipeValidator&#39;``).</span>
+<span class="sd">    :type class_name: str</span>
+<span class="sd">    :param resources_dir: Absolute or relative base path to the application&#39;s resources directory.</span>
+<span class="sd">    :type resources_dir: str</span>
+
+<span class="sd">    :return: An instance of the requested validator class initialized with its rule set, </span>
+<span class="sd">        or ``None`` if the rules file is missing or instantiation fails.</span>
+<span class="sd">    :rtype: object or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;rules&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">class_name</span> <span class="o">+</span> <span class="s2">&quot;_rules.ini&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;creating </span><span class="si">{}</span><span class="s2"> validator&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rules_filename</span><span class="p">)</span>
-            <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>            
+            <span class="n">class_instance</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;VE.&quot;</span> <span class="o">+</span> <span class="n">class_name</span> <span class="o">+</span> <span class="s2">&quot;(filename)&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;file not found&quot;</span><span class="p">)</span> 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;clean&quot;</span><span class="p">:</span>
-            <span class="k">return</span> 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">parameters</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_rules</span> <span class="o">=</span> <span class="n">TI</span><span class="o">.</span><span class="n">element_with_attributes_to_dict</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;parameters not found&quot;</span><span class="p">)</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_name</span> <span class="o">=</span> <span class="n">instance_name</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;file </span><span class="si">{}</span><span class="s2"> not found&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
     
-<div class="viewcode-block" id="worker_validator.check_data">
-<a class="viewcode-back" href="../../validation.validation_interface.html#validation.validation_interface.worker_validator.check_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">check_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_rules</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checking parameter </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ruled parameter </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> not found in worker configuration file of instance </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_instance_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">current_rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_rules</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_rule</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;rule </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> of instance </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_instance_name</span><span class="si">}</span><span class="s1"> does not have a type&#39;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">current_rule</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_check_float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">current_rule</span><span class="p">)</span>
-                    <span class="c1">#TODO add other types</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interlocks</span><span class="p">:</span>
-            <span class="n">current_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;rearmable&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_value</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;codes&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_value</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;error in definition of </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_instance_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report</span></div>
+    <span class="k">return</span> <span class="n">class_instance</span> </div>
 
     
-<div class="viewcode-block" id="worker_validator._check_float">
-<a class="viewcode-back" href="../../validation.validation_interface.html#validation.validation_interface.worker_validator._check_float">[docs]</a>
-    <span class="k">def</span> <span class="nf">_check_float</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">max_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">rule</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">])</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">min_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">rule</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">])</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">max_value</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">min_value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> is out of range for instance </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_instance_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
-</div>
-
 </pre></div>
 
            </div>
