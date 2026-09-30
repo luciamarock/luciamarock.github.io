@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luciano Ciamarone - CV</title>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2b6cb0;
+            --text-color: #2d3748;
+            --bg-color: #f7fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            font-size: 0.95rem;
+            color: #4a5568;
+        }
+
+        .contact-info span {
+            margin-right: 15px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .date {
+            font-style: italic;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .project-tag {
+            font-style: italic;
+            color: #4a5568;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            margin: 8px 0 20px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        li strong {
+            color: #1a202c;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .skill-category {
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-left: 3px solid var(--secondary-color);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .skill-category strong {
+            display: block;
+            color: var(--primary-color);
+            margin-bottom: 3px;
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            h2 {
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Luciano Ciamarone</h1>
+        <div class="subtitle">Technical Lead & Senior Control Software Engineer</div>
+        <div class="contact-info">
+            <a href="https://luciamarock.wixsite.com/home/contact-8" target="_blank">Contact Form</a> 
+        </div>
+    </header>
+
+    <section>
+        <h2>Executive Summary</h2>
+        <p>Results-driven Software Engineering Manager and Technical Lead with over a decade of experience leading cross-functional engineering teams, orchestrating complex software architectures, and driving mission-critical control systems projects (ITER Fusion Energy, Military Space Systems). Proven track record of accelerating development cycles by 10x through innovative tooling, establishing Agile/DevOps transformations, and translating business/client requirements into operational technical roadmaps. Seeking to leverage strong leadership, strategic planning, and engineering capabilities into a managerial role to steer high-impact engineering projects, streamline operational delivery, and cultivate high-performing technical teams.</p>
+    </section>
+
+    <section>
+        <h2>Core Competencies</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <strong>Management & Leadership</strong>
+                Team Leadership (8 engineers across multi-site international projects), Agile/Scrum, Code Review, Architecture Design, Stakeholder Liaison.
+            </div>
+            <div class="skill-category">
+                <strong>Process & Delivery</strong>
+                CI/CD Pipeline Automation, Software Architecture & Modular Design, Requirements Gathering & Translation, System Integration, QA & Test Plan Strategy, Quality & Compliance.
+            </div>
+            <div class="skill-category">
+                <strong>Technical Expertise</strong>
+                Python, C / C++, EPICS Framework, PLC / SCADA Systems (Siemens), Industrial Automation, Control Systems, Microservices (Docker, Jenkins, GitLab CI), Linux/Windows Architecture, Machine Learning / AI Integration.
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Professional Experience</h2>
+
+        <div class="job-header">
+            <h3>Lead Control Software Developer & Team Manager</h3>
+            <span class="date">July 2018 – Present</span>
+        </div>
+        <div class="company">Leonardo SpA</div>
+        <div class="project-tag">Project: ITER Vacuum System & LIPAc / Fusion for Energy</div>
+        <ul>
+            <li><strong>Engineering Team Leadership:</strong> Serve as Technical Lead and Manager for an 8-member multidisciplinary software development team distributed across project sites in France (ITER) and Rokkasho, Japan (LIPAc), directing technical execution, task allocation, code reviews, and architectural alignment across nuclear fusion control infrastructure.</li>
+            <li><strong>Code Generation Automation & Control Architecture (CGT & UCL):</strong> Architected and developed the proprietary Code Generation Tool (CGT), leveraging the underlying Unified Control Library (UCL) to automate source code block generation for Siemens PLCs and SCADA systems. Established scalable, modular building blocks that standardized industrial control software across F4E projects, drastically reducing code redundancy and accelerating the Plant System development process by 10x.</li>
+            <li><strong>Automated Control & Management System (ACMS):</strong> Designed and implemented the core Recipe Management System (RMS) for ITER, and subsequently expanded it into the unified ACMS for LIPAc (Fusion for Energy) to integrate the RF Cavity Auto-Conditioning Tool (ACT) alongside vacuum diagnostics. Engineered the interaction protocols and execution loop linking ACMS with the LIPAc Campaign Manager for automated job polling and status monitoring. Built intelligent software pre-checks and safety interlocks to protect high-value RF equipment from trips, and developed intuitive operator GUIs (PyQt5) and control room displays (Phoebus/CS-Studio) featuring built-in rule validation engines.</li>
+            <li><strong>DevOps, CI/CD & Compliance:</strong> Built robust CI/CD pipelines utilizing Git, Jenkins, GitLab CI, and Docker. Implemented automated testing suites (UnitTest) and Sphinx documentation (producing Architecture Diagrams, Test Plans, and User Manuals), strictly adhering to nuclear fusion sector quality and safety standards.</li>
+            <li><strong>Agile Project Management:</strong> Spearheaded Agile/Scrum methodologies across team workflows, establishing Jira ticketing systems, user story mapping, and Kanban boards for transparent visual management and timeline tracking.</li>
+            <li><strong>FPGA based pipelines:</strong> Developed custom FPGA-based CompactRIO analog optical modules and backplane diagnostic tools, engineering a 5 MS/s data streaming pipeline with custom start-of-frame byte interleaving, optical-to-chassis routing, and LabVIEW signal analysis for low-latency acquisition.</li>
+            <li><strong>Engineering & Commissioning:</strong> Performed on-site testing, commissioning, troubleshooting, FAT/SAT, and PLC/HMI debugging for ITER plant systems, buildings, and electrical distribution networks using Siemens TIA Portal and PLCSIM Advanced.</li>
+<li><strong>Control Systems Integration:</strong> Deployed and validated UCL, ICL, and ACL components, ensuring correct HMI displays, interlock propagation, and data exchange across plant subsystems.</li>
+        </ul>
+
+        <div class="job-header">
+            <h3>Satellite Control System Developer & Client Liaison</h3>
+            <span class="date">September 2016 – June 2018</span>
+        </div>
+        <div class="company">Info Solution</div>
+        <div class="project-tag">Project/Client: Telespazio / Turkish Military Air Force</div>
+        <ul>
+            <li><strong>Client & Stakeholder Management:</strong> Served as the sole trusted technical liaison between Turkish Military Air Force representatives (the client) and internal engineering leadership. Resolved cross-organizational communication challenges by translating complex operational needs into clear technical requirements and actionable development user stories.</li>
+            <li><strong>Satellite Control System Engineering:</strong> Engineered core C/C++ software modules for satellite ground control systems and high-reliability space operations including major satellite programs such as Gokturk and Cosmo-SkyMed.</li>
+            <li><strong>System Reliability & Operational Impact:</strong> Streamlined operator workflows during live satellite passes, achieving a 75% reduction in operator issues.</li>
+            <li><strong>Database & Architecture Optimization:</strong> Redefined the MySQL database schema and built custom APIs to optimize data querying mechanisms, achieving a 25% performance improvement in real-time data access and telemetry retrieval.</li>
+            <li><strong>Operational Readiness & Testing:</strong> Authored military operational procedures and comprehensive operator manuals. Conducted hands-on training for military satellite personnel and successfully led 100% of official integration and acceptance testing in real-case mission scenarios.</li>
+        </ul>
+
+        <div class="job-header">
+            <h3>Software Developer / DSP Engineer</h3>
+            <span class="date">December 2012 – July 2016</span>
+        </div>
+        <div class="company">Benti SA</div>
+        <div class="project-tag">Yverdon-les-Bains, Switzerland</div>
+        <ul>
+            <li><strong>Real-Time Polyphonic Pitch Detection:</strong> Researched and developed high-performance, low-latency polyphonic pitch detection algorithms in C++ for guitars and string instruments, solving complex harmonic overlap and real-time frequency estimation challenges.</li>
+            <li><strong>Custom FFT & DSP Engine Design:</strong> Engineered custom Fast Fourier Transform (FFT) algorithms, spectral audio morphing, physical modeling synthesis, and dynamic pitch-shifting routines tailored for real-time digital signal processing.</li>
+            <li><strong>Low-Latency Embedded Optimization:</strong> Embedded complex mathematical algorithms and physics-based acoustic models into tightly constrained computational environments, prioritizing deterministic latency, phase consistency, and minimal CPU/memory overhead.</li>
+            <li><strong>Audio Analyzer & FX Stompbox Prototyping:</strong> Built a standalone audio analyzer platform for electric instruments combining note-specific DSP, formant filtering, waveform morphing, and LFO modulation for real-time audio manipulation.</li>
+            <li><strong>CI/CD & Algorithmic QA:</strong> Implemented Continuous Integration (CI) pipelines and rigorous automated testing suites to validate algorithmic stability, regression prevention, and low-latency performance metrics.</li>
+        </ul>
+
+        <div class="job-header">
+            <h3>Automation Specialist</h3>
+            <span class="date">February 2009 – September 2010</span>
+        </div>
+        <div class="company">FAMECCANICA.DATA SPA</div>
+        <div class="project-tag">San Giovanni Teatino, Italy</div>
+        <ul>
+            <li><strong>High-Speed Industrial Control Systems:</strong> Programmed and deployed Siemens S7-300 / S7-400 PLCs utilizing SIMOTION controllers and Fast I/O modules to execute deterministic, real-time control loops on high-speed industrial manufacturing lines.</li>
+            <li><strong>Sensor & Vision System Integration:</strong> Integrated input telemetry from high-speed line-scan cameras, optical sensors, and specialized sensor arrays into automated quality control and inspection routines.</li>
+            <li><strong>Deterministic Actuation & Rejection Routines:</strong> Engineered sub-millisecond pneumatic rejection subroutines to execute real-time physical interventions and defect disposal without halting or interrupting continuous high-speed production hardware.</li>
+            <li><strong>Control Logic & System Commissioning:</strong> Designed, debugged, and commissioned complex ladder/statement list control logic, adhering to rigorous industrial safety, timing, and automation reliability standards.</li>
+        </ul>
+
+        <div class="job-header">
+            <h3>Musical Researcher & Computational Systems Developer</h3>
+            <span class="date">September 2007 – August 2012</span>
+        </div>
+        <div class="company">Center of Musical Research (CRM)</div>
+        <div class="project-tag">Rome, Italy (Contract Collaboration)</div>
+        <ul>
+            <li><strong>Hardware-Software Actuation Systems:</strong> Designed specialized electronic hardware interfaces, custom sensor circuits, and real-time software for physical instrument actuation, sensor augmentation, and interactive acoustic environments.</li>
+            <li><strong>Augmented Instruments & Haptic Systems:</strong> Designed and built "The Feed-Guitar" (augmented electric guitar with bridge actuation showcased at Auditorium Parco della Musica) and integrated optical/capacitive performance sensors on classical guitars via Make Controller and Max/MSP.</li>
+            <li><strong>Interactive Installations & Scenography:</strong> Developed interactive physical computing installations, including capacitive-sensor audio-visual art reacting to touch and an interactive string scenography triggered by dancer movements and MIDI controllers.</li>
+            <li><strong>Algorithmic Composition & Research:</strong> Published research on real-time execution of Iannis Xenakis’ <em>Analogique B</em> using Markov Models with dynamic entropy-based probability matrices.</li>
+            <li><strong>Psychoacoustics & Signal Processing:</strong> Conducted research into human perception of musicality (harmony, timbre, rhythm) and built custom algorithms to bridge acoustic performance with low-latency digital signal processing.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Engineering Projects & Technical Consulting</h2>
+
+        <div class="job-header">
+            <h3>Co-Creator, Lead Technical Architect & Sound Designer</h3>
+            <span class="date">December 2024 – Present</span>
+        </div>
+        <div class="company">Perceptrum</div>
+        <div class="project-tag">Barcelona, Spain</div>
+        <ul>
+            <li><strong>Embedded Hardware & Systems Architecture:</strong> Designed custom capacitive touch sensing hardware and built low-latency Linux-based software pipelines (utilizing Raspberry Pi 4, HiFiBerry amplifiers, and Arduino) to process real-time tactile gestures into dynamic, event-driven audio responses.</li>
+            <li><strong>Generative Machine Learning & Memory Models:</strong> Implemented adaptive, non-linear algorithmic models (Higher-Order Markov Models and LSTMs) that give physical canvases an evolving "memory," making real-time sound output a function of cumulative interaction history rather than simple static triggers. Trained CNN models to map visual composition features into sound parameters.</li>
+            <li><strong>Networked Interaction Engine:</strong> Architected real-time networking infrastructure connecting multiple Sounding Canvases over the internet, enabling physical touch in one location to trigger organic, evolving soundscapes on a companion canvas worldwide.</li>
+        </ul>
+
+        <div class="job-header">
+            <h3>Freelance Developer & Project Support</h3>
+            <span class="date">July 2022 – December 2023</span>
+        </div>
+        <div class="company">OnlinePianist</div>
+        <div class="project-tag">Tel Aviv, Israel (Remote)</div>
+        <ul>
+            <li><strong>Polyphonic Pitch Detection & ML Optimization:</strong> Engineered a high-accuracy real-time polyphonic pitch detection engine in C++ for piano. Fine-tuned parameters using neural networks (PyTorch/TensorFlow) and statistical models (NumPy/Scikit-Learn), improving note recognition precision from 75% to 86%. Integrated the optimized audio processing engine into the client's iOS app.</li>
+        </ul>
+
+        <div class="job-header">
+            <h3>Freelance Machine Learning Researcher</h3>
+            <span class="date">January 2019 – September 2019</span>
+        </div>
+        <div class="company">University Pompeu Fabra</div>
+        <div class="project-tag">Barcelona, Spain</div>
+        <ul>
+            <li><strong>Algorithmic Scale Classification:</strong> Developed a machine learning algorithm in Python/C++ using Higher-Order Markov Models to classify traditional Persian music scales (Dastgahs) with 91% accuracy. Boosted performance to 97% precision using dataset augmentation and <code>GridSearchCV</code>.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Publications & Research</h2>
+        <ul>
+            <li><strong>"Sounding Canvas: An Embedded, Networked, Interactive Audio Artwork"</strong> | IEEE (Dec 2025)</li>
+            <li><strong>"Automatic Dastgah Recognition Using Markov Models"</strong> | CMMR Marseille (Oct 2019)</li>
+            <li><strong>"Towards a Real-Time Implementation of Analogique B"</strong> | Université Paris 8 (May 2012)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Education & Certifications</h2>
+        <ul>
+            <li><strong>Master’s Degree in Music Technology</strong> | University of L'Aquila, Italy (Apr 2013)</li>
+            <li><strong>Bachelor’s Degree in Music Technology</strong> | University of L'Aquila, Italy (Oct 2010)</li>
+            <li><em>Prior Academic Background:</em> Physics, Mechanics, and Automation Engineering</li>
+        </ul>
+
+        <p><strong>Certifications & Continuous Leadership Development:</strong></p>
+        <ul>
+            <li>Foundations of Project Management – Google / Coursera (Dec 2021)</li>
+            <li>Starting a Successful Project – Google / Coursera (Apr 2022)</li>
+            <li>Deep Learning Specializations (CNNs, Hyperparameter Tuning, RNNs) – DeepLearning.AI / Coursera (Aug 2025)</li>
+            <li>LabVIEW & FPGA Hardware Programming – National Instruments (Oct 2015)</li>
+            <li>AWS Fundamentals Specialization – Amazon / Coursera (Ongoing)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Languages</h2>
+        <p><strong>English:</strong> Fluent | <strong>Spanish:</strong> Fluent | <strong>Italian:</strong> Native | <strong>French:</strong> Working Proficiency</p>
+    </section>
+
+</div>
+
+</body>
+</html>
