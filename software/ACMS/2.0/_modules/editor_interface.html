@@ -57,6 +57,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_manual_worker_autorearm.html">Worker and auto-rearm configuration (operations)</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
@@ -127,6 +131,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">logging</span> 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -392,7 +397,15 @@
     <span class="n">config_file</span> <span class="o">=</span> <span class="n">resources_dir</span> <span class="o">+</span> <span class="s2">&quot;config.json&quot;</span>
     <span class="n">ca_timeout</span><span class="p">,</span> <span class="n">ca_parallelism</span><span class="p">,</span> <span class="n">pv_fields</span><span class="p">,</span> <span class="n">hmi_files</span> <span class="o">=</span> <span class="n">load_configuration</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;configuration file loaded&quot;</span><span class="p">)</span>
-    <span class="n">bob_file</span> <span class="o">=</span> <span class="n">hmi_files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">configured_path</span> <span class="o">=</span> <span class="n">hmi_files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">configured_path</span><span class="p">):</span>
+        <span class="n">bob_file</span> <span class="o">=</span> <span class="n">configured_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reconstructing path to .bob file from project root&quot;</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">configured_path</span><span class="p">)</span>
+        <span class="n">project_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">resources_dir</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">))</span>
+        <span class="n">fallback_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_root</span><span class="p">,</span> <span class="s2">&quot;HMI&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">bob_file</span> <span class="o">=</span> <span class="n">fallback_path</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fetching PV list from </span><span class="si">{</span><span class="n">bob_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">pv_names</span> <span class="o">=</span> <span class="n">extract_pvs_from_bob</span><span class="p">(</span><span class="n">bob_file</span><span class="p">)</span>

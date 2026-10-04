@@ -9,6 +9,7 @@ Submodules
 
    API.api_server
    API.bridge
+   API.lcm_executor
    API.models
    API.runner
 

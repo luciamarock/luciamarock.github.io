@@ -1,0 +1,279 @@
+Worker and auto-rearm configuration (operations)
+================================================
+
+This manual is for operators and integrators who add a **conditioning worker**
+on a real EPICS plant (not the local mock IOC). It describes how to pair a
+worker XML file with its auto-rearm PV map, which names must match the live
+control system, and how auto-rearm is allowed to run.
+
+Do not reuse a PV map written for another cavity or bench. The worker drives
+one set of setpoints; auto-rearm waits on **other** PVs named in its own file.
+If those names belong to a different chain, voltage and forward-power checks
+time out and the worker aborts.
+
+File layout
+-----------
+
+``settings.ini`` points at the resources tree (typically ``resources/``).
+Relative to that directory:
+
+========================== ============================================================
+Path                       Role
+========================== ============================================================
+``workers/<name>.xml``     Worker instance. The file stem is the worker name
+                           (``HPTB_worker.xml`` → ``HPTB_worker``).
+``autorearm/<file>.xml``   Auto-rearm PV map. Linked from the worker via
+                           ``<auto_rearm_file>``.
+``sequences/<file>.csv``   Conditioning sequence. Linked via ``<sequence>``.
+``rules/<name>_rules.xml`` Parameter/interlock validation. ``<name>`` must equal
+                           the worker file stem.
+========================== ============================================================
+
+At startup, :class:`~workflows.workers_manager.WorkersManager` loads **every**
+``.xml`` file in ``workers/``. Each worker must have a unique
+``<ACTinterface>`` PV and a unique ``<macroed_string>``.
+
+The ``<auto_rearm_file>`` value is a basename. If you omit ``.xml``, it is
+appended. The file is loaded from ``resources/autorearm/``. If it is missing,
+the worker is still created but auto-rearm data is empty and the manager has
+nothing to connect.
+
+Create two files per machine
+----------------------------
+
+For a new subsystem (example: High Power Test Bench):
+
+1. Copy a worker template (for example ``resources/workers/HPTB_worker.xml``)
+   to ``resources/workers/<your_worker>.xml``.
+2. Copy ``resources/autorearm/auto-rearm.xml`` to a **dedicated** file, for
+   example ``resources/autorearm/hptb-auto-rearm.xml``.
+3. Point the worker at that file::
+
+        <auto_rearm_file>hptb-auto-rearm</auto_rearm_file>
+
+4. Add ``resources/rules/<your_worker>_rules.xml`` (same stem as the worker
+   file).
+5. Add or reuse a sequence CSV and set ``<sequence>``.
+6. Replace every PV name with the names that exist on the **target IOC**.
+
+Worker XML
+----------
+
+Root element is ``<configuration>``. Required children:
+
+``<epics>`` — power and pulse
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These are the worker's own RF setpoints and readbacks. Auto-rearm writes
+``power_set`` and, in some steps, waits on ``power_get``.
+
+============= ===========================================
+Tag           Meaning
+============= ===========================================
+``power_set`` Cavity voltage / power setpoint (written)
+``power_get`` Matching analog readback (verified)
+``pp_set_pv`` Pulse period setpoint
+``pp_get_pv`` Pulse period readback
+``pw_set_pv`` Pulse width setpoint
+``pw_get_pv`` Pulse width readback
+============= ===========================================
+
+Use the **same device prefix and engineering unit** for set and get (for
+example both millivolts on ``RFQ:HPTB_LLRF:...``).
+
+``<interlocks>``
+~~~~~~~~~~~~~~~~
+
+Each child is one monitored interlock PV::
+
+    <interlock rearmable="True" codes="1,4,31247">SYS:DEV:IlkWaterCooling</interlock>
+
+* ``rearmable``: ``True`` / ``true`` allows auto-rearm; ``false`` never rearms
+  that PV (severity still aborts the step).
+* ``codes``: optional comma-separated integers. If non-empty, the interlock
+  **value** must be in this list or rearm is refused. Use ``codes=""`` when any
+  non-zero / any value is acceptable after the severity check.
+
+Detection uses Channel Access **severity** ``> 0``, not the value alone.
+
+``<workflow_pvs>``
+~~~~~~~~~~~~~~~~~~
+
+====================== ==========================================================
+Tag                    Meaning
+====================== ==========================================================
+``quick_rearm_mode``   Enable switch (must be ``>= 1`` unless
+                       ``manual_restart`` is already ``>= 1``).
+``frequency_mode_set`` Frequency-mode command copied from the get PV.
+``frequency_mode_get`` Frequency-mode readback.
+====================== ==========================================================
+
+``<observable_pvs>``
+~~~~~~~~~~~~~~~~~~~~
+
+List of ``<pv>`` names (temperatures, vacuum, …) monitored during the
+sequence. They are not part of the auto-rearm PV map.
+
+``<conditioning_parameters>``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Numeric policy plus a few extra PV names.
+
+**Loop and reset names** are built as::
+
+    {main_prefix}{chain_prefix}{N}{cavity_prefix}{A|B|...}{suffix}
+
+Example with ``main_prefix=RF:``, ``chain_prefix=LLRF``, ``chains_amount=4``,
+``cavity_prefix=_Cav``, ``cavity_amount=2``,
+``loops_PV_suffix=:CtrlFwCavMstLoopEnCmd`` produces
+``RF:LLRF1_CavA:CtrlFwCavMstLoopEnCmd`` … ``RF:LLRF4_CavB:...``.
+
+Set ``chains_amount``, ``cavity_amount``, and the prefixes so this matches the
+**real** LLRF topology. A bench with one cavity must not keep a four-chain
+RFQ template.
+
+=============================== ==========================================================
+Tag                             Meaning
+=============================== ==========================================================
+``loops_PV_suffix``             Written to ``0`` when loops are turned off.
+``reset_PV_suffix``             Pulse ``1`` then ``0`` when the interlock has
+                                ``codes``; otherwise the interlock PV is put to
+                                ``0``.
+``loop_on_suffix``              Written to ``1`` after forward power is OK.
+``loop_rdbk_suffix``            Must read back ``1`` after loops are enabled.
+``all_interlocks_suffix``       Per-cavity interlock readback during restore.
+``Vrestore_multiplier``         First restore: ``power_set * this`` (e.g. ``0.5``).
+``V2restore_multiplier``        Intermediate restore in non-pulsed CW (e.g. ``0.75``).
+``Vwarning_multiplier``         Observable warning threshold (sequence, not rearm).
+``min_FW_power``                Forward-power gate before loops are enabled.
+``readback_tolerance``          Rounding for equality checks (e.g. ``0.001``).
+``retry_attempts``              Max successful rearms of the same interlock.
+``arc_limit``                   Max failed rearm / arc count before giving up.
+``manual_restart``              PV: if ``>= 1``, skip the quick-rearm enable check.
+``cavity_voltage_ramp_speed``   Ramp-rate PV (also used to size the wait).
+``cavity_phase``                Phase PV used with ramp rate to size the wait.
+``user_defined_ramp_speed``     Numeric fallback used elsewhere in the worker.
+=============================== ==========================================================
+
+``min_stable_time`` in the worker XML is currently unused; wait time is computed
+from voltage step, ramp rate, and cavity phase (minimum about 1 s, or 5 s if
+ramp rate is not positive).
+
+Other required worker tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+======================================== ============================================================
+Tag                                      Meaning
+======================================== ============================================================
+``sequence``                             CSV basename under ``sequences/``.
+``auto_rearm_file``                      Basename under ``autorearm/``.
+``macroed_string``                       Unique HMI macro for this worker.
+``ACTinterface``                         Unique enable PV; another worker cannot share it.
+``total_steps``                          Optional HMI step counter.
+``current_step``                         Optional HMI step counter.
+``sequence_combo``                       Optional HMI sequence selector.
+``sequence_load``                        Optional HMI sequence selector.
+======================================== ============================================================
+
+Auto-rearm XML
+--------------
+
+Root element is ``<epics_pvs>``. Each **child tag name** is the logical key
+used in software. The EPICS record is the ``name`` attribute::
+
+    <reference_cavity_voltage name="RFQ:HPTB_LLRF:VCavRef">
+        Readback used after the first voltage restore
+    </reference_cavity_voltage>
+
+Inner text is documentation only.
+
+At connect time the manager opens **every** child that has a ``name``. If any
+PV fails to connect within 1 s, worker connection fails. Delete tags you do
+not need; do not leave template names from another subsystem.
+
+Tags the rearm procedure actually uses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These keys must exist and must belong to the **same RF plant** as the worker's
+``<epics>`` block.
+
+==================================== ======================================================
+Tag                                  Role in the procedure
+==================================== ======================================================
+``reference_cavity_voltage``         Wait until this equals the restored
+                                     ``power_set`` (non-pulsed path).
+``forward_power_readback``           Must reach ``>= min_FW_power`` before
+                                     loops are turned on. **Failure here
+                                     aborts the worker.**
+``min_reference_voltage_setpoint``   Saved/restored in pulsed-on-CW mode.
+``conditioning_mode_control``        ``0`` = CW, ``1`` = pulsed (also used
+                                     to restore conditioning mode).
+``amplitude_phase_control``          Forced ``0`` on first shutdown.
+``beam_control_feedforward``         Forced ``0`` on first shutdown.
+``auto_frequency_control_status``    Saved; restored via command PVs.
+``manual_frequency_control_status``  Saved; restored via command PVs.
+``auto_frequency_control_command``   Written ``0`` then optionally ``1``.
+``manual_frequency_control_command`` Written ``0`` then optionally ``1``.
+``final_voltage_ramp_speed``         Ramp during pulsed restore.
+``first_stage_voltage_ramp``         Ramp for intermediate voltage restore.
+``second_stage_voltage_ramp``        Ramp for final voltage restore.
+==================================== ======================================================
+
+Choose ``reference_cavity_voltage`` so that it **tracks** ``power_set`` in the
+same units (or a calibrated equivalent the equality check can pass). Choose
+``forward_power_readback`` so that it rises when that cavity is powered, with
+units consistent with ``min_FW_power`` (kW if the threshold is ``0.01`` kW).
+
+When auto-rearm runs
+--------------------
+
+On an active interlock (severity ``> 0``):
+
+1. If ``manual_restart >= 1``, rearm is allowed immediately.
+2. Else ``quick_rearm_mode`` must be ``>= 1``.
+3. The interlock must be ``rearmable`` and, if ``codes`` is set, the value
+   must be listed.
+4. ``retry_attempts`` and ``arc_limit`` must not be exceeded.
+
+Then the procedure: drop power → disable frequency loops → reset interlock →
+align conditioning mode → restore a fraction of voltage → wait for forward
+power → enable loops → restore frequency mode → ramp voltage back.
+
+A timed-out **reference voltage** check is logged but the procedure continues.
+A timed-out **forward power** check returns failure and the worker aborts.
+
+Commissioning checklist (real plant)
+------------------------------------
+
+1. Confirm every PV in the worker and auto-rearm files ``caget``-s from the
+   RMS host (same EPICS network / ``EPICS_CA_ADDR_LIST``).
+2. Put a test value on ``power_set`` and confirm ``power_get`` and
+   ``reference_cavity_voltage`` move to the expected numbers within a few
+   seconds at the configured ramp.
+3. Confirm ``forward_power_readback`` exceeds ``min_FW_power`` whenever RF
+   is on at the restore level.
+4. Walk the generated loop/reset names (prefix × chains × cavities) and
+   confirm those records exist.
+5. Set ``quick_rearm_mode`` (or ``manual_restart``) from HMI before relying
+   on automatic recovery.
+6. Trigger a **rearmable** interlock on a safe, low-power state and watch the
+   log: successful path ends with cavity voltage restored, not
+   ``Failed to rearm interlock``.
+7. Keep one auto-rearm file per worker (or per identical IOC family). Sharing
+   ``auto-rearm.xml`` across HPTB and RFQ LLRF1 is what makes millivolt
+   setpoints wait on another cavity's milliamp/kW records.
+
+Validation rules file
+---------------------
+
+``resources/rules/<worker_stem>_rules.xml`` must exist or worker creation
+fails. Parameters listed under ``<parameters>`` are checked when they also
+appear in ``<conditioning_parameters>``. Interlock entries must include both
+``rearmable`` and ``codes`` attributes.
+
+Related source
+--------------
+
+* :mod:`workers.factories.factory_interface` — loads worker + auto-rearm XML.
+* :mod:`workers.auto_rearm_manager` — connect, gate, and execute rearm.
+* :mod:`workflows.workers_manager` — discovers all worker XML files.

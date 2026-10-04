@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API.lcm_executor module &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API.models module" href="API.models.html" />
+    <link rel="prev" title="API.bridge module" href="API.bridge.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="API.html">API package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="API.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="API.api_server.html">API.api_server module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="API.bridge.html">API.bridge module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">API.lcm_executor module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor.Handler"><code class="docutils literal notranslate"><span class="pre">Handler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._Halt"><code class="docutils literal notranslate"><span class="pre">_Halt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._aborted"><code class="docutils literal notranslate"><span class="pre">_aborted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._ev"><code class="docutils literal notranslate"><span class="pre">_ev()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._eval"><code class="docutils literal notranslate"><span class="pre">_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._event"><code class="docutils literal notranslate"><span class="pre">_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._lcm_post"><code class="docutils literal notranslate"><span class="pre">_lcm_post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._resolve"><code class="docutils literal notranslate"><span class="pre">_resolve()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor._wait"><code class="docutils literal notranslate"><span class="pre">_wait()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor.get_or_create_pv"><code class="docutils literal notranslate"><span class="pre">get_or_create_pv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor.run_job"><code class="docutils literal notranslate"><span class="pre">run_job()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#API.lcm_executor.run_steps"><code class="docutils literal notranslate"><span class="pre">run_steps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="API.models.html">API.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="API.runner.html">API.runner module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="API.html#module-API">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_manual_worker_autorearm.html">Worker and auto-rearm configuration (operations)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="API.html">API package</a></li>
+      <li class="breadcrumb-item active">API.lcm_executor module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/API.lcm_executor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-API.lcm_executor">
+<span id="api-lcm-executor-module"></span><h1>API.lcm_executor module<a class="headerlink" href="#module-API.lcm_executor" title="Link to this heading"></a></h1>
+<p>External executor for the LCM automation loop (v0.5.2) — PUSH model, statement DSL.</p>
+<p>LCM pushes jobs to the executor; the executor pushes results back to LCM. This executor
+connects to real EPICS Process Variables (PVs) using pyepics.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>LISTENS for:</dt><dd><ul>
+<li><p>POST {this}/run {job_id, sequence, inputs, …} -&gt; runs the job</p></li>
+<li><p>POST {this}/abort {job_id} -&gt; cancels a job</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>PUSHES to LCM:</dt><dd><ul>
+<li><p>POST {lcm}/api/automation/jobs/{id}/events -&gt; set_field / push_timestep / log / progress / done</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Standard-library + pyepics — runs with python3.</p>
+<dl class="simple">
+<dt>Start it and point LCM at it:</dt><dd><p>python3 tools/lcm_executor.py –port 9100 –lcm <a class="reference external" href="http://localhost:8000">http://localhost:8000</a>
+LIPAC_EXECUTOR_URL=http://localhost:9100 uvicorn backend.main:app –port 8000</p>
+</dd>
+</dl>
+<p>The job’s <code class="docutils literal notranslate"><span class="pre">sequence</span></code> is the statement DSL (SPEC §4), e.g.:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{ “steps”: [</dt><dd><p>{ “caput”: { “pv”: “LIPAC:PUMP:A:CMD”, “value”: 1 } },
+{ “wait”: { “seconds”: 30 } },
+{ “caget”: { “pv”: “LIPAC:GAUGE:A”, “into”: “gauge_a” } },
+{ “push_field”: { “code”: “PRES_ACTUAL”, “value”: “${gauge_a}” } },
+{ “push_timestep”: { “comment”: “after settle” } },
+{ “done”: { “ok”: true } }</p>
+</dd>
+</dl>
+<p>] }</p>
+</div></blockquote>
+<p>DSL statements mapped to executor → LCM events:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">caput</span></code> → log / EPICS write (cached PV connection with timeout)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">caget</span></code> → log / EPICS read into a DSL variable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wait</span></code> / <code class="docutils literal notranslate"><span class="pre">wait_until</span></code> → progress (abort-aware)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span></code> / <code class="docutils literal notranslate"><span class="pre">for_each</span></code> / <code class="docutils literal notranslate"><span class="pre">while</span></code> → control flow (executor-internal)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">push_field</span></code> → set_field (LCM stores it in the job working state)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">push_timestep</span></code> → push_timestep (LCM commits a TIME-STEP)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log</span></code> → log</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">done</span></code> → done (terminal)</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="API.lcm_executor.Handler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">Handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#Handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.Handler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHTTPRequestHandler</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="API.lcm_executor.Handler._read">
+<span class="sig-name descname"><span class="pre">_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#Handler._read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.Handler._read" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="API.lcm_executor.Handler._reply">
+<span class="sig-name descname"><span class="pre">_reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#Handler._reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.Handler._reply" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="API.lcm_executor.Handler.do_POST">
+<span class="sig-name descname"><span class="pre">do_POST</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#Handler.do_POST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.Handler.do_POST" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="API.lcm_executor.Handler.log_message">
+<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#Handler.log_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.Handler.log_message" title="Link to this definition"></a></dt>
+<dd><p>Log an arbitrary message.</p>
+<p>This is used by all other logging functions.  Override
+it if you have specific logging wishes.</p>
+<p>The first argument, FORMAT, is a format string for the
+message to be logged.  If the format string contains
+any % escapes requiring parameters, they should be
+specified as subsequent arguments (it’s just like
+printf!).</p>
+<p>The client ip and current date/time are prefixed to
+every message.</p>
+<p>Unicode control characters are replaced with escaped hex
+before writing the output to stderr.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="API.lcm_executor._Halt">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_Halt</span></span><a class="reference internal" href="_modules/API/lcm_executor.html#_Halt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._Halt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Unwinds the interpreter when the job is done or aborted.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._aborted">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_aborted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#_aborted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._aborted" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._ev">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_ev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#_ev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._ev" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._eval">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._eval" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._event">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._event" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._lcm_post">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_lcm_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#_lcm_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._lcm_post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._resolve">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#_resolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._resolve" title="Link to this definition"></a></dt>
+<dd><p>A value may be a literal or a ‘${…}’ expression string.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor._wait">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor._wait" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor.get_or_create_pv">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">get_or_create_pv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/API/lcm_executor.html#get_or_create_pv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.get_or_create_pv" title="Link to this definition"></a></dt>
+<dd><p>Checks if a PV instance is already cached.
+If not, creates it, waits for connection, and caches it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor.main">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor.run_job">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">run_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#run_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.run_job" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="API.lcm_executor.run_steps">
+<span class="sig-prename descclassname"><span class="pre">API.lcm_executor.</span></span><span class="sig-name descname"><span class="pre">run_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/API/lcm_executor.html#run_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#API.lcm_executor.run_steps" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="API.bridge.html" class="btn btn-neutral float-left" title="API.bridge module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="API.models.html" class="btn btn-neutral float-right" title="API.models module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

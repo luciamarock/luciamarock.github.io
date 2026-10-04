@@ -44,6 +44,12 @@ System Architecture & Reference
 
 .. toctree::
    :maxdepth: 2
+   :caption: User Guides
+
+   user_manual_worker_autorearm
+
+.. toctree::
+   :maxdepth: 2
    :caption: Workflows & Automation
 
    workflows

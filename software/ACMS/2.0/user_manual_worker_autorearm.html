@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Worker and auto-rearm configuration (operations) &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="workflows package" href="workflows.html" />
+    <link rel="prev" title="GUI.gui_main module" href="GUI.gui_main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Worker and auto-rearm configuration (operations)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#file-layout">File layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-two-files-per-machine">Create two files per machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#worker-xml">Worker XML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#epics-power-and-pulse"><code class="docutils literal notranslate"><span class="pre">&lt;epics&gt;</span></code> — power and pulse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlocks"><code class="docutils literal notranslate"><span class="pre">&lt;interlocks&gt;</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-pvs"><code class="docutils literal notranslate"><span class="pre">&lt;workflow_pvs&gt;</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#observable-pvs"><code class="docutils literal notranslate"><span class="pre">&lt;observable_pvs&gt;</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conditioning-parameters"><code class="docutils literal notranslate"><span class="pre">&lt;conditioning_parameters&gt;</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-required-worker-tags">Other required worker tags</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#auto-rearm-xml">Auto-rearm XML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tags-the-rearm-procedure-actually-uses">Tags the rearm procedure actually uses</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#when-auto-rearm-runs">When auto-rearm runs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commissioning-checklist-real-plant">Commissioning checklist (real plant)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validation-rules-file">Validation rules file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-source">Related source</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Worker and auto-rearm configuration (operations)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/user_manual_worker_autorearm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="worker-and-auto-rearm-configuration-operations">
+<h1>Worker and auto-rearm configuration (operations)<a class="headerlink" href="#worker-and-auto-rearm-configuration-operations" title="Link to this heading"></a></h1>
+<p>This manual is for operators and integrators who add a <strong>conditioning worker</strong>
+on a real EPICS plant (not the local mock IOC). It describes how to pair a
+worker XML file with its auto-rearm PV map, which names must match the live
+control system, and how auto-rearm is allowed to run.</p>
+<p>Do not reuse a PV map written for another cavity or bench. The worker drives
+one set of setpoints; auto-rearm waits on <strong>other</strong> PVs named in its own file.
+If those names belong to a different chain, voltage and forward-power checks
+time out and the worker aborts.</p>
+<section id="file-layout">
+<h2>File layout<a class="headerlink" href="#file-layout" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">settings.ini</span></code> points at the resources tree (typically <code class="docutils literal notranslate"><span class="pre">resources/</span></code>).
+Relative to that directory:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Path</p></th>
+<th class="head"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">workers/&lt;name&gt;.xml</span></code></p></td>
+<td><p>Worker instance. The file stem is the worker name
+(<code class="docutils literal notranslate"><span class="pre">HPTB_worker.xml</span></code> → <code class="docutils literal notranslate"><span class="pre">HPTB_worker</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">autorearm/&lt;file&gt;.xml</span></code></p></td>
+<td><p>Auto-rearm PV map. Linked from the worker via
+<code class="docutils literal notranslate"><span class="pre">&lt;auto_rearm_file&gt;</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sequences/&lt;file&gt;.csv</span></code></p></td>
+<td><p>Conditioning sequence. Linked via <code class="docutils literal notranslate"><span class="pre">&lt;sequence&gt;</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rules/&lt;name&gt;_rules.xml</span></code></p></td>
+<td><p>Parameter/interlock validation. <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> must equal
+the worker file stem.</p></td>
+</tr>
+</tbody>
+</table>
+<p>At startup, <code class="xref py py-class docutils literal notranslate"><span class="pre">WorkersManager</span></code> loads <strong>every</strong>
+<code class="docutils literal notranslate"><span class="pre">.xml</span></code> file in <code class="docutils literal notranslate"><span class="pre">workers/</span></code>. Each worker must have a unique
+<code class="docutils literal notranslate"><span class="pre">&lt;ACTinterface&gt;</span></code> PV and a unique <code class="docutils literal notranslate"><span class="pre">&lt;macroed_string&gt;</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;auto_rearm_file&gt;</span></code> value is a basename. If you omit <code class="docutils literal notranslate"><span class="pre">.xml</span></code>, it is
+appended. The file is loaded from <code class="docutils literal notranslate"><span class="pre">resources/autorearm/</span></code>. If it is missing,
+the worker is still created but auto-rearm data is empty and the manager has
+nothing to connect.</p>
+</section>
+<section id="create-two-files-per-machine">
+<h2>Create two files per machine<a class="headerlink" href="#create-two-files-per-machine" title="Link to this heading"></a></h2>
+<p>For a new subsystem (example: High Power Test Bench):</p>
+<ol class="arabic">
+<li><p>Copy a worker template (for example <code class="docutils literal notranslate"><span class="pre">resources/workers/HPTB_worker.xml</span></code>)
+to <code class="docutils literal notranslate"><span class="pre">resources/workers/&lt;your_worker&gt;.xml</span></code>.</p></li>
+<li><p>Copy <code class="docutils literal notranslate"><span class="pre">resources/autorearm/auto-rearm.xml</span></code> to a <strong>dedicated</strong> file, for
+example <code class="docutils literal notranslate"><span class="pre">resources/autorearm/hptb-auto-rearm.xml</span></code>.</p></li>
+<li><p>Point the worker at that file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">auto_rearm_file</span><span class="o">&gt;</span><span class="n">hptb</span><span class="o">-</span><span class="n">auto</span><span class="o">-</span><span class="n">rearm</span><span class="o">&lt;/</span><span class="n">auto_rearm_file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">resources/rules/&lt;your_worker&gt;_rules.xml</span></code> (same stem as the worker
+file).</p></li>
+<li><p>Add or reuse a sequence CSV and set <code class="docutils literal notranslate"><span class="pre">&lt;sequence&gt;</span></code>.</p></li>
+<li><p>Replace every PV name with the names that exist on the <strong>target IOC</strong>.</p></li>
+</ol>
+</section>
+<section id="worker-xml">
+<h2>Worker XML<a class="headerlink" href="#worker-xml" title="Link to this heading"></a></h2>
+<p>Root element is <code class="docutils literal notranslate"><span class="pre">&lt;configuration&gt;</span></code>. Required children:</p>
+<section id="epics-power-and-pulse">
+<h3><code class="docutils literal notranslate"><span class="pre">&lt;epics&gt;</span></code> — power and pulse<a class="headerlink" href="#epics-power-and-pulse" title="Link to this heading"></a></h3>
+<p>These are the worker’s own RF setpoints and readbacks. Auto-rearm writes
+<code class="docutils literal notranslate"><span class="pre">power_set</span></code> and, in some steps, waits on <code class="docutils literal notranslate"><span class="pre">power_get</span></code>.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tag</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">power_set</span></code></p></td>
+<td><p>Cavity voltage / power setpoint (written)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">power_get</span></code></p></td>
+<td><p>Matching analog readback (verified)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pp_set_pv</span></code></p></td>
+<td><p>Pulse period setpoint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pp_get_pv</span></code></p></td>
+<td><p>Pulse period readback</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pw_set_pv</span></code></p></td>
+<td><p>Pulse width setpoint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pw_get_pv</span></code></p></td>
+<td><p>Pulse width readback</p></td>
+</tr>
+</tbody>
+</table>
+<p>Use the <strong>same device prefix and engineering unit</strong> for set and get (for
+example both millivolts on <code class="docutils literal notranslate"><span class="pre">RFQ:HPTB_LLRF:...</span></code>).</p>
+</section>
+<section id="interlocks">
+<h3><code class="docutils literal notranslate"><span class="pre">&lt;interlocks&gt;</span></code><a class="headerlink" href="#interlocks" title="Link to this heading"></a></h3>
+<p>Each child is one monitored interlock PV:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">interlock</span> <span class="n">rearmable</span><span class="o">=</span><span class="s2">&quot;True&quot;</span> <span class="n">codes</span><span class="o">=</span><span class="s2">&quot;1,4,31247&quot;</span><span class="o">&gt;</span><span class="n">SYS</span><span class="p">:</span><span class="n">DEV</span><span class="p">:</span><span class="n">IlkWaterCooling</span><span class="o">&lt;/</span><span class="n">interlock</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rearmable</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code> / <code class="docutils literal notranslate"><span class="pre">true</span></code> allows auto-rearm; <code class="docutils literal notranslate"><span class="pre">false</span></code> never rearms
+that PV (severity still aborts the step).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">codes</span></code>: optional comma-separated integers. If non-empty, the interlock
+<strong>value</strong> must be in this list or rearm is refused. Use <code class="docutils literal notranslate"><span class="pre">codes=&quot;&quot;</span></code> when any
+non-zero / any value is acceptable after the severity check.</p></li>
+</ul>
+<p>Detection uses Channel Access <strong>severity</strong> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>, not the value alone.</p>
+</section>
+<section id="workflow-pvs">
+<h3><code class="docutils literal notranslate"><span class="pre">&lt;workflow_pvs&gt;</span></code><a class="headerlink" href="#workflow-pvs" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tag</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quick_rearm_mode</span></code></p></td>
+<td><p>Enable switch (must be <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">1</span></code> unless
+<code class="docutils literal notranslate"><span class="pre">manual_restart</span></code> is already <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">1</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">frequency_mode_set</span></code></p></td>
+<td><p>Frequency-mode command copied from the get PV.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">frequency_mode_get</span></code></p></td>
+<td><p>Frequency-mode readback.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="observable-pvs">
+<h3><code class="docutils literal notranslate"><span class="pre">&lt;observable_pvs&gt;</span></code><a class="headerlink" href="#observable-pvs" title="Link to this heading"></a></h3>
+<p>List of <code class="docutils literal notranslate"><span class="pre">&lt;pv&gt;</span></code> names (temperatures, vacuum, …) monitored during the
+sequence. They are not part of the auto-rearm PV map.</p>
+</section>
+<section id="conditioning-parameters">
+<h3><code class="docutils literal notranslate"><span class="pre">&lt;conditioning_parameters&gt;</span></code><a class="headerlink" href="#conditioning-parameters" title="Link to this heading"></a></h3>
+<p>Numeric policy plus a few extra PV names.</p>
+<p><strong>Loop and reset names</strong> are built as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">main_prefix</span><span class="p">}{</span><span class="n">chain_prefix</span><span class="p">}{</span><span class="n">N</span><span class="p">}{</span><span class="n">cavity_prefix</span><span class="p">}{</span><span class="n">A</span><span class="o">|</span><span class="n">B</span><span class="o">|...</span><span class="p">}{</span><span class="n">suffix</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Example with <code class="docutils literal notranslate"><span class="pre">main_prefix=RF:</span></code>, <code class="docutils literal notranslate"><span class="pre">chain_prefix=LLRF</span></code>, <code class="docutils literal notranslate"><span class="pre">chains_amount=4</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cavity_prefix=_Cav</span></code>, <code class="docutils literal notranslate"><span class="pre">cavity_amount=2</span></code>,
+<code class="docutils literal notranslate"><span class="pre">loops_PV_suffix=:CtrlFwCavMstLoopEnCmd</span></code> produces
+<code class="docutils literal notranslate"><span class="pre">RF:LLRF1_CavA:CtrlFwCavMstLoopEnCmd</span></code> … <code class="docutils literal notranslate"><span class="pre">RF:LLRF4_CavB:...</span></code>.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">chains_amount</span></code>, <code class="docutils literal notranslate"><span class="pre">cavity_amount</span></code>, and the prefixes so this matches the
+<strong>real</strong> LLRF topology. A bench with one cavity must not keep a four-chain
+RFQ template.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tag</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">loops_PV_suffix</span></code></p></td>
+<td><p>Written to <code class="docutils literal notranslate"><span class="pre">0</span></code> when loops are turned off.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset_PV_suffix</span></code></p></td>
+<td><p>Pulse <code class="docutils literal notranslate"><span class="pre">1</span></code> then <code class="docutils literal notranslate"><span class="pre">0</span></code> when the interlock has
+<code class="docutils literal notranslate"><span class="pre">codes</span></code>; otherwise the interlock PV is put to
+<code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">loop_on_suffix</span></code></p></td>
+<td><p>Written to <code class="docutils literal notranslate"><span class="pre">1</span></code> after forward power is OK.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">loop_rdbk_suffix</span></code></p></td>
+<td><p>Must read back <code class="docutils literal notranslate"><span class="pre">1</span></code> after loops are enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">all_interlocks_suffix</span></code></p></td>
+<td><p>Per-cavity interlock readback during restore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vrestore_multiplier</span></code></p></td>
+<td><p>First restore: <code class="docutils literal notranslate"><span class="pre">power_set</span> <span class="pre">*</span> <span class="pre">this</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">0.5</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">V2restore_multiplier</span></code></p></td>
+<td><p>Intermediate restore in non-pulsed CW (e.g. <code class="docutils literal notranslate"><span class="pre">0.75</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Vwarning_multiplier</span></code></p></td>
+<td><p>Observable warning threshold (sequence, not rearm).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_FW_power</span></code></p></td>
+<td><p>Forward-power gate before loops are enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">readback_tolerance</span></code></p></td>
+<td><p>Rounding for equality checks (e.g. <code class="docutils literal notranslate"><span class="pre">0.001</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">retry_attempts</span></code></p></td>
+<td><p>Max successful rearms of the same interlock.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">arc_limit</span></code></p></td>
+<td><p>Max failed rearm / arc count before giving up.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">manual_restart</span></code></p></td>
+<td><p>PV: if <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">1</span></code>, skip the quick-rearm enable check.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cavity_voltage_ramp_speed</span></code></p></td>
+<td><p>Ramp-rate PV (also used to size the wait).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cavity_phase</span></code></p></td>
+<td><p>Phase PV used with ramp rate to size the wait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">user_defined_ramp_speed</span></code></p></td>
+<td><p>Numeric fallback used elsewhere in the worker.</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">min_stable_time</span></code> in the worker XML is currently unused; wait time is computed
+from voltage step, ramp rate, and cavity phase (minimum about 1 s, or 5 s if
+ramp rate is not positive).</p>
+</section>
+<section id="other-required-worker-tags">
+<h3>Other required worker tags<a class="headerlink" href="#other-required-worker-tags" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tag</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sequence</span></code></p></td>
+<td><p>CSV basename under <code class="docutils literal notranslate"><span class="pre">sequences/</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">auto_rearm_file</span></code></p></td>
+<td><p>Basename under <code class="docutils literal notranslate"><span class="pre">autorearm/</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">macroed_string</span></code></p></td>
+<td><p>Unique HMI macro for this worker.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ACTinterface</span></code></p></td>
+<td><p>Unique enable PV; another worker cannot share it.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">total_steps</span></code></p></td>
+<td><p>Optional HMI step counter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">current_step</span></code></p></td>
+<td><p>Optional HMI step counter.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sequence_combo</span></code></p></td>
+<td><p>Optional HMI sequence selector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sequence_load</span></code></p></td>
+<td><p>Optional HMI sequence selector.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="auto-rearm-xml">
+<h2>Auto-rearm XML<a class="headerlink" href="#auto-rearm-xml" title="Link to this heading"></a></h2>
+<p>Root element is <code class="docutils literal notranslate"><span class="pre">&lt;epics_pvs&gt;</span></code>. Each <strong>child tag name</strong> is the logical key
+used in software. The EPICS record is the <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">reference_cavity_voltage</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RFQ:HPTB_LLRF:VCavRef&quot;</span><span class="o">&gt;</span>
+    <span class="n">Readback</span> <span class="n">used</span> <span class="n">after</span> <span class="n">the</span> <span class="n">first</span> <span class="n">voltage</span> <span class="n">restore</span>
+<span class="o">&lt;/</span><span class="n">reference_cavity_voltage</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Inner text is documentation only.</p>
+<p>At connect time the manager opens <strong>every</strong> child that has a <code class="docutils literal notranslate"><span class="pre">name</span></code>. If any
+PV fails to connect within 1 s, worker connection fails. Delete tags you do
+not need; do not leave template names from another subsystem.</p>
+<section id="tags-the-rearm-procedure-actually-uses">
+<h3>Tags the rearm procedure actually uses<a class="headerlink" href="#tags-the-rearm-procedure-actually-uses" title="Link to this heading"></a></h3>
+<p>These keys must exist and must belong to the <strong>same RF plant</strong> as the worker’s
+<code class="docutils literal notranslate"><span class="pre">&lt;epics&gt;</span></code> block.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tag</p></th>
+<th class="head"><p>Role in the procedure</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reference_cavity_voltage</span></code></p></td>
+<td><p>Wait until this equals the restored
+<code class="docutils literal notranslate"><span class="pre">power_set</span></code> (non-pulsed path).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forward_power_readback</span></code></p></td>
+<td><p>Must reach <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">min_FW_power</span></code> before
+loops are turned on. <strong>Failure here
+aborts the worker.</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_reference_voltage_setpoint</span></code></p></td>
+<td><p>Saved/restored in pulsed-on-CW mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">conditioning_mode_control</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> = CW, <code class="docutils literal notranslate"><span class="pre">1</span></code> = pulsed (also used
+to restore conditioning mode).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">amplitude_phase_control</span></code></p></td>
+<td><p>Forced <code class="docutils literal notranslate"><span class="pre">0</span></code> on first shutdown.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">beam_control_feedforward</span></code></p></td>
+<td><p>Forced <code class="docutils literal notranslate"><span class="pre">0</span></code> on first shutdown.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auto_frequency_control_status</span></code></p></td>
+<td><p>Saved; restored via command PVs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">manual_frequency_control_status</span></code></p></td>
+<td><p>Saved; restored via command PVs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auto_frequency_control_command</span></code></p></td>
+<td><p>Written <code class="docutils literal notranslate"><span class="pre">0</span></code> then optionally <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">manual_frequency_control_command</span></code></p></td>
+<td><p>Written <code class="docutils literal notranslate"><span class="pre">0</span></code> then optionally <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">final_voltage_ramp_speed</span></code></p></td>
+<td><p>Ramp during pulsed restore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">first_stage_voltage_ramp</span></code></p></td>
+<td><p>Ramp for intermediate voltage restore.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">second_stage_voltage_ramp</span></code></p></td>
+<td><p>Ramp for final voltage restore.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Choose <code class="docutils literal notranslate"><span class="pre">reference_cavity_voltage</span></code> so that it <strong>tracks</strong> <code class="docutils literal notranslate"><span class="pre">power_set</span></code> in the
+same units (or a calibrated equivalent the equality check can pass). Choose
+<code class="docutils literal notranslate"><span class="pre">forward_power_readback</span></code> so that it rises when that cavity is powered, with
+units consistent with <code class="docutils literal notranslate"><span class="pre">min_FW_power</span></code> (kW if the threshold is <code class="docutils literal notranslate"><span class="pre">0.01</span></code> kW).</p>
+</section>
+</section>
+<section id="when-auto-rearm-runs">
+<h2>When auto-rearm runs<a class="headerlink" href="#when-auto-rearm-runs" title="Link to this heading"></a></h2>
+<p>On an active interlock (severity <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>):</p>
+<ol class="arabic simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">manual_restart</span> <span class="pre">&gt;=</span> <span class="pre">1</span></code>, rearm is allowed immediately.</p></li>
+<li><p>Else <code class="docutils literal notranslate"><span class="pre">quick_rearm_mode</span></code> must be <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">1</span></code>.</p></li>
+<li><p>The interlock must be <code class="docutils literal notranslate"><span class="pre">rearmable</span></code> and, if <code class="docutils literal notranslate"><span class="pre">codes</span></code> is set, the value
+must be listed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retry_attempts</span></code> and <code class="docutils literal notranslate"><span class="pre">arc_limit</span></code> must not be exceeded.</p></li>
+</ol>
+<p>Then the procedure: drop power → disable frequency loops → reset interlock →
+align conditioning mode → restore a fraction of voltage → wait for forward
+power → enable loops → restore frequency mode → ramp voltage back.</p>
+<p>A timed-out <strong>reference voltage</strong> check is logged but the procedure continues.
+A timed-out <strong>forward power</strong> check returns failure and the worker aborts.</p>
+</section>
+<section id="commissioning-checklist-real-plant">
+<h2>Commissioning checklist (real plant)<a class="headerlink" href="#commissioning-checklist-real-plant" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Confirm every PV in the worker and auto-rearm files <code class="docutils literal notranslate"><span class="pre">caget</span></code>-s from the
+RMS host (same EPICS network / <code class="docutils literal notranslate"><span class="pre">EPICS_CA_ADDR_LIST</span></code>).</p></li>
+<li><p>Put a test value on <code class="docutils literal notranslate"><span class="pre">power_set</span></code> and confirm <code class="docutils literal notranslate"><span class="pre">power_get</span></code> and
+<code class="docutils literal notranslate"><span class="pre">reference_cavity_voltage</span></code> move to the expected numbers within a few
+seconds at the configured ramp.</p></li>
+<li><p>Confirm <code class="docutils literal notranslate"><span class="pre">forward_power_readback</span></code> exceeds <code class="docutils literal notranslate"><span class="pre">min_FW_power</span></code> whenever RF
+is on at the restore level.</p></li>
+<li><p>Walk the generated loop/reset names (prefix × chains × cavities) and
+confirm those records exist.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">quick_rearm_mode</span></code> (or <code class="docutils literal notranslate"><span class="pre">manual_restart</span></code>) from HMI before relying
+on automatic recovery.</p></li>
+<li><p>Trigger a <strong>rearmable</strong> interlock on a safe, low-power state and watch the
+log: successful path ends with cavity voltage restored, not
+<code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">rearm</span> <span class="pre">interlock</span></code>.</p></li>
+<li><p>Keep one auto-rearm file per worker (or per identical IOC family). Sharing
+<code class="docutils literal notranslate"><span class="pre">auto-rearm.xml</span></code> across HPTB and RFQ LLRF1 is what makes millivolt
+setpoints wait on another cavity’s milliamp/kW records.</p></li>
+</ol>
+</section>
+<section id="validation-rules-file">
+<h2>Validation rules file<a class="headerlink" href="#validation-rules-file" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">resources/rules/&lt;worker_stem&gt;_rules.xml</span></code> must exist or worker creation
+fails. Parameters listed under <code class="docutils literal notranslate"><span class="pre">&lt;parameters&gt;</span></code> are checked when they also
+appear in <code class="docutils literal notranslate"><span class="pre">&lt;conditioning_parameters&gt;</span></code>. Interlock entries must include both
+<code class="docutils literal notranslate"><span class="pre">rearmable</span></code> and <code class="docutils literal notranslate"><span class="pre">codes</span></code> attributes.</p>
+</section>
+<section id="related-source">
+<h2>Related source<a class="headerlink" href="#related-source" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="workers.factories.factory_interface.html#module-workers.factories.factory_interface" title="workers.factories.factory_interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workers.factories.factory_interface</span></code></a> — loads worker + auto-rearm XML.</p></li>
+<li><p><a class="reference internal" href="workers.auto_rearm_manager.html#module-workers.auto_rearm_manager" title="workers.auto_rearm_manager"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workers.auto_rearm_manager</span></code></a> — connect, gate, and execute rearm.</p></li>
+<li><p><a class="reference internal" href="workflows.workers_manager.html#module-workflows.workers_manager" title="workflows.workers_manager"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflows.workers_manager</span></code></a> — discovers all worker XML files.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GUI.gui_main.html" class="btn btn-neutral float-left" title="GUI.gui_main module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workflows.html" class="btn btn-neutral float-right" title="workflows package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

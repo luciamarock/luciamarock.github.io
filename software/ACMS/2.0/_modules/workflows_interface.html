@@ -57,6 +57,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../GUI.html">GUI package</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_manual_worker_autorearm.html">Worker and auto-rearm configuration (operations)</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.html">workflows package</a></li>
@@ -231,10 +235,16 @@
         <span class="n">start_api_server</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
         <span class="c1">#TODO Operate the workflows</span>
         <span class="c1"># Keep main thread alive if running strictly in API mode</span>
+        <span class="kn">from</span> <span class="nn">API.lcm_executor</span> <span class="kn">import</span> <span class="n">Handler</span><span class="p">,</span> <span class="n">LCM</span>
+        <span class="kn">from</span> <span class="nn">http.server</span> <span class="kn">import</span> <span class="n">ThreadingHTTPServer</span>
+        <span class="n">executor_host</span> <span class="o">=</span> <span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executor_host&quot;</span><span class="p">,</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">)</span>
+        <span class="n">executor_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">UF</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executor_port&quot;</span><span class="p">,</span> <span class="mi">9100</span><span class="p">))</span>
+        <span class="n">srv</span> <span class="o">=</span> <span class="n">ThreadingHTTPServer</span><span class="p">((</span><span class="n">executor_host</span><span class="p">,</span> <span class="n">executor_port</span><span class="p">),</span> <span class="n">Handler</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;LCM Executor listening on http://</span><span class="si">{</span><span class="n">executor_host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">executor_port</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">time</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">srv</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stopping ACMS API service...&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">registered_workflows</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>

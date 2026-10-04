@@ -1,0 +1,526 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API.lcm_executor &mdash; Automated Control and Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automated Control and Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">System &amp; Interfaces</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_program.html">main_program module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows_interface.html">workflows_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../controllersInterface.html">controllersInterface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../editor_interface.html">editor_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_launcher.html">gui_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui_process_launcher.html">gui_process_launcher module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notify.html">notify module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web API &amp; Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">API package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Automated Control &amp; Management System's GUI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI.html">GUI package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_manual_worker_autorearm.html">Worker and auto-rearm configuration (operations)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Workflows &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows.html">workflows package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workers.html">workers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SmartControllers.html">SmartControllers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../validation.html">validation package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Models &amp; Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../projectmodel.html">projectmodel package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automated Control and Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">API.lcm_executor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for API.lcm_executor</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">External executor for the LCM automation loop (v0.5.2) — PUSH model, statement DSL.</span>
+
+<span class="sd">LCM pushes jobs to the executor; the executor pushes results back to LCM. This executor</span>
+<span class="sd">connects to real EPICS Process Variables (PVs) using pyepics.</span>
+
+<span class="sd">- LISTENS for:</span>
+<span class="sd">    - POST {this}/run {job_id, sequence, inputs, ...} -&gt; runs the job</span>
+<span class="sd">    - POST {this}/abort {job_id} -&gt; cancels a job</span>
+<span class="sd">- PUSHES to LCM:</span>
+<span class="sd">    - POST {lcm}/api/automation/jobs/{id}/events -&gt; set_field / push_timestep / log / progress / done</span>
+
+<span class="sd">Standard-library + pyepics — runs with python3.</span>
+
+<span class="sd">Start it and point LCM at it:</span>
+<span class="sd">    python3 tools/lcm_executor.py --port 9100 --lcm http://localhost:8000</span>
+<span class="sd">    LIPAC_EXECUTOR_URL=http://localhost:9100 uvicorn backend.main:app --port 8000</span>
+
+<span class="sd">The job&#39;s ``sequence`` is the statement DSL (SPEC §4), e.g.:</span>
+
+<span class="sd">    { &quot;steps&quot;: [</span>
+<span class="sd">        { &quot;caput&quot;: { &quot;pv&quot;: &quot;LIPAC:PUMP:A:CMD&quot;, &quot;value&quot;: 1 } },</span>
+<span class="sd">        { &quot;wait&quot;: { &quot;seconds&quot;: 30 } },</span>
+<span class="sd">        { &quot;caget&quot;: { &quot;pv&quot;: &quot;LIPAC:GAUGE:A&quot;, &quot;into&quot;: &quot;gauge_a&quot; } },</span>
+<span class="sd">        { &quot;push_field&quot;: { &quot;code&quot;: &quot;PRES_ACTUAL&quot;, &quot;value&quot;: &quot;${gauge_a}&quot; } },</span>
+<span class="sd">        { &quot;push_timestep&quot;: { &quot;comment&quot;: &quot;after settle&quot; } },</span>
+<span class="sd">        { &quot;done&quot;: { &quot;ok&quot;: true } }</span>
+<span class="sd">    ] }</span>
+
+<span class="sd">DSL statements mapped to executor → LCM events:</span>
+
+<span class="sd">    * ``caput`` → log / EPICS write (cached PV connection with timeout)</span>
+<span class="sd">    * ``caget`` → log / EPICS read into a DSL variable</span>
+<span class="sd">    * ``wait`` / ``wait_until`` → progress (abort-aware)</span>
+<span class="sd">    * ``if`` / ``for_each`` / ``while`` → control flow (executor-internal)</span>
+<span class="sd">    * ``push_field`` → set_field (LCM stores it in the job working state)</span>
+<span class="sd">    * ``push_timestep`` → push_timestep (LCM commits a TIME-STEP)</span>
+<span class="sd">    * ``log`` → log</span>
+<span class="sd">    * ``done`` → done (terminal)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">urllib.error</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">http.server</span> <span class="kn">import</span> <span class="n">BaseHTTPRequestHandler</span><span class="p">,</span> <span class="n">ThreadingHTTPServer</span>
+<span class="kn">import</span> <span class="nn">epics</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">LCM</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8000&quot;</span>
+<span class="n">_ABORTED</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">_LOCK</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+<span class="n">_CAGET_N</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>      <span class="c1"># (job_id, pv) → read count, for a converging simulation</span>
+
+<span class="n">connected_pvs</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># ── HTTP push to LCM ────────────────────────────────────────────────────────</span>
+<div class="viewcode-block" id="_lcm_post">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._lcm_post">[docs]</a>
+<span class="k">def</span> <span class="nf">_lcm_post</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">LCM</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/api&quot;</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+    <span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="k">if</span> <span class="n">raw</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_http_error&quot;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="s2">&quot;_body&quot;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)}</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="_event">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._event">[docs]</a>
+<span class="k">def</span> <span class="nf">_event</span><span class="p">(</span><span class="n">job_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ev</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">_lcm_post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/automation/jobs/</span><span class="si">{</span><span class="n">job_id</span><span class="si">}</span><span class="s2">/events&quot;</span><span class="p">,</span> <span class="n">ev</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ── Expression evaluation (closed grammar, SPEC §4.3) ─────────────────────────</span>
+<div class="viewcode-block" id="_Halt">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._Halt">[docs]</a>
+<span class="k">class</span> <span class="nc">_Halt</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unwinds the interpreter when the job is done or aborted.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="n">_ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Expression</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">BoolOp</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">And</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Or</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">UnaryOp</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Not</span><span class="p">,</span>
+            <span class="n">ast</span><span class="o">.</span><span class="n">USub</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">UAdd</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">BinOp</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Add</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Sub</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Mult</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Div</span><span class="p">,</span>
+            <span class="n">ast</span><span class="o">.</span><span class="n">Compare</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Eq</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">NotEq</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Lt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">LtE</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Gt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">GtE</span><span class="p">,</span>
+            <span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="_ev">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._ev">[docs]</a>
+<span class="k">def</span> <span class="nf">_ev</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Expression</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_ev</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">names</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unresolved variable &#39;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_ev</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">elts</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">BoolOp</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">_ev</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">And</span><span class="p">)</span> <span class="k">else</span> <span class="nb">any</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">UnaryOp</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">_ev</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">operand</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Not</span><span class="p">):</span> <span class="k">return</span> <span class="ow">not</span> <span class="n">v</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">USub</span><span class="p">):</span> <span class="k">return</span> <span class="o">-</span><span class="n">v</span>
+        <span class="k">return</span> <span class="o">+</span><span class="n">v</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">BinOp</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">_ev</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">names</span><span class="p">),</span> <span class="n">_ev</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Add</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Sub</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Mult</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Div</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Compare</span><span class="p">):</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">_ev</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">op</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ops</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">comparators</span><span class="p">):</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">_ev</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="p">({</span><span class="n">ast</span><span class="o">.</span><span class="n">Eq</span><span class="p">:</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">NotEq</span><span class="p">:</span> <span class="n">left</span> <span class="o">!=</span> <span class="n">right</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Lt</span><span class="p">:</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">,</span>
+                   <span class="n">ast</span><span class="o">.</span><span class="n">LtE</span><span class="p">:</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Gt</span><span class="p">:</span> <span class="n">left</span> <span class="o">&gt;</span> <span class="n">right</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">GtE</span><span class="p">:</span> <span class="n">left</span> <span class="o">&gt;=</span> <span class="n">right</span><span class="p">}</span>
+                  <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">op</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">right</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unsupported expression node </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_eval">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._eval">[docs]</a>
+<span class="k">def</span> <span class="nf">_eval</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">vars</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">py</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\$\{(\w+)\}&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\1&quot;</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>          <span class="c1"># ${x} → x</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">py</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_ALLOWED</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;illegal expression element </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">vars</span><span class="p">);</span> <span class="n">names</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">;</span> <span class="n">names</span><span class="p">[</span><span class="s2">&quot;false&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">_ev</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_resolve">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._resolve">[docs]</a>
+<span class="k">def</span> <span class="nf">_resolve</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">vars</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A value may be a literal or a &#39;${…}&#39; expression string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;${&quot;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_eval</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">vars</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+
+<div class="viewcode-block" id="_aborted">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._aborted">[docs]</a>
+<span class="k">def</span> <span class="nf">_aborted</span><span class="p">(</span><span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">_LOCK</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jid</span> <span class="ow">in</span> <span class="n">_ABORTED</span></div>
+
+
+
+<div class="viewcode-block" id="_wait">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor._wait">[docs]</a>
+<span class="k">def</span> <span class="nf">_wait</span><span class="p">(</span><span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">waited</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">while</span> <span class="n">waited</span> <span class="o">&lt;</span> <span class="n">seconds</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_aborted</span><span class="p">(</span><span class="n">jid</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">-</span> <span class="n">waited</span><span class="p">));</span> <span class="n">waited</span> <span class="o">+=</span> <span class="mf">0.25</span></div>
+
+
+
+<div class="viewcode-block" id="get_or_create_pv">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.get_or_create_pv">[docs]</a>
+<span class="k">def</span> <span class="nf">get_or_create_pv</span><span class="p">(</span><span class="n">pv_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a PV instance is already cached. </span>
+<span class="sd">    If not, creates it, waits for connection, and caches it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">connected_pvs</span>
+    <span class="k">if</span> <span class="n">pv_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">connected_pvs</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connecting to EPICS PV: </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Create the PV instance (auto_monitor=True is helpful for reads, but default works fine)</span>
+        <span class="n">pv_inst</span> <span class="o">=</span> <span class="n">epics</span><span class="o">.</span><span class="n">PV</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+        
+        <span class="c1"># Wait for connection to ensure the IOC is reachable</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pv_inst</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connection timeout or PV not found: </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="n">connected_pvs</span><span class="p">[</span><span class="n">pv_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_inst</span>
+        
+    <span class="k">return</span> <span class="n">connected_pvs</span><span class="p">[</span><span class="n">pv_name</span><span class="p">]</span></div>
+
+
+<span class="c1"># ── DSL interpreter ───────────────────────────────────────────────────────────</span>
+<div class="viewcode-block" id="run_steps">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.run_steps">[docs]</a>
+<span class="k">def</span> <span class="nf">run_steps</span><span class="p">(</span><span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">vars</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="c1"># Send Heartbeat to LCM and check for abort requests</span>
+        <span class="n">hb_res</span> <span class="o">=</span> <span class="n">_lcm_post</span><span class="p">(</span><span class="s2">&quot;/automation/heartbeat&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="n">jid</span><span class="p">})</span>
+        <span class="n">abort_ids</span> <span class="o">=</span> <span class="n">hb_res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;abort_job_ids&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">in</span> <span class="n">abort_ids</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">_LOCK</span><span class="p">:</span>
+                <span class="n">_ABORTED</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_aborted</span><span class="p">(</span><span class="n">jid</span><span class="p">):</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;aborted&quot;</span><span class="p">})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   job </span><span class="si">{</span><span class="n">jid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2"> ABORTED&quot;</span><span class="p">);</span> <span class="k">raise</span> <span class="n">_Halt</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">st</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;if&quot;</span> <span class="k">if</span> <span class="s2">&quot;if&quot;</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">else</span> <span class="nb">next</span><span class="p">((</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_KINDS</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;unknown statement: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">st</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">});</span> <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;caput&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;caput&quot;</span><span class="p">];</span> <span class="n">val</span> <span class="o">=</span> <span class="n">_resolve</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="nb">vars</span><span class="p">)</span>
+            <span class="n">pv_name</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pv&quot;</span><span class="p">)</span>
+            <span class="n">pv_inst</span> <span class="o">=</span> <span class="n">get_or_create_pv</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+            <span class="n">pv_inst</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;caput </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   caput </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;caget&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;caget&quot;</span><span class="p">];</span> <span class="n">pv_name</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pv&quot;</span><span class="p">);</span> <span class="n">into</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;into&quot;</span><span class="p">)</span>
+            <span class="n">pv_inst</span> <span class="o">=</span> <span class="n">get_or_create_pv</span><span class="p">(</span><span class="n">pv_name</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">pv_inst</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="nb">vars</span><span class="p">[</span><span class="n">into</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;caget </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">into</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   caget </span><span class="si">{</span><span class="n">pv_name</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">into</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;wait&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seconds&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;progress&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;waiting </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">});</span> <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   wait </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">);</span> <span class="n">_wait</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;wait_until&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;wait_until&quot;</span><span class="p">];</span> <span class="n">cond</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;condition&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">);</span> <span class="n">to</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeout_s&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;progress&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;wait_until </span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2"> (≤</span><span class="si">{</span><span class="n">to</span><span class="si">}</span><span class="s2">s)&quot;</span><span class="p">})</span>
+            <span class="n">waited</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">while</span> <span class="n">waited</span> <span class="o">&lt;</span> <span class="n">to</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_aborted</span><span class="p">(</span><span class="n">jid</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">_eval</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="nb">vars</span><span class="p">):</span> <span class="k">break</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span> <span class="k">break</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span> <span class="n">waited</span> <span class="o">+=</span> <span class="mf">0.5</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;if&quot;</span><span class="p">:</span>
+            <span class="n">cond</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;if&quot;</span><span class="p">);</span> <span class="n">branch</span> <span class="o">=</span> <span class="s2">&quot;then&quot;</span> <span class="k">if</span> <span class="n">_eval</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="nb">vars</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;else&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   if </span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">run_steps</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[],</span> <span class="nb">vars</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;for_each&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;for_each&quot;</span><span class="p">];</span> <span class="n">var</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">)</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="n">_resolve</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">),</span> <span class="nb">vars</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span> <span class="ow">or</span> <span class="p">[]:</span>
+                <span class="nb">vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="n">run_steps</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;do&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[],</span> <span class="nb">vars</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;while&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;while&quot;</span><span class="p">];</span> <span class="n">cond</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;condition&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">);</span> <span class="n">mx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_iterations&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">it</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">it</span> <span class="o">&lt;</span> <span class="n">mx</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_aborted</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_eval</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="nb">vars</span><span class="p">):</span>
+                <span class="n">run_steps</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;do&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[],</span> <span class="nb">vars</span><span class="p">);</span> <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   while </span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2"> ran </span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">mx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;push_field&quot;</span><span class="p">,</span> <span class="s2">&quot;set_field&quot;</span><span class="p">):</span>        <span class="c1"># set_field = accepted alias</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;push_field&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">st</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;set_field&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">);</span> <span class="n">val</span> <span class="o">=</span> <span class="n">_resolve</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="nb">vars</span><span class="p">)</span>
+            <span class="nb">vars</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>                              <span class="c1"># track locally so ${code} sees it later</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;set_field&quot;</span><span class="p">,</span> <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">val</span><span class="p">})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;push_timestep&quot;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;push_timestep&quot;</span><span class="p">,</span> <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;push_timestep&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   push_timestep &#39;</span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">&#39;push_timestep&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;comment&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; → </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;msg&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)})</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="s2">&quot;done&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   job </span><span class="si">{</span><span class="n">jid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2"> done&quot;</span><span class="p">);</span> <span class="k">raise</span> <span class="n">_Halt</span><span class="p">()</span></div>
+
+
+
+<span class="n">_KINDS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;caput&quot;</span><span class="p">,</span> <span class="s2">&quot;caget&quot;</span><span class="p">,</span> <span class="s2">&quot;wait&quot;</span><span class="p">,</span> <span class="s2">&quot;wait_until&quot;</span><span class="p">,</span> <span class="s2">&quot;if&quot;</span><span class="p">,</span> <span class="s2">&quot;for_each&quot;</span><span class="p">,</span> <span class="s2">&quot;while&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;push_field&quot;</span><span class="p">,</span> <span class="s2">&quot;set_field&quot;</span><span class="p">,</span> <span class="s2">&quot;push_timestep&quot;</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="run_job">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.run_job">[docs]</a>
+<span class="k">def</span> <span class="nf">run_job</span><span class="p">(</span><span class="n">job</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">jid</span> <span class="o">=</span> <span class="n">job</span><span class="p">[</span><span class="s2">&quot;job_id&quot;</span><span class="p">]</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sequence&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;steps&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;→ RUN job </span><span class="si">{</span><span class="n">jid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span><span class="si">}</span><span class="s2"> steps, inputs=</span><span class="si">{</span><span class="n">job</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputs&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="nb">vars</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inputs&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">run_steps</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="nb">vars</span><span class="p">)</span>
+        <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>          <span class="c1"># auto-done if the sequence didn&#39;t</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   job </span><span class="si">{</span><span class="n">jid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2"> done (auto)&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">_Halt</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 — report DSL/runtime errors as a failed job</span>
+        <span class="n">_event</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;executor error: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   job </span><span class="si">{</span><span class="n">jid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2"> FAILED: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">_LOCK</span><span class="p">:</span>
+            <span class="n">_ABORTED</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_CAGET_N</span> <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">jid</span><span class="p">]:</span>
+            <span class="n">_CAGET_N</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ── HTTP server ───────────────────────────────────────────────────────────────</span>
+<div class="viewcode-block" id="Handler">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.Handler">[docs]</a>
+<span class="k">class</span> <span class="nc">Handler</span><span class="p">(</span><span class="n">BaseHTTPRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler.log_message">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.Handler.log_message">[docs]</a>
+    <span class="k">def</span> <span class="nf">log_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">):</span>  <span class="c1"># quieter</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Handler._read">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.Handler._read">[docs]</a>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="k">else</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="k">if</span> <span class="n">raw</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
+            <span class="k">return</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="Handler._reply">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.Handler._reply">[docs]</a>
+    <span class="k">def</span> <span class="nf">_reply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Handler.do_POST">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.Handler.do_POST">[docs]</a>
+    <span class="k">def</span> <span class="nf">do_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;/run&quot;</span><span class="p">:</span>
+            <span class="n">jid</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job_id&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">jid</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reply</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;missing job_id&quot;</span><span class="p">})</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;← POST /run  job </span><span class="si">{</span><span class="n">jid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">run_job</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">body</span><span class="p">,),</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reply</span><span class="p">(</span><span class="mi">202</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;accepted&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="n">jid</span><span class="p">})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;/abort&quot;</span><span class="p">:</span>
+            <span class="n">jid</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job_id&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">_LOCK</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">jid</span><span class="p">:</span>
+                    <span class="n">_ABORTED</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;← POST /abort  job </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">jid</span><span class="p">)[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reply</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;aborting&quot;</span><span class="p">:</span> <span class="n">jid</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reply</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;not found&quot;</span><span class="p">})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../API.lcm_executor.html#API.lcm_executor.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">LCM</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">9100</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;port this mock executor listens on&quot;</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--lcm&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;LCM base URL to push results to&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">ap</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">LCM</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">lcm</span>
+    <span class="n">srv</span> <span class="o">=</span> <span class="n">ThreadingHTTPServer</span><span class="p">((</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">),</span> <span class="n">Handler</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mock executor listening on http://localhost:</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">  (pushes results to </span><span class="si">{</span><span class="n">LCM</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;→ set LCM to reach it:  LIPAC_EXECUTOR_URL=http://localhost:</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">srv</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">stopped.&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LIPAc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
