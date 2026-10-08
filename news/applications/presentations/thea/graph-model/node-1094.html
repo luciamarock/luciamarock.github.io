@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Node #1094 | PPS Permission to SSPA</title>
+    <style>
+        body { background-color: #121212; color: #cfd8dc; font-family: sans-serif; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        .box { max-width: 700px; width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 30px; border-radius: 8px; }
+        h2 { color: #00d2ff; }
+        .edge-info { background: rgba(255, 100, 100, 0.05); border-left: 3px solid #ff6464; padding: 15px; margin: 20px 0; }
+        a.back { color: #64ffda; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <a href="index.html" class="back">&larr; Back to Graph Map</a>
+        <h2>Node #1094: PPS permission to the SSPA during the vault closed</h2>
+        <p><strong>Assignee:</strong> Unassigned</p>
+        <p><strong>Status:</strong> Request</p>
+        
+        <div class="edge-info">
+            <h4>Safety Dependency Layer</h4>
+            <p><strong>Incoming Edges:</strong> Vault safety hardware status, access control interlocks.</p>
+            <p><strong>Outgoing Edges:</strong> Feeds critical interlock permission tokens directly into the final **Node #1096 (Buncher RF Permission)** milestone.</p>
+        </div>
+        <p><em>Definition:</em> A hard safety gating node. High-power RF amplification cannot energize unless this safety workflow validates that the vault enclosure is physically secure.</p>
+    </div>
+</body>
+</html>

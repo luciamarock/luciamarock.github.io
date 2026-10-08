@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Questions & Discussion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background-color: #121212; color: #cfd8dc; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .slide-container { text-align: center; max-width: 900px; padding: 40px; }
+        h2 { color: #00d2ff; font-size: 2.5em; }
+        .nav-buttons { position: fixed; bottom: 30px; display: flex; gap: 20px; }
+        a.btn { background: rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.2); }
+        a.btn:hover { background: #00d2ff; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <h2>Questions & Discussion</h2>
+        <p style="font-size: 1.2em; margin-top: 20px;">Translating industrial automation rigor to next-generation stellarator architectures.</p>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="slide-9.html" class="btn">&larr; Prev</a>
+    </div>
+
+    <script>
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') window.location.href = 'slide-9.html';
+        });
+    </script>
+</body>
+</html>

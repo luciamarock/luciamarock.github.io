@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Project Management Directed Graph | LIPAc Flow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background-color: #121212; color: #cfd8dc; font-family: sans-serif; margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 1300px; width: 100%; }
+        h1 { color: #00d2ff; text-align: center; }
+        p.subtitle { text-align: center; color: #888; margin-bottom: 40px; }
+
+        /* Graph Flow Layout */
+        .graph-flow { display: flex; align-items: flex-start; justify-content: space-between; position: relative; gap: 20px; }
+        
+        .column { display: flex; flex-direction: column; gap: 20px; flex: 1; }
+        .column-header { font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; color: #64ffda; text-align: center; margin-bottom: 5px; font-weight: bold; }
+
+        .node-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 8px; text-decoration: none; color: inherit; transition: 0.2s; display: block; position: relative; }
+        .node-card:hover { border-color: #00d2ff; background: rgba(0, 210, 255, 0.05); transform: translateY(-2px); }
+        
+        .node-id { color: #64ffda; font-weight: bold; font-size: 0.8em; }
+        h3 { color: #fff; margin: 8px 0; font-size: 0.9em; line-height: 1.3; }
+        .meta { font-size: 0.7em; color: #aaa; }
+        
+        /* Edge Flow Indicators */
+        .edge-badge { display: inline-block; background: rgba(100, 255, 218, 0.1); color: #64ffda; font-size: 0.65em; padding: 2px 6px; border-radius: 4px; margin-top: 8px; border: 1px solid rgba(100, 255, 218, 0.2); }
+        .branch-badge { background: rgba(255, 100, 100, 0.1); color: #ff6464; border-color: rgba(255, 100, 100, 0.2); }
+
+        /* Milestone Column */
+        .milestone-card { border-color: #00d2ff; background: rgba(0, 210, 255, 0.08); text-align: center; padding: 25px; }
+        .milestone-card h3 { color: #00d2ff; font-size: 1.05em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Project Management Graph Topology</h1>
+        <p class="subtitle">Directed Acyclic Graph: Main Path (1091 &rarr; 1077 &rarr; 1087 &rarr; 1096) with Safety and HMI Ramifications</p>
+
+        <div class="graph-flow">
+            
+            <!-- Column 1: Root Inputs -->
+            <div class="column">
+                <div class="column-header">Root Inputs</div>
+                <a href="node-1091.html" class="node-card">
+                    <span class="node-id">Node #1091[cite: 1]</span>
+                    <h3>Timing Request: HW Coaxial Cable[cite: 1]</h3>
+                    <p class="meta">Assignee: T. Nakayama[cite: 1]</p>
+                    <span class="edge-badge">&rarr; Feeds Path (1077)</span>
+                </a>
+                <a href="node-1094.html" class="node-card" style="border-color: rgba(255, 100, 100, 0.3);">
+                    <span class="node-id">Node #1094[cite: 1]</span>
+                    <h3>PPS Permission to SSPA (Vault Closed)[cite: 1]</h3>
+                    <p class="meta">Status: Request[cite: 1]</p>
+                    <span class="edge-badge branch-badge">&rarr; Enables 1077 & 1066</span>
+                </a>
+            </div>
+
+            <!-- Column 2: Core Path Step 1 & Divergent Branch -->
+            <div class="column">
+                <div class="column-header">Primary Step / Branch</div>
+                <a href="node-1077.html" class="node-card">
+                    <span class="node-id">Node #1077[cite: 1]</span>
+                    <h3>SRF Timing Config (SW)[cite: 1]</h3>
+                    <p class="meta">Status: In Progress[cite: 1]</p>
+                    <span class="edge-badge">&larr; Inputs: 1091 & 1094<br>&rarr; Feeds Path (1087)</span>
+                </a>
+                <a href="node-1066.html" class="node-card">
+                    <span class="node-id">Node #1066[cite: 1]</span>
+                    <h3>Injector HMI Tool Visualization[cite: 1]</h3>
+                    <p class="meta">Assignee: J. C. Morales[cite: 1]</p>
+                    <span class="edge-badge branch-badge">&larr; Enabled by 1094<br>&rarr; Enables 1096</span>
+                </a>
+            </div>
+
+            <!-- Column 3: Core Path Step 2 -->
+            <div class="column">
+                <div class="column-header">Primary Progression</div>
+                <a href="node-1087.html" class="node-card">
+                    <span class="node-id">Node #1087[cite: 1]</span>
+                    <h3>Diagnostics Script Manual[cite: 1]</h3>
+                    <p class="meta">Assignee: J. C. Morales[cite: 1]</p>
+                    <span class="edge-badge">&larr; Inputs: 1077<br>&rarr; Feeds Milestone (1096)</span>
+                </a>
+            </div>
+
+            <!-- Column 4: Final Confluence Milestone -->
+            <div class="column">
+                <div class="column-header">Confluence (Point D)</div>
+                <a href="node-1096.html" class="node-card milestone-card">
+                    <span class="node-id">Node #1096[cite: 1]</span>
+                    <h3>Buncher RF Permission</h3>
+                    <p class="meta" style="margin-top: 8px;">AND-Join Confluence:[cite: 1] Receives incoming edges from Main Path (1087) and Supervisory Branch (1066).</p>
+                    <span class="edge-badge" style="background: rgba(0, 210, 255, 0.2); color: #00d2ff; border-color: #00d2ff;">Target Milestone</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Visual Graph Image Banner -->
+        <div class="graph-image-container">
+            <img src="graph_view.png" alt="LIPAc Task Dependency Graph Model">
+        </div>
+
+        <div class="graph-flow">
+            <!-- Columns remain unchanged -->
+            <!-- ... -->
+        </div>
+    </div>
+</body>
+</html>

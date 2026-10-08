@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Engineering Projects & Technical Consulting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background-color: #121212; color: #cfd8dc; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; margin: 0; padding: 30px 20px; box-sizing: border-box; overflow-y: auto; }
+        .slide-container { text-align: left; max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 18px; align-items: center; }
+        h2 { color: #00d2ff; font-size: 2.1em; text-align: center; margin: 0 0 10px 0; }
+        
+        .content-column { display: flex; flex-direction: column; gap: 16px; width: 100%; align-items: center; }
+
+        /* Experience Card */
+        .exp-card { width: 100%; max-width: 840px; background: rgba(255, 255, 255, 0.02); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 18px 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; }
+        
+        .exp-header { display: flex; align-items: center; gap: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; }
+        .exp-logo { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; background: #1e1e1e; border: 1px solid rgba(255, 255, 255, 0.15); flex-shrink: 0; }
+        .exp-titles { display: flex; flex-direction: column; gap: 2px; }
+        .exp-titles h3 { color: #00d2ff; font-size: 1.25em; margin: 0; }
+        .exp-titles .role-sub { font-size: 0.95em; color: #90a4ae; font-weight: bold; }
+        .exp-titles .exp-date { font-size: 0.85em; color: #78909c; }
+
+        .exp-body { font-size: 0.98em; line-height: 1.5; display: flex; flex-direction: column; gap: 8px; }
+        .exp-body p { margin: 0; }
+
+        /* Scrolling Navigation Buttons */
+        .nav-buttons { display: flex; gap: 20px; margin: 10px 0 30px 0; }
+        a.btn { background: rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 22px; border-radius: 6px; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.2); font-size: 1em; }
+        a.btn:hover { background: #00d2ff; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <h2>Engineering Projects & Technical Consulting</h2>
+        
+        <div class="content-column">
+            
+            <!-- University Pompeu Fabra (2019) -->
+            <div class="exp-card">
+                <div class="exp-header">
+                    <img src="images/logos/MTG-group-upf.jpeg" alt="MTG Group UPF Logo" class="exp-logo">
+                    <div class="exp-titles">
+                        <h3>University Pompeu Fabra <span style="font-weight: normal; font-size: 0.85em; color: #b0bec5;">- Barcelona, Spain</span></h3>
+                        <div class="role-sub">Freelance Machine Learning Researcher</div>
+                        <div class="exp-date">January 2019 - September 2019</div>
+                    </div>
+                </div>
+                <div class="exp-body">
+                    <p><strong>Algorithmic Scale Classification:</strong> Developed a machine learning algorithm in Python/C++ using Higher-Order Markov Models to classify traditional Persian music scales (Dastgahs) with 91% accuracy. Boosted performance to 97% precision using dataset augmentation and GridSearchCV.</p>
+                </div>
+            </div>
+
+            <!-- OnlinePianist (2022-2023) -->
+            <div class="exp-card">
+                <div class="exp-header">
+                    <img src="images/logos/on-line-pianist.jpg" alt="OnlinePianist Logo" class="exp-logo">
+                    <div class="exp-titles">
+                        <h3>OnlinePianist <span style="font-weight: normal; font-size: 0.85em; color: #b0bec5;">- Tel Aviv, Israel (Remote)</span></h3>
+                        <div class="role-sub">Freelance Developer & Project Support</div>
+                        <div class="exp-date">July 2022 - December 2023</div>
+                    </div>
+                </div>
+                <div class="exp-body">
+                    <p><strong>Polyphonic Pitch Detection & ML Optimization:</strong> Engineered a high-accuracy real-time polyphonic pitch detection engine in C++ for piano. Fine-tuned parameters using neural networks (PyTorch/TensorFlow) and statistical models (NumPy/Scikit-Learn), improving note recognition precision from 75% to 86%. Integrated the optimized audio processing engine into the client's iOS app.</p>
+                </div>
+            </div>
+
+            <!-- Perceptrum (2024-Present) -->
+            <div class="exp-card">
+                <div class="exp-header">
+                    <img src="images/logos/perceptrum.jpg" alt="Perceptrum Logo" class="exp-logo">
+                    <div class="exp-titles">
+                        <h3>Perceptrum <span style="font-weight: normal; font-size: 0.85em; color: #b0bec5;">- Barcelona, Spain</span></h3>
+                        <div class="role-sub">Co-Creator, Lead Technical Architect & Sound Designer</div>
+                        <div class="exp-date">December 2024 - Present</div>
+                    </div>
+                </div>
+                <div class="exp-body">
+                    <p><strong>Embedded Hardware & Systems Architecture:</strong> Designed custom capacitive touch sensing hardware and built low-latency Linux-based software pipelines (utilizing Raspberry Pi 4, HiFiBerry amplifiers, and Arduino) to process real-time tactile gestures into dynamic, event-driven audio responses.</p>
+                    <p><strong>Generative Machine Learning & Memory Models:</strong> Implemented adaptive, non-linear algorithmic models (Higher-Order Markov Models and LSTMs) that give physical canvases an evolving "memory," making real-time sound output a function of cumulative interaction history rather than simple static triggers. Trained CNN models to map visual composition features into sound parameters.</p>
+                    <p><strong>Networked Interaction Engine:</strong> Architected real-time networking infrastructure connecting multiple Sounding Canvases over the internet, enabling physical touch in one location to trigger organic, evolving soundscapes on a companion canvas worldwide.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Scrolling Navigation Buttons -->
+        <div class="nav-buttons">
+            <a href="slide-8.html" class="btn">&larr; Prev</a>
+            <a href="questions.html" class="btn">Next &rarr;</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') window.location.href = 'slide-8.html';
+            if (e.key === 'ArrowRight' || e.key === ' ') window.location.href = 'questions.html';
+        });
+    </script>
+</body>
+</html>
