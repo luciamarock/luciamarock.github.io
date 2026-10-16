@@ -1,8 +1,0 @@
-notify module
-=============
-
-.. automodule:: notify
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

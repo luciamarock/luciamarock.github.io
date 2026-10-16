@@ -1,8 +1,0 @@
-editor\_interface module
-========================
-
-.. automodule:: editor_interface
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

@@ -1,8 +1,0 @@
-API.api\_server module
-======================
-
-.. automodule:: API.api_server
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

@@ -1,8 +1,0 @@
-workflows.workers\_manager module
-=================================
-
-.. automodule:: workflows.workers_manager
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

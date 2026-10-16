@@ -1,8 +1,0 @@
-GUI.tabs.main\_control\_tab module
-==================================
-
-.. automodule:: GUI.tabs.main_control_tab
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

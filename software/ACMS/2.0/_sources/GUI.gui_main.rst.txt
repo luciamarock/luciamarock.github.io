@@ -1,8 +1,0 @@
-GUI.gui\_main module
-====================
-
-.. automodule:: GUI.gui_main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
