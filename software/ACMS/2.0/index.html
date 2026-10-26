@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Control and Management System (ACMS)</title>
+    <link rel="stylesheet" href="../../../Academics/research-style.css">
+</head>
+<body>
+
+    <nav class="main-nav">
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-list">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#notice">IP Notice</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Automated Control and Management System</h1>
+        <p style="text-align: center; font-style: italic; color: #555;">ACMS (formerly Recipe Management System) - Control Software Platform</p>
+
+        <section id="overview" class="section intro">
+            <div class="bio-text">
+                <h2>Overview & Background</h2>
+                <p>
+                    The <strong>Automated Control and Management System (ACMS)</strong> is an automated execution engine originally developed for ITER's PBS31 Vacuum System requirements and extended for the Linear IFMIF Prototype Accelerator (LIPAc) campaign operations.
+                </p>
+                <p>
+                    The software orchestrates step-by-step automated recipes, dynamic configuration validation, and complex calibration procedures across smart controller devices and hardware abstraction drivers.
+                </p>
+            </div>
+        </section>
+
+        <section id="architecture" class="section">
+            <h2>Key Capabilities & Architecture</h2>
+            <ul>
+                <li><strong>LIPAc Campaign Manager (LCM) Integration:</strong> Acts as the backend execution engine for higher-level campaign orchestration and GUI/API monitoring.</li>
+                <li><strong>Automated RF & Vacuum Workflows:</strong> Manages multi-chain procedures such as RFQ phase alignment with real-time field fitting, state validation rules, and safety rollbacks.</li>
+                <li><strong>EPICS & Modular Drivers:</strong> Integrates with softIoc process variables (PVs), PLCs, RGAs, TPGs, and scopes via modular driver interfaces using <code>pyepics</code>.</li>
+                <li><strong>Flexible Interfaces:</strong> Supports both direct Command Line Interface (CLI) execution and a FastAPI-based REST API for remote control.</li>
+            </ul>
+        </section>
+
+        <section id="getting-started" class="section">
+            <h2>Repository Structure & Usage</h2>
+            <p>The core software codebase is structured around modular control packages:</p>
+<pre><code>├── documentation/   # Sphinx documentation source files and build scripts
+├── src/            # Core source code (API, SmartControllers, workflows)
+├── tests/          # Unit and integration test suites
+└── settings.ini    # Environment and resource configuration settings</code></pre>
+            <p><strong>Running the Application:</strong></p>
+            <ul>
+                <li>Main application: <code>python src/main_program.py settings.ini</code></li>
+                <li>REST API Server: <code>python -m API.runner</code></li>
+                <li>Running Tests: <code>pytest tests/</code></li>
+            </ul>
+        </section>
+
+        <section id="notice" class="section">
+            <h2>Intellectual Property Notice</h2>
+            <p>
+                This software is developed for and property of <strong>Fusion for Energy (F4E)</strong>. All rights are reserved. Access to detailed internal repositories, source code implementations, and operational deployment packages is strictly restricted to authorized project personnel.
+            </p>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Official Contact Information</h2>
+            <p>
+                For official institutional inquiries, collaboration frameworks, or project documentation guidelines, please visit the official Fusion for Energy web portal:
+            </p>
+            <p style="background: #eaeaea; padding: 15px; border-radius: 5px;">
+                <strong>Fusion for Energy (F4E)</strong><br>
+                Control Systems and Operations<br>
+                Website: <a href="https://fusionforenergy.europa.eu/" target="_blank" rel="noopener">fusionforenergy.europa.eu</a>
+            </p>
+        </section>
+    </main>
+
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.querySelector('.nav-list');
+
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('is-active');
+                navList.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>
