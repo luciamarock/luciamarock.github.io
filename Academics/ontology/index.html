@@ -2,131 +2,341 @@
 <html>
   <head>
     <title>Perceptrum Ontology</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://www.perceptrum.net/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
-    <link href="https://www.perceptrum.net/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <style>
+        #pylode {
+            position: fixed;
+            top: 205px;
+            left: -150px;
+            font-size: small;
+            transform: rotate(-90deg);
+            color: grey;
+        }
+        #pylode a {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            color: #005A9C;
+        }
+        #pylode a:hover {
+            color: #333;
+        }
+        #pylode #p {
+            color: #329545;
+        }
+        #pylode #y {
+            color: #f9cb33;
+        }
+        #pylode #version {
+            font-size: 1.0em;
+        }
+
+        #profile {
+            font-style: italic;
+            font-size: 1.25em;
+            color: darkred!important;
+        }
+
+        .cardinality {
+            font-style: italic;
+            color: #aa00aa;
+        }
+
+        dl {
+            /*border: 1px solid navy;*/
+            /*padding:5px;*/
+        }
+
+        dt {
+            font-weight: bold;
+            padding: 0;
+        }
+
+        dd {
+            margin-bottom: 10px;
+            padding-top: 7px;
+        }
+
+        ul.pylodelitlist {
+            list-style-type: none;
+            margin-left: -40px;
+        }
+
+        #metadata ul li,
+        #classes ul li {
+            margin-bottom: 10px;
+        }
+
+        #metadata dd p {
+          margin: 0 0 1em 0;
+        }
+
+        ul.hlist {
+            list-style-type: none;
+            border: 1px solid navy;
+            padding:5px;
+            background-color: #F4FFFF;
+        }
+
+        div.hierarchy {
+            margin-bottom: 30px;
+            background-color: #F4FFFF;
+            padding: 10px;
+        }
+
+        ul.hierarchy {=
+            padding: 5px 25px 5px 25px;
+        }
+
+        ul.hierarchy li {
+            margin-top:5px;
+        }
+
+        ul.hlist li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        .entity {
+            border: 1px solid navy;
+            margin:5px 0 5px 0;
+            padding: 5px;
+        }
+
+        .entity th {
+            width: 150px;
+            vertical-align: top;
+        }
+
+        .entity th,
+        .entity td {
+            padding-bottom: 20px;
+        }
+
+        .entity table th {
+            text-align: left;
+        }
+
+        section#overview img {
+            max-width: 1000px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-align: left
+        }
+        h1, h2, h3 {
+            color: #005A9C; background: white
+        }
+        h1 {
+            font: 170% sans-serif;
+            line-height: 110%;
+        }
+        h2 {
+            font: 140% sans-serif;
+            margin-top:40px;
+        }
+        h3 {
+            font: 120% sans-serif;
+            margin-top: 20px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid navy;
+        }
+        h4 { font: bold 100% sans-serif }
+        h5 {
+            font: italic 100% sans-serif;
+            margin-bottom: 10px;
+        }
+        h6 { font: small-caps 100% sans-serif }
+
+        body {
+            padding: 2em 70px 2em 70px;
+            margin: 0;
+            font-family: sans-serif;
+            color: black;
+            background: white;
+            background-position: top left;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            text-align: left;
+        }
+
+        section {
+            max-width: 1500px;
+        }
+
+        .figure {
+            margin-bottom: 20px;
+        }
+
+        :link { color: #00C; background: transparent }
+        :visited { color: #609; background: transparent }
+        a:active { color: #C00; background: transparent }
+
+        .sup-c,
+        .sup-op,
+        .sup-fp,
+        .sup-dp,
+        .sup-ap,
+        .sup-p,
+        .sup-ni,
+        .sup-con,
+        .sup-col {
+            cursor:help;
+        }
+
+        .sup-c {
+            color:orange;
+        }
+
+        .sup-op {
+            color:navy;
+        }
+
+        .sup-fp {
+            color:lightskyblue;
+        }
+
+        .sup-dp {
+            color:green;
+        }
+
+        .sup-ap {
+            color:darkred;
+        }
+
+        .sup-p {
+            color:black;
+        }
+
+        .sup-ni {
+            color:brown;
+        }
+
+        .sup-con {
+            color:orange;
+        }
+
+        .sup-col {
+            color:darkred;
+        }
+
+        sup {
+            margin-left: -3px;
+        }
+        code {
+            font-size: large;
+            color: darkred;
+        }
+
+        /* less prominent links for properties */
+        .proplink {
+            color: #336;
+            text-decoration: none;
+        }
+
+        #toc {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 2;
+            height: 100%;
+            overflow-y: auto;
+            padding: 10px;
+            border: solid 1px navy;
+            font-size: small;
+            width: 180px;
+        }
+        #toc h3 {
+            margin-top: 5px;
+        }
+
+        #toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #toc .first > li {
+            margin-top: 5px;
+        }
+
+        #toc .second,
+        #toc .third {
+            padding-left: 10px;
+        }
+
+        #content {
+            width: calc(100% - 150px);
+        }
+
+        .hover_property {
+            cursor: help;
+            text-decoration: none;
+            border-bottom: dashed 1px;
+        }
+
+        .setclass {
+            list-style-type: none;
+        }
+
+        code{
+            word-wrap: break-word;
+          }
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        td {
+            word-wrap: break-word;
+        }
+        #legend table.entity {
+            width: 25%;
+        }
+	</style>
+    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhklEQVQ4jbWPzStEURjG3yQLirlGKUnKFO45Z+SjmXvnnmthQcpCoVhYmD/AwmJiI3OvZuZc2U3UlKU0/gAslMw9JgvhHxAr2fko7r0jHSsl+TgbTz2Lt5731/MASEiJW9ONml2QyX6rsGalmnT74v8BDf12hxJfpV8d1uwNKUBYszabdFv84L8B9X0rESVmmUup2fme0cVhJWaZHw4NWL1SewEAfDe6H3Dy6Ll456WEJsRZS630MwCAOI20ei5OBpxse5zcBZw8eS4uPpfIuDiCainIg9umBCU0GZzgLZ9Hn31OgoATL+CkLDGB5H1OKj4nFd/FBxUXJ0UZNb4edw/6nLyJXaj5FeCVyPLNIVmYK8TG1IwWb16L1gEACAFV90ftoT8bdOX0EeyY99gxBXZMgRz6qGb1KantAACI0UvE6F5XJqEjpsdURouI0Vt5gGOUkUNnPu7ObGIIMfNaGqDmjDRi9FZldF1lRgYzeqUyeoiY4ag5Iy3RgOYRM8+/M2bG8efsO4hGrpmJseyMAAAAAElFTkSuQmCC" rel="icon" sizes="16x16" type="image/png">
+    <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC40lEQVRYhe2UT0hUQRzHp6Iss1B3VZKIDbbdfW9mnoi4f3zzjkJQeOgS0SEIb1EWBGGlLLu460zQPQM1unUIIjA6rfpm6ZAhHjoIRVQUFUlEbG+euTsdXG1d3VL3bVD4g+9h+L35fT/8fvN7ADgY9aHY5fpIvK82HO9ysu66wxWOzbkjcekKx0a2ALYA/n2AGi3a6ArFezcidziecQygNhhrcUficjP6PwBqtGijKxy/thnVBePHywYoDsFhl53GV8SEcsTx4usCMLUewTVpc23BNvEzm6Neyf1+KcG2vwqwUjgrOJq2JmHftwmkVBRGTvncFodnbI7vChO/FRznCmHsNM7aHM9Yk7Df5iqsLMw9sMNOK2g+jS4IEz0UJv4iuJZb2RltWnB4UZqH6ioGAgAAGe5vtiZhtzDx7OoRadLmeM7m6IRjhnLMW2Vx1bA5GhAmnhIcz6/xNj4Ujsky8UspwfayjDPjsF2Y6L7N8Vzx/BfP+KPg6LbgSqd8DnfJW2CnbaLhfH5ephpqygJYvQU4Z3P82TLRsDDhUTnmrSq+Y3N0Mg+Xldy/zwEAnLMWZ3pHpNExmfLs/t0dOdVcbT0JeKxUwFP2VljjqiE47Jp53LTXNxhsUZjerTByXWX6VZWRs/4bIQ2ACv+UAomgDzLCISNZxAxZKMhIDjLy1JfsaK+I+eGBUBNk5E2x8RogX/PdcDZUqieWTSh5D6nOVKqfhoycUmlHFFIyu5RXqf7AcQDISCpv/tqbMBqK883RtmpISRoxQyJKPgGn3wNk5NEigDFa6hslqV/Kj+FdBQD0bshIDlKSLlVcoWQo36UhR80BAMB73lulMn0EMpJTqD6qJiOt3mho/8GbkT2BZNgDB/V+RI0fkOrT3kRIVQbaDizJm2hdNbINBxwk5xAj3yEjuV9rZ1iIkgxixkLBA83mz8uCjLwoGwAx0vOnFSy5mtR4VTaAQvVORMnwZgSpzkrV/QmdE2tKe46+MQAAAABJRU5ErkJggg==" rel="icon" sizes="32x32" type="image/png">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <script id="schema.org" type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-
-    {
-      "@type": "DefinedTermSet",
-      "@id": "https://luciamarock.github.io/Academics/ontology/",
-      "name": "Perceptrum Ontology",
-      "description": "An ontology describing augmented physical objects, augmented paintings, augmented musical instruments, and related concepts developed within the Perceptrum framework.",
-      "url": "https://luciamarock.github.io/Academics/ontology/",
-      "inLanguage": "en",
-      "version": "1.1",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "creator": {
-        "@id": "https://www.wikidata.org/entity/Q138757384"
-      },
-      "publisher": {
-        "@id": "https://perceptrum.net/#organization"
-      },
-      "hasDefinedTerm": [
-        {
-          "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"
-        },
-        {
-          "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPainting"
-        },
-        {
-          "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument"
-        }
-      ]
-    },
-
-    {
-      "@type": "Organization",
-      "@id": "https://www.wikidata.org/entity/Q136547945",
-      "name": "Perceptrum²",
-      "sameAs": "https://www.wikidata.org/entity/Q136547945",
-      "url": "https://www.perceptrum.net/"
-    },
-
-    {
-      "@type": "Person",
-      "@id": "https://www.wikidata.org/entity/Q138757384",
-      "name": "Luciano Ciamarone",
-      "sameAs": "https://musicbrainz.org/artist/916311d6-42b1-4207-b8be-74bfeb4d741a",
-      "affiliation": {
-        "@id": "https://www.wikidata.org/entity/Q136547945"
+[
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology",
+    "@type": [
+      "https://schema.org/DefinedTermSet"
+    ],
+    "https://schema.org/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"
       }
-    },
-
-    {
-      "@type": "DefinedTerm",
-      "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject",
-      "name": "Augmented Physical Object",
-      "description": "A physical object that integrates sensing, computation, communication or actuation technologies to extend its behaviour beyond its passive material properties.",
-      "url": "https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html",
-      "inDefinedTermSet": {
-        "@id": "https://luciamarock.github.io/Academics/ontology/"
-      },
-      "sameAs": "https://www.wikidata.org/entity/Q138713278"
-    },
-
-    {
-      "@type": "DefinedTerm",
-      "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPainting",
-      "name": "Augmented Painting",
-      "description": "An augmented physical object that combines a painted surface with sensing, computation, communication or actuation technologies.",
-      "url": "https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html",
-      "inDefinedTermSet": {
-        "@id": "https://luciamarock.github.io/Academics/ontology/"
-      },
-      "sameAs": "https://www.wikidata.org/entity/Q137104541",
-      "broader": {
-        "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"
+    ],
+    "https://schema.org/dateIssued": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
+        "@value": "2026"
       }
-    },
-
-    {
-      "@type": "DefinedTerm",
-      "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument",
-      "name": "Augmented Musical Instrument",
-      "description": "An augmented physical object designed for musical performance that integrates sensing, computation, communication or actuation technologies.",
-      "url": "https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html",
-      "inDefinedTermSet": {
-        "@id": "https://luciamarock.github.io/Academics/ontology/"
-      },
-      "sameAs": "https://www.wikidata.org/entity/Q138713305",
-      "broader": {
-        "@id": "https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject"
+    ],
+    "https://schema.org/description": [
+      {
+        "@language": "en",
+        "@value": "A lightweight ontology describing Augmented Physical Objects, Augmented Paintings and Augmented Musical Instruments."
       }
-    },
-
-    {
-      "@type": "CreativeWork",
-      "@id": "https://www.wikidata.org/entity/Q136547884",
-      "name": "Sounding Canvas",
-      "sameAs": "https://www.perceptrum.net/works/sounding-canvas.html",
-      "additionalType": "https://www.perceptrum.net/ontology/augmented-painting.html",
-      "creator": {
-        "@id": "https://www.wikidata.org/entity/Q136547945"
-      },
-      "publisher": {
-        "@id": "https://perceptrum.net/#organization"
-      },
-      "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sounding-canvas-preview.jpg"
-    },
-
-    {
-      "@type": "Product",
-      "@id": "https://www.wikidata.org/entity/Q138757459",
-      "name": "Feed Guitar",
-      "sameAs": "https://luciamarock.github.io/Projects/FeedGuitar.html",
-      "additionalType": "https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html",
-      "creator": {
-        "@id": "https://www.wikidata.org/entity/Q138757384"
+    ],
+    "https://schema.org/license": [
+      {
+        "@id": "https://creativecommons.org/licenses/by/4.0/"
       }
-    }
-
-  ]
-}	</script>
+    ],
+    "https://schema.org/name": [
+      {
+        "@language": "en",
+        "@value": "Perceptrum Ontology"
+      }
+    ],
+    "https://schema.org/publisher": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology#Perceptrum"
+      }
+    ]
+  }
+]
+	</script>
   </head>
   <body>
     <div id="content">
@@ -152,7 +362,7 @@
             <dt>
               <a class="hover_property" href="http://purl.org/dc/terms/publisher" title="An entity responsible for making the resource available. Defined in DCMI Metadata Terms">Publisher</a>
             </dt>
-            <dd>https://luciamarock.github.io/Academics/ontology#Perceptrum2</dd>
+            <dd>https://luciamarock.github.io/Academics/ontology#Perceptrum</dd>
           </div>
           <div>
             <dt>
@@ -162,9 +372,37 @@
           </div>
           <div>
             <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/issued" title="Date of formal issuance of the resource. Defined in DCMI Metadata Terms">Date Issued</a>
+            </dt>
+            <dd><p>2026</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/license" title="A legal document giving official permission to do something with the resource. Defined in DCMI Metadata Terms">License</a>
+            </dt>
+            <dd>
+              <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://www.w3.org/2002/07/owl#versionIRI" title="The property that identifies the version IRI of an ontology. Defined in The OWL 2 Schema vocabulary (OWL 2)">Version Iri</a>
+            </dt>
+            <dd>
+              <a href="#1.0">https://luciamarock.github.io/Academics/ontology/versions/1.0</a>
+            </dd>
+          </div>
+          <div>
+            <dt>
               <a class="hover_property" href="http://www.w3.org/2002/07/owl#versionInfo" title="The annotation property that provides version information for an ontology or another OWL construct. Defined in The OWL 2 Schema vocabulary (OWL 2)">Version Info</a>
             </dt>
-            <dd><p>1.1</p></dd>
+            <dd><p>1.0</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+            </dt>
+            <dd><p>A lightweight ontology describing Augmented Physical Objects, Augmented Paintings and Augmented Musical Instruments.</p></dd>
           </div>
         </dl>
       </div>
@@ -203,14 +441,14 @@
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
               </th>
               <td>
-                <a href="classes/augmented-physical-object.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html</a>
+                <a href="#augmented-physical-object.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html</a>
               </td>
             </tr>
             <tr>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td><p>A physical object that integrates sensing, computation, communication, or actuation technologies to extend its behavior beyond its passive material properties.</p></td>
+              <td><p>Physical objects enhanced with embedded computational systems that enable responsive, interactive behavior through human gesture. Unlike traditional objects whose behavior is passive and fixed, augmented physical objects introduce a layer of computational agency that allows them to participate in interaction.</p></td>
             </tr>
             <tr>
               <th>
@@ -251,14 +489,14 @@
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
               </th>
               <td>
-                <a href="classes/augmented-painting.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html</a>
+                <a href="#augmented-painting.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html</a>
               </td>
             </tr>
             <tr>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td><p>An augmented physical object that combines a painted surface with sensing, computation, communication, or actuation technologies.</p></td>
+              <td><p>An ontological category in contemporary art defining an art form that combines traditional painting with embedded technology, sensors, and artificial intelligence to create interactive, responsive, and networked experiences where touch and visual interaction generate evolving sounds and behaviors.</p></td>
             </tr>
             <tr>
               <th>
@@ -289,14 +527,14 @@
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
               </th>
               <td>
-                <a href="classes/augmented-musical-instrument.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html</a>
+                <a href="#augmented-musical-instrument.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html</a>
               </td>
             </tr>
             <tr>
               <th>
                 <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
               </th>
-              <td><p>An augmented physical object designed for musical performance that integrates sensing, computation, communication, or actuation technologies.</p></td>
+              <td><p>Musical instrument extended with sensors, computation, or actuators that modify or enhance its expressive capabilities. These systems expand traditional instrumental interaction by introducing computational mediation between gesture and sound production.</p></td>
             </tr>
             <tr>
               <th>
@@ -312,6 +550,124 @@
           </table>
         </div>
       </div>
+      <div class="section" id="objectproperties">
+        <h2>Object Properties</h2>
+        <h3 id="object-property-hierarchy">Object Property Hierarchy</h3>
+        <div class="hierarchy">
+          <ul class="hierarchy">
+            <li>
+              <a href="#documentedIn">documented in</a>
+            </li>
+            <li>
+              <a href="#hasExample">has example</a>
+            </li>
+            <li>
+              <a href="#introducedBy">introduced by</a>
+            </li>
+          </ul>
+        </div>
+        <h3 id="object-property-definitions">Object Property Definitions</h3>
+        <div class="property entity" id="introducedBy">
+          <h3>introduced by
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://luciamarock.github.io/Academics/ontology#introducedBy</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a class, conceptual paradigm, or artistic category to the individual, group, or organization that pioneered or originally introduced it.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://www.w3.org/2002/07/owl#Thing">Thing</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://xmlns.com/foaf/0.1/Agent">foaf:Agent</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasExample">
+          <h3>has example
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://luciamarock.github.io/Academics/ontology#hasExample</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates a concept or class layer to a specific representative individual instance or exemplary resource.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2002/07/owl#Class">Class</a>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2002/07/owl#NamedIndividual">NamedIndividual</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="documentedIn">
+          <h3>documented in
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>https://luciamarock.github.io/Academics/ontology#documentedIn</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
+              </th>
+              <td><p>Relates an artwork instance or an instrument to a research paper or bibliographic resource documenting its system implementation.</p></td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://purl.org/ontology/bibo/Document">bibo:Document</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <div id="namespaces">
         <h2>Namespaces</h2>
         <dl>
@@ -319,9 +675,17 @@
           <dd>
             <code>https://luciamarock.github.io/Academics/ontology#</code>
           </dd>
+          <dt id="bibo">bibo</dt>
+          <dd>
+            <code>http://purl.org/ontology/bibo/</code>
+          </dd>
           <dt id="dcterms">dcterms</dt>
           <dd>
             <code>http://purl.org/dc/terms/</code>
+          </dd>
+          <dt id="foaf">foaf</dt>
+          <dd>
+            <code>http://xmlns.com/foaf/0.1/</code>
           </dd>
           <dt id="ns1">ns1</dt>
           <dd>
@@ -350,8 +714,27 @@
             </td>
             <td>Classes</td>
           </tr>
+          <tr>
+            <td>
+              <sup class="sup-op" title="OWL Object Property">op</sup>
+            </td>
+            <td>Object Properties</td>
+          </tr>
         </table>
       </div>
+    </div>
+    <div id="pylode">
+      <p>made by 
+        <a href="https://github.com/rdflib/pyLODE">
+          <span id="p">p</span>
+          <span id="y">y</span>
+          <span>LODE</span>
+        </a>
+        <a href="https://github.com/rdflib/pyLODE/release/3.5.0" id="version">3.5.0</a>
+        <span> with the </span>
+        <a href="https://linked.data.gov.au/def/ontpub" id="profile">OntPub</a>
+        <span>profile</span>
+      </p>
     </div>
     <div id="toc">
       <h3>Table of Contents</h3>
@@ -385,6 +768,28 @@
         </li>
         <li>
           <h4>
+            <a href="#objectproperties">Object Properties</a>
+          </h4>
+          <h5>
+            <a href="#object-property-hierarchy" style="margin-left:10px;">Object Property Hierarchy</a>
+          </h5>
+          <h5>
+            <a href="#object-property-definitions" style="margin-left:10px;">Object Property Definitions</a>
+          </h5>
+          <ul class="second">
+            <li style="margin-left:10px;">
+              <a href="#introducedBy">introduced by</a>
+            </li>
+            <li style="margin-left:10px;">
+              <a href="#hasExample">has example</a>
+            </li>
+            <li style="margin-left:10px;">
+              <a href="#documentedIn">documented in</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h4>
             <a href="#namespaces">Namespaces</a>
           </h4>
           <ul class="second">
@@ -392,7 +797,13 @@
               <a href="#"></a>
             </li>
             <li>
+              <a href="#bibo">bibo</a>
+            </li>
+            <li>
               <a href="#dcterms">dcterms</a>
+            </li>
+            <li>
+              <a href="#foaf">foaf</a>
             </li>
             <li>
               <a href="#ns1">ns1</a>
@@ -416,6 +827,5 @@
         </li>
       </ul>
     </div>
-    <script src="js/ontology.js"></script>
   </body>
 </html>
