@@ -1,81 +1,30 @@
 [
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MusiqueEtEcologiesDuSon",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#SoundingCanvasNIME2026",
     "@type": [
-      "http://purl.org/ontology/bibo/Book",
+      "http://purl.org/ontology/bibo/AcademicArticle",
       "http://www.w3.org/2002/07/owl#NamedIndividual"
     ],
-    "http://purl.org/ontology/bibo/isbn10": [
-      {
-        "@value": "2140010892"
-      }
-    ],
-    "http://purl.org/ontology/bibo/isbn13": [
-      {
-        "@value": "9782140010897"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
+    "http://purl.org/dc/terms/bibliographicCitation": [
       {
         "@language": "en",
-        "@value": "Musique et écologies du son - Propositions théoriques pour une écoute du monde"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#InteractiveStageSetElement",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPhysicalObject"
-    ],
-    "http://purl.org/dc/terms/created": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
-        "@value": "2015"
+        "@value": "Presented at New Interfaces for Musical Expression (NIME) - London, UK."
       }
     ],
     "http://purl.org/dc/terms/creator": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum"
       }
     ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
+    "http://purl.org/dc/terms/identifier": [
       {
-        "@language": "en",
-        "@value": "A unique wooden sculpture designed as a relational scenographic element for dance performances. Its structure and functionality combine acoustic principles with artistic creativity, resulting in a versatile object that can also be connected to external augmented musical instruments."
+        "@value": "doi:10.5281/zenodo.20782028"
       }
     ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+    "http://purl.org/dc/terms/issued": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Interactive Stage Set Element"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
-      {
-        "@id": "https://luciamarock.github.io/Projects/AccroccoSonic.html"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPainting",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
-      {
-        "@language": "en",
-        "@value": "An ontological category in contemporary art defining an art form that combines traditional painting with embedded technology, sensors, and artificial intelligence to create interactive, responsive, and networked experiences where touch and visual interaction generate evolving sounds and behaviors."
+        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
+        "@value": "2026"
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
@@ -86,81 +35,15 @@
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Augmented Painting"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
-      {
-        "@id": "https://www.perceptrum.net/ontology/augmented-painting.html"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPhysicalObject"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#sameAs": [
-      {
-        "@id": "https://www.wikidata.org/wiki/Q137104541"
-      }
-    ],
-    "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
-      {
-        "@value": "stable"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#hasExample": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#SoundingCanvas"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#introducedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
+        "@value": "Sounding Canvas: A Networked Social Artwork Bridging Distant Communities through Tactile Interaction"
       }
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum",
-    "@type": [
-      "http://xmlns.com/foaf/0.1/Group",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Perceptrum²"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#sameAs": [
-      {
-        "@id": "https://www.wikidata.org/wiki/Q136547945"
-      }
-    ],
-    "http://xmlns.com/foaf/0.1/homepage": [
-      {
-        "@id": "https://www.perceptrum.net/"
-      }
-    ],
-    "http://xmlns.com/foaf/0.1/member": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#DoraMoteque"
-      },
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#DoraMoteque",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#IstitutoGramma",
     "@type": [
       "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "http://xmlns.com/foaf/0.1/Person"
+      "http://xmlns.com/foaf/0.1/Organization"
     ],
     "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
       {
@@ -170,25 +53,91 @@
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Dora Motèque"
-      }
-    ],
-    "http://xmlns.com/foaf/0.1/homepage": [
-      {
-        "@id": "https://doramoteque-faf94c.webflow.io/"
+        "@value": "Istituto Gramma, L'Aquila"
       }
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedMusicalInstrument",
+    "@id": "https://luciamarock.github.io/Academics/ontology.ttl",
     "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
+      "http://www.w3.org/2002/07/owl#Ontology"
     ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#LucianoCiamarone"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
       {
         "@language": "en",
-        "@value": "Musical instrument extended with sensors, computation, or actuators that modify or enhance its expressive capabilities. These systems expand traditional instrumental interaction by introducing computational mediation between gesture and sound production."
+        "@value": "A lightweight ontology describing Augmented Physical Objects, Augmented Paintings and Augmented Musical Instruments."
       }
+    ],
+    "http://purl.org/dc/terms/issued": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
+        "@value": "2026"
+      }
+    ],
+    "http://purl.org/dc/terms/language": [
+      {
+        "@id": "http://id.loc.gov/vocabulary/iso639-1/en"
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "http://purl.org/dc/terms/modified": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2026-10-28"
+      }
+    ],
+    "http://purl.org/dc/terms/publisher": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Perceptrum Ontology"
+      }
+    ],
+    "http://purl.org/vocab/vann/preferredNamespacePrefix": [
+      {
+        "@value": "aart"
+      }
+    ],
+    "http://purl.org/vocab/vann/preferredNamespaceUri": [
+      {
+        "@value": "https://luciamarock.github.io/Academics/ontology.ttl#"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Perceptrum Ontology"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#versionIRI": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/versions/1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#versionInfo": [
+      {
+        "@value": "1.0"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MichelangeloLupone",
+    "@type": [
+      "http://xmlns.com/foaf/0.1/Person",
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
     ],
     "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
       {
@@ -198,46 +147,20 @@
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Augmented Musical Instrument"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPhysicalObject"
+        "@value": "Michelangelo Lupone"
       }
     ],
     "http://www.w3.org/2002/07/owl#sameAs": [
       {
-        "@id": "https://www.wikidata.org/wiki/Q138713305"
-      }
-    ],
-    "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
-      {
-        "@value": "stable"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#hasExample": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#FeedGuitar"
-      },
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MagneticResonatorPiano"
-      },
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#FeedDrum"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#introducedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MichelangeloLupone"
+        "@id": "https://www.wikidata.org/wiki/Q54932808"
       }
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#SoundingCanvasIS22025",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#SoundingCanvasIS22025",
     "@type": [
-      "http://purl.org/ontology/bibo/AcademicArticle",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "http://purl.org/ontology/bibo/AcademicArticle"
     ],
     "http://purl.org/dc/terms/bibliographicCitation": [
       {
@@ -247,7 +170,7 @@
     ],
     "http://purl.org/dc/terms/creator": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum"
       }
     ],
     "http://purl.org/dc/terms/identifier": [
@@ -279,7 +202,160 @@
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#hasExample",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#FeedGuitar",
+    "@type": [
+      "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedMusicalInstrument",
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#LucianoCiamarone"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "An augmented musical instrument created by Luciano Ciamarone for his Master's Degree thesis at CRM."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Feed Guitar"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
+      {
+        "@id": "https://luciamarock.github.io/Projects/FeedGuitar.html"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "https://www.wikidata.org/wiki/Q138757459"
+      }
+    ],
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#documentedIn": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#EnvironmentLikeStrings"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#documentedIn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "Relates an artwork instance or an instrument to a research paper or bibliographic resource documenting its system implementation."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "documented in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://purl.org/ontology/bibo/Document"
+      }
+    ],
+    "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
+      {
+        "@value": "stable"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#CentroRicercheMusicali",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "http://xmlns.com/foaf/0.1/Organization"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "CRM - Centro Ricerche Musicali, Rome"
+      }
+    ],
+    "http://xmlns.com/foaf/0.1/homepage": [
+      {
+        "@id": "https://www.crm-music.it/"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedPainting",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "An ontological category in contemporary art defining an art form that combines traditional painting with embedded technology, sensors, and artificial intelligence to create interactive, responsive, and networked experiences where touch and visual interaction generate evolving sounds and behaviors."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Augmented Painting"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
+      {
+        "@id": "https://www.perceptrum.net/ontology/augmented-painting.html"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedPhysicalObject"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "https://www.wikidata.org/wiki/Q137104541"
+      }
+    ],
+    "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
+      {
+        "@value": "stable"
+      }
+    ],
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#hasExample": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#SoundingCanvas"
+      }
+    ],
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#introducedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#hasExample",
     "@type": [
       "http://www.w3.org/2002/07/owl#ObjectProperty"
     ],
@@ -317,14 +393,50 @@
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#SoundingCanvas",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum",
     "@type": [
-      "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPainting",
+      "http://xmlns.com/foaf/0.1/Group",
       "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Perceptrum²"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "https://www.wikidata.org/wiki/Q136547945"
+      }
+    ],
+    "http://xmlns.com/foaf/0.1/homepage": [
+      {
+        "@id": "https://www.perceptrum.net/"
+      }
+    ],
+    "http://xmlns.com/foaf/0.1/member": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#DoraMoteque"
+      },
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#LucianoCiamarone"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#SoundingCanvas",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedPainting"
     ],
     "http://purl.org/dc/terms/creator": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum"
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#comment": [
@@ -354,114 +466,24 @@
         "@id": "https://www.wikidata.org/wiki/Q136547884"
       }
     ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#documentedIn": [
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#documentedIn": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#SoundingCanvasIS22025"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#SoundingCanvasIS22025"
       },
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#SoundingCanvasNIME2026"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#SoundingCanvasNIME2026"
       }
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedMusicalInstrument",
     "@type": [
-      "http://www.w3.org/2002/07/owl#Ontology"
-    ],
-    "http://purl.org/dc/terms/creator": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone"
-      }
-    ],
-    "http://purl.org/dc/terms/description": [
-      {
-        "@language": "en",
-        "@value": "A lightweight ontology describing Augmented Physical Objects, Augmented Paintings and Augmented Musical Instruments."
-      }
-    ],
-    "http://purl.org/dc/terms/issued": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
-        "@value": "2026"
-      }
-    ],
-    "http://purl.org/dc/terms/language": [
-      {
-        "@id": "http://id.loc.gov/vocabulary/iso639-1/en"
-      }
-    ],
-    "http://purl.org/dc/terms/license": [
-      {
-        "@id": "https://creativecommons.org/licenses/by/4.0/"
-      }
-    ],
-    "http://purl.org/dc/terms/modified": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#date",
-        "@value": "2026-10-28"
-      }
-    ],
-    "http://purl.org/dc/terms/publisher": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
-      }
-    ],
-    "http://purl.org/dc/terms/title": [
-      {
-        "@language": "en",
-        "@value": "Perceptrum Ontology"
-      }
-    ],
-    "http://purl.org/vocab/vann/preferredNamespacePrefix": [
-      {
-        "@value": "aart"
-      }
-    ],
-    "http://purl.org/vocab/vann/preferredNamespaceUri": [
-      {
-        "@value": "https://luciamarock.github.io/Academics/ontology.ttl#"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Perceptrum Ontology"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#versionIRI": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology/versions/1.0"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#versionInfo": [
-      {
-        "@value": "1.0"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#FeedDrum",
-    "@type": [
-      "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedMusicalInstrument",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
-    ],
-    "http://purl.org/dc/terms/contributor": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#CentroRicercheMusicali"
-      },
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#IstitutoGramma"
-      }
-    ],
-    "http://purl.org/dc/terms/creator": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MichelangeloLupone"
-      }
+      "http://www.w3.org/2002/07/owl#Class"
     ],
     "http://www.w3.org/2000/01/rdf-schema#comment": [
       {
         "@language": "en",
-        "@value": "An imperial bass drum with a system of electronic conditioning of the skin conceived by composer Michelangelo Lupone."
+        "@value": "Musical instrument extended with sensors, computation, or actuators that modify or enhance its expressive capabilities. These systems expand traditional instrumental interaction by introducing computational mediation between gesture and sound production."
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
@@ -472,199 +494,46 @@
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Feed-Drum"
+        "@value": "Augmented Musical Instrument"
       }
     ],
-    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
       {
-        "@id": "https://en.wikipedia.org/wiki/Feed-Drum"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedPhysicalObject"
       }
     ],
     "http://www.w3.org/2002/07/owl#sameAs": [
       {
-        "@id": "https://www.wikidata.org/wiki/Q5441166"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#IstitutoGramma",
-    "@type": [
-      "http://xmlns.com/foaf/0.1/Organization",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Istituto Gramma, L'Aquila"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#documentedIn",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
-      {
-        "@language": "en",
-        "@value": "Relates an artwork instance or an instrument to a research paper or bibliographic resource documenting its system implementation."
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "documented in"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://purl.org/ontology/bibo/Document"
+        "@id": "https://www.wikidata.org/wiki/Q138713305"
       }
     ],
     "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
       {
         "@value": "stable"
       }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#FeedGuitar",
-    "@type": [
-      "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedMusicalInstrument",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
     ],
-    "http://purl.org/dc/terms/creator": [
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#hasExample": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#FeedGuitar"
+      },
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MagneticResonatorPiano"
+      },
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#FeedDrum"
       }
     ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#introducedBy": [
       {
-        "@language": "en",
-        "@value": "An augmented musical instrument created by Luciano Ciamarone for his Master's Degree thesis at CRM."
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Feed Guitar"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
-      {
-        "@id": "https://luciamarock.github.io/Projects/FeedGuitar.html"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#sameAs": [
-      {
-        "@id": "https://www.wikidata.org/wiki/Q138757459"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#documentedIn": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#EnvironmentLikeStrings"
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MichelangeloLupone"
       }
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#EnvironmentLikeStrings",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MagneticResonatorPiano",
     "@type": [
       "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "http://purl.org/ontology/bibo/Chapter"
-    ],
-    "http://purl.org/dc/terms/creator": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone"
-      }
-    ],
-    "http://purl.org/dc/terms/identifier": [
-      {
-        "@value": "doi:10.6084/m9.figshare.30903413"
-      }
-    ],
-    "http://purl.org/dc/terms/isPartOf": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MusiqueEtEcologiesDuSon"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Environment like strings"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#CentroRicercheMusicali",
-    "@type": [
-      "http://xmlns.com/foaf/0.1/Organization",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "CRM - Centro Ricerche Musicali, Rome"
-      }
-    ],
-    "http://xmlns.com/foaf/0.1/homepage": [
-      {
-        "@id": "https://www.crm-music.it/"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MichelangeloLupone",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "http://xmlns.com/foaf/0.1/Person"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Michelangelo Lupone"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#sameAs": [
-      {
-        "@id": "https://www.wikidata.org/wiki/Q54932808"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#MagneticResonatorPiano",
-    "@type": [
-      "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedMusicalInstrument",
-      "http://www.w3.org/2002/07/owl#NamedIndividual"
+      "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedMusicalInstrument"
     ],
     "http://www.w3.org/2000/01/rdf-schema#comment": [
       {
@@ -695,118 +564,7 @@
     ]
   },
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "http://xmlns.com/foaf/0.1/Person"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Luciano Ciamarone"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#sameAs": [
-      {
-        "@id": "https://www.wikidata.org/wiki/Q138757384"
-      }
-    ],
-    "http://xmlns.com/foaf/0.1/homepage": [
-      {
-        "@id": "https://luciamarock.github.io/"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#SoundingCanvasNIME2026",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "http://purl.org/ontology/bibo/AcademicArticle"
-    ],
-    "http://purl.org/dc/terms/bibliographicCitation": [
-      {
-        "@language": "en",
-        "@value": "Presented at New Interfaces for Musical Expression (NIME) - London, UK."
-      }
-    ],
-    "http://purl.org/dc/terms/creator": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
-      }
-    ],
-    "http://purl.org/dc/terms/identifier": [
-      {
-        "@value": "doi:10.5281/zenodo.20782028"
-      }
-    ],
-    "http://purl.org/dc/terms/issued": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
-        "@value": "2026"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Sounding Canvas: A Networked Social Artwork Bridging Distant Communities through Tactile Interaction"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPhysicalObject",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
-      {
-        "@language": "en",
-        "@value": "Physical objects enhanced with embedded computational systems that enable responsive, interactive behavior through human gesture. Unlike traditional objects whose behavior is passive and fixed, augmented physical objects introduce a layer of computational agency that allows them to participate in interaction."
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Augmented Physical Object"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#sameAs": [
-      {
-        "@id": "https://www.wikidata.org/wiki/Q138713278"
-      }
-    ],
-    "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
-      {
-        "@value": "stable"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#hasExample": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#InteractiveStageSetElement"
-      }
-    ],
-    "https://luciamarock.github.io/Academics/ontology.ttl#introducedBy": [
-      {
-        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
-      }
-    ]
-  },
-  {
-    "@id": "https://luciamarock.github.io/Academics/ontology.ttl#introducedBy",
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#introducedBy",
     "@type": [
       "http://www.w3.org/2002/07/owl#ObjectProperty"
     ],
@@ -840,6 +598,248 @@
     "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
       {
         "@value": "stable"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#LucianoCiamarone",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "http://xmlns.com/foaf/0.1/Person"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Luciano Ciamarone"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "https://www.wikidata.org/wiki/Q138757384"
+      }
+    ],
+    "http://xmlns.com/foaf/0.1/homepage": [
+      {
+        "@id": "https://luciamarock.github.io/"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedPhysicalObject",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "Physical objects enhanced with embedded computational systems that enable responsive, interactive behavior through human gesture. Unlike traditional objects whose behavior is passive and fixed, augmented physical objects introduce a layer of computational agency that allows them to participate in interaction."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Augmented Physical Object"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "https://www.wikidata.org/wiki/Q138713278"
+      }
+    ],
+    "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status": [
+      {
+        "@value": "stable"
+      }
+    ],
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#hasExample": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#InteractiveStageSetElement"
+      }
+    ],
+    "https://luciamarock.github.io/Academics/ontology/ontology.ttl#introducedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#Perceptrum"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#EnvironmentLikeStrings",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "http://purl.org/ontology/bibo/Chapter"
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#LucianoCiamarone"
+      }
+    ],
+    "http://purl.org/dc/terms/identifier": [
+      {
+        "@value": "doi:10.6084/m9.figshare.30903413"
+      }
+    ],
+    "http://purl.org/dc/terms/isPartOf": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MusiqueEtEcologiesDuSon"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Environment like strings"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#InteractiveStageSetElement",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedPhysicalObject"
+    ],
+    "http://purl.org/dc/terms/created": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#gYear",
+        "@value": "2015"
+      }
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#LucianoCiamarone"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "A unique wooden sculpture designed as a relational scenographic element for dance performances. Its structure and functionality combine acoustic principles with artistic creativity, resulting in a versatile object that can also be connected to external augmented musical instruments."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Interactive Stage Set Element"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
+      {
+        "@id": "https://luciamarock.github.io/Projects/AccroccoSonic.html"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MusiqueEtEcologiesDuSon",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "http://purl.org/ontology/bibo/Book"
+    ],
+    "http://purl.org/ontology/bibo/isbn10": [
+      {
+        "@value": "2140010892"
+      }
+    ],
+    "http://purl.org/ontology/bibo/isbn13": [
+      {
+        "@value": "9782140010897"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Musique et écologies du son - Propositions théoriques pour une écoute du monde"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#DoraMoteque",
+    "@type": [
+      "http://xmlns.com/foaf/0.1/Person",
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Dora Motèque"
+      }
+    ],
+    "http://xmlns.com/foaf/0.1/homepage": [
+      {
+        "@id": "https://doramoteque-faf94c.webflow.io/"
+      }
+    ]
+  },
+  {
+    "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#FeedDrum",
+    "@type": [
+      "https://luciamarock.github.io/Academics/ontology/ontology.ttl#AugmentedMusicalInstrument",
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://purl.org/dc/terms/contributor": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#CentroRicercheMusicali"
+      },
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#IstitutoGramma"
+      }
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology/ontology.ttl#MichelangeloLupone"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "An imperial bass drum with a system of electronic conditioning of the skin conceived by composer Michelangelo Lupone."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Feed-Drum"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#seeAlso": [
+      {
+        "@id": "https://en.wikipedia.org/wiki/Feed-Drum"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "https://www.wikidata.org/wiki/Q5441166"
       }
     ]
   }
