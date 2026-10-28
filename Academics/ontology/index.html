@@ -297,19 +297,25 @@
     <script id="schema.org" type="application/ld+json">
 [
   {
-    "@id": "https://luciamarock.github.io/Academics/ontology",
+    "@id": "https://luciamarock.github.io/Academics/ontology.ttl",
     "@type": [
       "https://schema.org/DefinedTermSet"
     ],
     "https://schema.org/creator": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology#LucianoCiamarone"
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone"
       }
     ],
     "https://schema.org/dateIssued": [
       {
         "@type": "http://www.w3.org/2001/XMLSchema#gYear",
         "@value": "2026"
+      }
+    ],
+    "https://schema.org/dateModified": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2026-10-28"
       }
     ],
     "https://schema.org/description": [
@@ -331,7 +337,7 @@
     ],
     "https://schema.org/publisher": [
       {
-        "@id": "https://luciamarock.github.io/Academics/ontology#Perceptrum"
+        "@id": "https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum"
       }
     ]
   }
@@ -349,7 +355,7 @@
               <strong>IRI</strong>
             </dt>
             <dd>
-              <code>https://luciamarock.github.io/Academics/ontology</code>
+              <code>https://luciamarock.github.io/Academics/ontology.ttl</code>
             </dd>
           </div>
           <div>
@@ -362,13 +368,19 @@
             <dt>
               <a class="hover_property" href="http://purl.org/dc/terms/publisher" title="An entity responsible for making the resource available. Defined in DCMI Metadata Terms">Publisher</a>
             </dt>
-            <dd>https://luciamarock.github.io/Academics/ontology#Perceptrum</dd>
+            <dd>https://luciamarock.github.io/Academics/ontology.ttl#Perceptrum</dd>
           </div>
           <div>
             <dt>
               <a class="hover_property" href="http://purl.org/dc/terms/creator" title="An entity responsible for making the resource. Defined in DCMI Metadata Terms">Creator</a>
             </dt>
-            <dd>https://luciamarock.github.io/Academics/ontology#LucianoCiamarone</dd>
+            <dd>https://luciamarock.github.io/Academics/ontology.ttl#LucianoCiamarone</dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/dc/terms/modified" title="Date on which the resource was changed. Defined in DCMI Metadata Terms">Date Modified</a>
+            </dt>
+            <dd><p>2026-10-28</p></dd>
           </div>
           <div>
             <dt>
@@ -389,7 +401,7 @@
               <a class="hover_property" href="http://www.w3.org/2002/07/owl#versionIRI" title="The property that identifies the version IRI of an ontology. Defined in The OWL 2 Schema vocabulary (OWL 2)">Version Iri</a>
             </dt>
             <dd>
-              <a href="#1.0">https://luciamarock.github.io/Academics/ontology/versions/1.0</a>
+              <a href="https://luciamarock.github.io/Academics/ontology/versions/1.0">https://luciamarock.github.io/Academics/ontology/versions/1.0</a>
             </dd>
           </div>
           <div>
@@ -397,6 +409,20 @@
               <a class="hover_property" href="http://www.w3.org/2002/07/owl#versionInfo" title="The annotation property that provides version information for an ontology or another OWL construct. Defined in The OWL 2 Schema vocabulary (OWL 2)">Version Info</a>
             </dt>
             <dd><p>1.0</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/vocab/vann/preferredNamespacePrefix" title="None. Defined in None">Preferred Namespace Prefix</a>
+            </dt>
+            <dd><p>aart</p></dd>
+          </div>
+          <div>
+            <dt>
+              <a class="hover_property" href="http://purl.org/vocab/vann/preferredNamespaceUri" title="None. Defined in None">Preferred Namespace Uri</a>
+            </dt>
+            <dd>
+              <a href="https://luciamarock.github.io/Academics/ontology.ttl#">https://luciamarock.github.io/Academics/ontology.ttl#</a>
+            </dd>
           </div>
           <div>
             <dt>
@@ -433,7 +459,7 @@
             <tr>
               <th>IRI</th>
               <td>
-                <code>https://luciamarock.github.io/Academics/ontology#AugmentedPhysicalObject</code>
+                <code>https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPhysicalObject</code>
               </td>
             </tr>
             <tr>
@@ -441,7 +467,7 @@
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
               </th>
               <td>
-                <a href="#augmented-physical-object.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-physical-object.html</a>
+                <a href="https://luciamarock.github.io/Academics/ontology.ttl">Perceptrum Ontology</a>
               </td>
             </tr>
             <tr>
@@ -481,7 +507,7 @@
             <tr>
               <th>IRI</th>
               <td>
-                <code>https://luciamarock.github.io/Academics/ontology#AugmentedPainting</code>
+                <code>https://luciamarock.github.io/Academics/ontology.ttl#AugmentedPainting</code>
               </td>
             </tr>
             <tr>
@@ -489,7 +515,7 @@
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
               </th>
               <td>
-                <a href="#augmented-painting.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-painting.html</a>
+                <a href="https://luciamarock.github.io/Academics/ontology.ttl">Perceptrum Ontology</a>
               </td>
             </tr>
             <tr>
@@ -519,7 +545,7 @@
             <tr>
               <th>IRI</th>
               <td>
-                <code>https://luciamarock.github.io/Academics/ontology#AugmentedMusicalInstrument</code>
+                <code>https://luciamarock.github.io/Academics/ontology.ttl#AugmentedMusicalInstrument</code>
               </td>
             </tr>
             <tr>
@@ -527,7 +553,7 @@
                 <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
               </th>
               <td>
-                <a href="#augmented-musical-instrument.html">https://luciamarock.github.io/Academics/ontology/classes/augmented-musical-instrument.html</a>
+                <a href="https://luciamarock.github.io/Academics/ontology.ttl">Perceptrum Ontology</a>
               </td>
             </tr>
             <tr>
@@ -575,7 +601,15 @@
             <tr>
               <th>IRI</th>
               <td>
-                <code>https://luciamarock.github.io/Academics/ontology#introducedBy</code>
+                <code>https://luciamarock.github.io/Academics/ontology.ttl#introducedBy</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
+              </th>
+              <td>
+                <a href="https://luciamarock.github.io/Academics/ontology.ttl">Perceptrum Ontology</a>
               </td>
             </tr>
             <tr>
@@ -613,7 +647,15 @@
             <tr>
               <th>IRI</th>
               <td>
-                <code>https://luciamarock.github.io/Academics/ontology#hasExample</code>
+                <code>https://luciamarock.github.io/Academics/ontology.ttl#hasExample</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
+              </th>
+              <td>
+                <a href="https://luciamarock.github.io/Academics/ontology.ttl">Perceptrum Ontology</a>
               </td>
             </tr>
             <tr>
@@ -648,7 +690,15 @@
             <tr>
               <th>IRI</th>
               <td>
-                <code>https://luciamarock.github.io/Academics/ontology#documentedIn</code>
+                <code>https://luciamarock.github.io/Academics/ontology.ttl#documentedIn</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" title="The definition of the subject resource. Defined in The RDF Schema vocabulary (RDFS)">Is Defined By</a>
+              </th>
+              <td>
+                <a href="https://luciamarock.github.io/Academics/ontology.ttl">Perceptrum Ontology</a>
               </td>
             </tr>
             <tr>
@@ -673,7 +723,7 @@
         <dl>
           <dt id=":">:</dt>
           <dd>
-            <code>https://luciamarock.github.io/Academics/ontology#</code>
+            <code>https://luciamarock.github.io/Academics/ontology.ttl#</code>
           </dd>
           <dt id="bibo">bibo</dt>
           <dd>
@@ -687,10 +737,6 @@
           <dd>
             <code>http://xmlns.com/foaf/0.1/</code>
           </dd>
-          <dt id="ns1">ns1</dt>
-          <dd>
-            <code>https://luciamarock.github.io/Academics/</code>
-          </dd>
           <dt id="owl">owl</dt>
           <dd>
             <code>http://www.w3.org/2002/07/owl#</code>
@@ -702,6 +748,14 @@
           <dt id="rdfs">rdfs</dt>
           <dd>
             <code>http://www.w3.org/2000/01/rdf-schema#</code>
+          </dd>
+          <dt id="vann">vann</dt>
+          <dd>
+            <code>http://purl.org/vocab/vann/</code>
+          </dd>
+          <dt id="vs">vs</dt>
+          <dd>
+            <code>http://www.w3.org/2003/06/sw-vocab-status/ns#</code>
           </dd>
         </dl>
       </div>
@@ -806,9 +860,6 @@
               <a href="#foaf">foaf</a>
             </li>
             <li>
-              <a href="#ns1">ns1</a>
-            </li>
-            <li>
               <a href="#owl">owl</a>
             </li>
             <li>
@@ -816,6 +867,12 @@
             </li>
             <li>
               <a href="#rdfs">rdfs</a>
+            </li>
+            <li>
+              <a href="#vann">vann</a>
+            </li>
+            <li>
+              <a href="#vs">vs</a>
             </li>
           </ul>
         </li>
