@@ -9,7 +9,7 @@
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 
-<https://luciamarock.github.io/Academics/ontology.ttl>
+<https://luciamarock.github.io/Academics/ontology/ontology.ttl>
     rdf:type owl:Ontology ;
     rdfs:label "Perceptrum Ontology"@en ;
     dcterms:title "Perceptrum Ontology"@en ;
@@ -21,7 +21,7 @@
     dcterms:issued "2026"^^xsd:gYear ;
     dcterms:modified "2026-10-28"^^xsd:date ;
     vann:preferredNamespacePrefix "aart" ;
-    vann:preferredNamespaceUri "https://luciamarock.github.io/Academics/ontology.ttl#" ;
+    vann:preferredNamespaceUri "https://luciamarock.github.io/Academics/ontology/ontology.ttl#" ;
     owl:versionIRI <https://luciamarock.github.io/Academics/ontology/versions/1.0> ;
     owl:versionInfo "1.0" .
 
@@ -34,7 +34,7 @@
     rdfs:domain owl:Thing ;
     rdfs:range foaf:Agent ;
     rdfs:label "introduced by"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     vs:term_status "stable" ;
     rdfs:comment "Relates a class, conceptual paradigm, or artistic category to the individual, group, or organization that pioneered or originally introduced it."@en .
 
@@ -43,14 +43,14 @@
     rdfs:domain owl:Class ;
     rdfs:range owl:NamedIndividual ;
     rdfs:label "has example"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     vs:term_status "stable" ;
     rdfs:comment "Relates a concept or class layer to a specific representative individual instance or exemplary resource."@en .
 
 :documentedIn 
     rdf:type owl:ObjectProperty ;
     rdfs:label "documented in"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     vs:term_status "stable" ;
     rdfs:comment "Relates an artwork instance or an instrument to a research paper or bibliographic resource documenting its system implementation."@en ;
     rdfs:range bibo:Document .
@@ -62,7 +62,7 @@
 :Perceptrum
     rdf:type owl:NamedIndividual, foaf:Group ;
     rdfs:label "Perceptrum²"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     owl:sameAs <https://www.wikidata.org/wiki/Q136547945> ;
     foaf:homepage <https://www.perceptrum.net/> ;
     foaf:member :LucianoCiamarone, :DoraMoteque .
@@ -70,31 +70,31 @@
 :LucianoCiamarone
     rdf:type owl:NamedIndividual, foaf:Person ;
     rdfs:label "Luciano Ciamarone"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     foaf:homepage <https://luciamarock.github.io/> ;
     owl:sameAs <https://www.wikidata.org/wiki/Q138757384> .
 
 :DoraMoteque
     rdf:type owl:NamedIndividual, foaf:Person ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     foaf:homepage <https://doramoteque-faf94c.webflow.io/> ;
     rdfs:label "Dora Motèque"@en .
 
 :MichelangeloLupone
     rdf:type owl:NamedIndividual, foaf:Person ;
     rdfs:label "Michelangelo Lupone"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     owl:sameAs <https://www.wikidata.org/wiki/Q54932808> .
 
 :CentroRicercheMusicali
     rdf:type owl:NamedIndividual, foaf:Organization ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     foaf:homepage <https://www.crm-music.it/> ;
     rdfs:label "CRM - Centro Ricerche Musicali, Rome"@en .
 
 :IstitutoGramma
     rdf:type owl:NamedIndividual, foaf:Organization ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     rdfs:label "Istituto Gramma, L'Aquila"@en .
 
 
@@ -106,7 +106,7 @@
     rdf:type owl:Class ;
     rdfs:label "Augmented Physical Object"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q138713278> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     vs:term_status "stable" ;
     :introducedBy :Perceptrum ;
     :hasExample :InteractiveStageSetElement ;
@@ -117,7 +117,7 @@
     rdfs:subClassOf :AugmentedPhysicalObject ;
     rdfs:label "Augmented Painting"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q137104541> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     vs:term_status "stable" ;
     rdfs:seeAlso <https://www.perceptrum.net/ontology/augmented-painting.html> ;
     :introducedBy :Perceptrum ;
@@ -129,7 +129,7 @@
     rdfs:subClassOf :AugmentedPhysicalObject ;
     rdfs:label "Augmented Musical Instrument"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q138713305> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     vs:term_status "stable" ;
     :introducedBy :MichelangeloLupone ;
     :hasExample :FeedDrum, :MagneticResonatorPiano, :FeedGuitar ;
@@ -145,7 +145,7 @@
 :InteractiveStageSetElement
     rdf:type owl:NamedIndividual, :AugmentedPhysicalObject ;
     rdfs:label "Interactive Stage Set Element"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     rdfs:seeAlso <https://luciamarock.github.io/Projects/AccroccoSonic.html> ;
     dcterms:creator :LucianoCiamarone ;
     dcterms:created "2015"^^xsd:gYear ;
@@ -157,7 +157,7 @@
     rdf:type owl:NamedIndividual, :AugmentedPainting ;
     rdfs:label "Sounding Canvas"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q136547884> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     rdfs:seeAlso <https://www.perceptrum.net/works/sounding-canvas.html> ;
     dcterms:creator :Perceptrum ;
     :documentedIn :SoundingCanvasIS22025, :SoundingCanvasNIME2026 ;
@@ -169,7 +169,7 @@
     rdf:type owl:NamedIndividual, :AugmentedMusicalInstrument ;
     rdfs:label "Feed-Drum"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q5441166> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     rdfs:seeAlso <https://en.wikipedia.org/wiki/Feed-Drum> ;
     dcterms:creator :MichelangeloLupone ;
     dcterms:contributor :CentroRicercheMusicali, :IstitutoGramma ;
@@ -179,7 +179,7 @@
     rdf:type owl:NamedIndividual, :AugmentedMusicalInstrument ;
     rdfs:label "Magnetic Resonator Piano"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q116953917> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     rdfs:seeAlso <https://andrewmcpherson.org/project/mrp> ;
     rdfs:comment "A hybrid acoustic-electronic instrument augmenting the grand piano."@en .
 
@@ -187,7 +187,7 @@
     rdf:type owl:NamedIndividual, :AugmentedMusicalInstrument ;
     rdfs:label "Feed Guitar"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q138757459> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     rdfs:seeAlso <https://luciamarock.github.io/Projects/FeedGuitar.html> ;
     dcterms:creator :LucianoCiamarone ;
     :documentedIn :EnvironmentLikeStrings ;
@@ -201,7 +201,7 @@
 :EnvironmentLikeStrings
     rdf:type owl:NamedIndividual, bibo:Chapter ;
     rdfs:label "Environment like strings"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     dcterms:creator :LucianoCiamarone ;
     dcterms:isPartOf :MusiqueEtEcologiesDuSon ;
     dcterms:identifier "doi:10.6084/m9.figshare.30903413" .
@@ -209,7 +209,7 @@
 :MusiqueEtEcologiesDuSon
     rdf:type owl:NamedIndividual, bibo:Book ;
     rdfs:label "Musique et écologies du son - Propositions théoriques pour une écoute du monde"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     bibo:isbn13 "9782140010897" ;
     bibo:isbn10 "2140010892" .
 
@@ -217,7 +217,7 @@
     rdf:type owl:NamedIndividual, bibo:AcademicArticle ;
     rdfs:label "Sounding Canvas: A Networked Interactive Painting System Based on Touch, Sound, and Machine Learning"@en ;
     owl:sameAs <https://www.wikidata.org/wiki/Q137426267> ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     dcterms:creator :Perceptrum ;
     dcterms:issued "2025"^^xsd:gYear ;
     dcterms:bibliographicCitation "Presented at the 2025 IEEE 6th International Symposium on the Internet of Sounds (IS2) - L'Aquila, Italy."@en ;
@@ -226,7 +226,7 @@
 :SoundingCanvasNIME2026
     rdf:type owl:NamedIndividual, bibo:AcademicArticle ;
     rdfs:label "Sounding Canvas: A Networked Social Artwork Bridging Distant Communities through Tactile Interaction"@en ;
-    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology.ttl> ;
+    rdfs:isDefinedBy <https://luciamarock.github.io/Academics/ontology/ontology.ttl> ;
     dcterms:creator :Perceptrum ;
     dcterms:issued "2026"^^xsd:gYear ;
     dcterms:bibliographicCitation "Presented at New Interfaces for Musical Expression (NIME) - London, UK."@en ;
