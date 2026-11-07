@@ -21,49 +21,59 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Luciano Ciamarone",
-  "alternateName": "luciamarock",
-  "url": "https://luciamarock.github.io/",
-  "sameAs": [
-    "https://www.wikidata.org/wiki/Q138757384",
-    "https://www.perceptrum.net/",
-    "http://luciama.altervista.org/luciamarock.html"
-  ],
-  "jobTitle": "Multidisciplinary Creator",
-  "description": "Multidisciplinary creator working at the crossroads of music, technology, and engineering. Specializing in interactive sound experiences, signal processing, augmented instruments, and immersive audiovisual projects.",
-  "image": "https://luciamarock.github.io/images/unnamed.jpg",
-  "knowsAbout": ["Music Technology", "Audio Signal Processing", "Augmented Musical Instruments", "Interactive Audio-Visual Experiences", "Space Technology", "Embedded Systems"],
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Self-employed / Artistic Projects",
-    "url": "https://luciamarock.github.io/"
-  },
-  "hasPart": [
+  "@graph": [
     {
-      "@type": "CreativeWork",
+      "@type": "Person",
+      "@id": "https://luciamarock.github.io/#person",
+      "name": "Luciano Ciamarone",
+      "alternateName": "luciamarock",
+      "url": "https://luciamarock.github.io/",
+      "image": "https://luciamarock.github.io/images/unnamed.jpg",
+      "jobTitle": "Multidisciplinary Creator",
+      "description": "Multidisciplinary creator working at the crossroads of music, technology, and engineering. Specializing in interactive sound experiences, signal processing, augmented instruments, and immersive audiovisual projects.",
+      "sameAs": [
+        "https://www.wikidata.org/wiki/Q138757384",
+        "http://luciama.altervista.org/luciamarock.html",
+        "https://musicbrainz.org/artist/916311d6-42b1-4207-b8be-74bfeb4d741a"
+      ],
+      "knowsAbout": [
+        "Contemporary Music",
+        "Electroacoustic Music",
+        "Musical Composition",
+        "Sound Art",
+        "Interactive Sound",
+        "Audio Signal Processing",
+        "Music Technology",
+        "Augmented Musical Instruments",
+        "Embedded Systems"
+      ],
+      "memberOf": {
+        "@id": "https://www.wikidata.org/entity/Q136547945"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.wikidata.org/entity/Q136547945",
       "name": "Perceptrum²",
-      "sameAs": "https://www.wikidata.org/wiki/Q136547945"
+      "url": "https://www.perceptrum.net/",
+      "sameAs": "https://www.wikidata.org/entity/Q136547945",
+      "member": {
+        "@id": "https://luciamarock.github.io/#person"
+      }
     },
     {
-      "@type": "CreativeWork",
-      "name": "Sounding Canvas",
-      "sameAs": "https://www.wikidata.org/wiki/Q136547884"
-    },
-    {
-      "@type": "CreativeWork",
-      "name": "Sounding Stage",
-      "sameAs": "https://www.wikidata.org/wiki/Q137104746"
-    },
-    {
-      "@type": "CreativeWork",
-      "name": "FeedGuitar",
-      "sameAs": "https://www.wikidata.org/wiki/Q138757459"
-    },
-    {
-      "@type": "CreativeWork",
-      "name": "Variational Geometric Network Framework",
-      "sameAs": "https://www.wikidata.org/wiki/Q138053632"
+      "@type": "WebSite",
+      "@id": "https://luciamarock.github.io/#website",
+      "url": "https://luciamarock.github.io/",
+      "name": "Luciano Ciamarone",
+      "description": "Personal website of composer, musician, and sound artist Luciano Ciamarone.",
+      "author": {
+        "@id": "https://luciamarock.github.io/#person"
+      },
+      "publisher": {
+        "@id": "https://luciamarock.github.io/#person"
+      },
+      "inLanguage": "en"
     }
   ]
 }
