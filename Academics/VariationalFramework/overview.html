@@ -86,17 +86,73 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+
 <p>
-The framework provides a unified perspective linking geometry, dynamics, and information, and serves as
-the conceptual foundation for several of my projects, including the <em>Sounding Canvas</em>, where the
-evolution of geometric configurations is used to generate compositional structures and interactive musical
-behaviors.
+  Simples are the fundamental geometric entities of SimplesModel. Each Simple
+  is represented as a closed, deformable surface embedded in a three-dimensional
+  space. Rather than behaving as rigid bodies, Simples can change their
+  geometric configuration through variational dynamics governed by surface
+  tension and curvature-dependent energy.
 </p>
+
 <p>
-Although motivated by ideas from differential geometry, variational calculus, statistical mechanics,
-and quantum-inspired computation, the framework should be regarded primarily as an exploratory
-mathematical and artistic model rather than a physical theory. Its purpose is to investigate how
-complex forms, temporal structures, and emergent behaviors may arise from simple geometric interactions.
+  When two or more Simples come into contact, their surfaces interact through
+  geometric constraints and variational forces. These interactions can produce
+  local deformations, shared boundaries, and partially merged surface regions.
+  The resulting configurations are not merely spatial arrangements: they
+  constitute the elementary interactions from which the network structure of
+  the model emerges.
+</p>
+
+<figure>
+  <img src="./images/simple-interaction.png"
+       alt="Interaction between two deformable Simples, showing surface contact, deformation, and the resulting geometric forces."
+       style="max-width: 100%; height: auto;" />
+  <figcaption>
+    Interaction between two Simples. Contact between deformable surfaces
+    produces geometric constraints and forces that influence their
+    configurations.
+  </figcaption>
+</figure>
+
+<p>
+  When three or more Simples interact, their surfaces can partially merge,
+  producing shared geometric regions. These shared surfaces establish
+  relationships between the participating entities and provide the geometric
+  basis for network formation.
+</p>
+
+<p>
+  In this representation, a network is not an externally imposed structure
+  connecting independent objects. It emerges from the geometric interactions
+  and shared surface regions of the Simples themselves. Changes in these
+  configurations can therefore modify the topology and connectivity of the
+  resulting network.
+</p>
+
+<figure>
+  <img src="./images/simples-spinnetwork.png"
+       alt="Three interacting Simples with partially merged surfaces forming a shared geometric network."
+       style="max-width: 100%; height: auto;" />
+  <figcaption>
+    Three interacting Simples. Partially merged surfaces create shared
+    geometric regions that establish the relationships forming a network.
+  </figcaption>
+</figure>
+
+<p>
+  The interaction of Simples provides the geometric foundation for the
+  probabilistic and temporal dynamics explored in SimplesModel. Network
+  configurations define possible states, while variations in their geometry
+  determine the conditions under which transitions between states can occur.
+  Through these transitions, the model investigates how higher-order
+  structures and temporal ordering can emerge from local geometric
+  interactions.
+</p>
+
+<p>
+  The following sections describe the theoretical principles and computational
+  approximations used to implement these mechanisms.
 </p>
 </section>
 
